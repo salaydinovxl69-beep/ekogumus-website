@@ -104,7 +104,7 @@ export const uz = {
   // Our Product Section
   ourProduct: {
     title: 'Bizning mahsulotimiz',
-    subtitle: 'EKOGUMUS organik-mineral o\'g\'it',
+    subtitle: 'BIOGUMUS va NANOECOVERM',
     description: {
       paragraph1: 'Bizning organik-mineral o\'g\'itimiz Kaliforniya yomg\'ir chuvalchanglari yordamida ishlab chiqariladi, bu mahsulotning eng yuqori sifati va samaradorligini ta\'minlaydi.',
       paragraph2: 'Bu noyob ishlab chiqarish tuproq unumdorligini yaxshilaydigan va hosildorlikni sezilarli darajada oshiradigan organik va mineral moddalarning mayda granulali massasidir.',
@@ -153,8 +153,8 @@ export const uz = {
 
     cta: 'Batafsil',
     productSection: {
-      title: 'EKOGUMUS - Organik o\'g\'it',
-      subtitle: 'O\'simliklarning sog\'lom o\'sishi uchun zarur bo\'lgan barcha ozuqa moddalarini o\'z ichiga olgan mayda granulali organik o\'g\'it',
+      title: 'BIOGUMUS va NANOEKOVERM',
+      subtitle: 'O\'simliklarning sog\'lom o\'sishi uchun barcha zarur oziq moddalarni o\'z ichiga olgan mayda granulyatsiyalangan va suyuq organo-mineral o\'g\'it',
       card1: {
         title: 'Ekologik xavfsizlik',
         description: 'Zararli kimyoviy qo\'shimchalarsiz 100% organik o\'g\'it',
