@@ -1,0 +1,424 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap');
+
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap');
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-size: 16px;
+  
+  /* EkoGumus Brand Colors */
+  --ekogumus-green: #2E7D32;
+  --ekogumus-green-light: #4CAF50;
+  --ekogumus-green-lighter: #81C784;
+  --ekogumus-brown: #5D4037;
+  --ekogumus-brown-light: #8D6E63;
+  --ekogumus-yellow: #FFC107;
+  --ekogumus-red: #D32F2F;
+  
+  /* System Colors */
+  --background: #ffffff;
+  --foreground: #424242;
+  --card: #ffffff;
+  --card-foreground: #424242;
+  --popover: #ffffff;
+  --popover-foreground: #424242;
+  --primary: #2E7D32;
+  --primary-foreground: #ffffff;
+  --secondary: #f3f4f6;
+  --secondary-foreground: #424242;
+  --muted: #f9fafb;
+  --muted-foreground: #6b7280;
+  --accent: #4CAF50;
+  --accent-foreground: #ffffff;
+  --destructive: #D32F2F;
+  --destructive-foreground: #ffffff;
+  --border: rgba(0, 0, 0, 0.1);
+  --input: transparent;
+  --input-background: #f9fafb;
+  --switch-background: #e5e7eb;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: #2E7D32;
+  --chart-1: #2E7D32;
+  --chart-2: #4CAF50;
+  --chart-3: #81C784;
+  --chart-4: #5D4037;
+  --chart-5: #FFC107;
+  --radius: 0.5rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #424242;
+  --sidebar-primary: #2E7D32;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f3f4f6;
+  --sidebar-accent-foreground: #424242;
+  --sidebar-border: rgba(0, 0, 0, 0.1);
+  --sidebar-ring: #2E7D32;
+
+  /* Text sizes following brand guidelines */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+}
+
+.dark {
+  --background: #1a1a1a;
+  --foreground: #ffffff;
+  --card: #2a2a2a;
+  --card-foreground: #ffffff;
+  --popover: #2a2a2a;
+  --popover-foreground: #ffffff;
+  --primary: #4CAF50;
+  --primary-foreground: #1a1a1a;
+  --secondary: #374151;
+  --secondary-foreground: #ffffff;
+  --muted: #374151;
+  --muted-foreground: #9ca3af;
+  --accent: #4CAF50;
+  --accent-foreground: #1a1a1a;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --border: #374151;
+  --input: #374151;
+  --ring: #4CAF50;
+  --sidebar: #2a2a2a;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #4CAF50;
+  --sidebar-primary-foreground: #1a1a1a;
+  --sidebar-accent: #374151;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #374151;
+  --sidebar-ring: #4CAF50;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* EkoGumus Brand Colors */
+  --color-ekogumus-green: var(--ekogumus-green);
+  --color-ekogumus-green-light: var(--ekogumus-green-light);
+  --color-ekogumus-green-lighter: var(--ekogumus-green-lighter);
+  --color-ekogumus-brown: var(--ekogumus-brown);
+  --color-ekogumus-brown-light: var(--ekogumus-brown-light);
+  --color-ekogumus-yellow: var(--ekogumus-yellow);
+  --color-ekogumus-red: var(--ekogumus-red);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fffe 30%, #f0fdf4 60%, #ecfccb 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+}
+
+/* Dark mode body background */
+@layer base {
+  .dark body {
+    background: radial-gradient(1200px 600px at 10% -10%, rgba(76, 175, 80, 0.08), transparent 60%),
+                radial-gradient(1000px 500px at 110% 0%, rgba(46, 125, 50, 0.06), transparent 60%),
+                linear-gradient(135deg, #0b0f0c 0%, #0f1a12 40%, #0e1710 100%);
+    background-attachment: fixed;
+  }
+}
+
+/**
+ * EkoGumus Brand Typography
+ */
+@layer base {
+  :where(:not(:has([class*=" text-"]), :not(:has([class^="text-"])))) {
+    h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: var(--text-5xl);
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--ekogumus-green);
+    }
+
+    h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: var(--text-4xl);
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--ekogumus-green);
+    }
+
+    h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: var(--text-3xl);
+      font-weight: 600;
+      line-height: 1.4;
+      color: var(--ekogumus-green);
+    }
+
+    h4 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: var(--text-2xl);
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--ekogumus-green);
+    }
+
+    h5 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: var(--text-xl);
+      font-weight: 500;
+      line-height: 1.5;
+      color: var(--ekogumus-green);
+    }
+
+    h6 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: var(--text-lg);
+      font-weight: 500;
+      line-height: 1.5;
+      color: var(--ekogumus-green);
+    }
+
+    p {
+      font-family: 'Open Sans', sans-serif;
+      font-size: var(--text-base);
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--foreground);
+    }
+
+    label {
+      font-family: 'Open Sans', sans-serif;
+      font-size: var(--text-base);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    button {
+      font-family: 'Open Sans', sans-serif;
+      font-size: var(--text-base);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    input, textarea {
+      font-family: 'Open Sans', sans-serif;
+      font-size: var(--text-base);
+      font-weight: 400;
+      line-height: 1.5;
+    }
+  }
+}
+
+/* Custom EkoGumus utility classes */
+@layer utilities {
+  .text-ekogumus-green {
+    color: var(--ekogumus-green);
+  }
+  
+  .text-ekogumus-green-light {
+    color: var(--ekogumus-green-light);
+  }
+  
+  .text-ekogumus-brown {
+    color: var(--ekogumus-brown);
+  }
+  
+  .bg-ekogumus-green {
+    background-color: var(--ekogumus-green);
+  }
+  
+  .bg-ekogumus-green-light {
+    background-color: var(--ekogumus-green-light);
+  }
+  
+  .bg-ekogumus-brown {
+    background-color: var(--ekogumus-brown);
+  }
+  
+  .border-ekogumus-green {
+    border-color: var(--ekogumus-green);
+  }
+  
+  .font-montserrat {
+    font-family: 'Montserrat', sans-serif;
+  }
+  
+  .font-opensans {
+    font-family: 'Open Sans', sans-serif;
+  }
+}
+
+html {
+  font-size: var(--font-size);
+  scroll-behavior: smooth;
+  /* Предотвращаем фиксацию позиции при навигации */
+  scroll-restoration: manual;
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ekogumus-green);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ekogumus-green-light);
+}
+
+
+
+/* Дополнительные эффекты для карточек на анимированном фоне */
+@layer utilities {
+  .bg-glass {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  .bg-glass-green {
+    background: rgba(46, 125, 50, 0.08);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(46, 125, 50, 0.15);
+  }
+  
+  .bg-glass-subtle {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .bg-glass-card {
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+  
+  .bg-transparent-content {
+    background: transparent;
+  }
+}
+
+/* Dark variants for glass utilities */
+@layer utilities {
+  .dark .bg-glass {
+    background: rgba(17, 24, 39, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .dark .bg-glass-green {
+    background: rgba(46, 125, 50, 0.12);
+    border: 1px solid rgba(76, 175, 80, 0.18);
+  }
+  .dark .bg-glass-subtle {
+    background: rgba(17, 24, 39, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .dark .bg-glass-card {
+    background: rgba(17, 24, 39, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+}
+
+/* Image Lightbox Styles */
+@layer base {
+  .lightbox-overlay {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  
+  .lightbox-controls {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  
+  /* Отключаем прокрутку body когда открыт lightbox */
+  body.lightbox-open {
+    overflow: hidden;
+  }
+}
+
+/* Навигация и якоря */
+@layer utilities {
+  /* Сброс позиции скролла */
+  .page-transition {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Предотвращение автоскролла к якорям */
+  :target {
+    scroll-margin-top: 0;
+  }
+  
+  /* Плавная прокрутка только для внутренних ссылок */
+  [href^="#"] {
+    scroll-behavior: smooth;
+  }
+}
