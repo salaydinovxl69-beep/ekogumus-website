@@ -53,6 +53,8 @@ function HeroSection() {
           src="images/originals/doroga_trava_pole_1140666_3840x2160.jpg"
           alt={(t.hero.backgroundAlt)}
           className="w-full h-full object-cover "
+          loading="eager"
+          
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-transparent"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent"></div>
@@ -342,6 +344,7 @@ function AboutSection() {
                 src="/images/originals/Generated Image August 29, 2025 - 1_06PM.jpeg"
                 alt={t.about.founderAlt}
                 className=" lg:h-[500px] object-contain"
+                loading="lazy"
               />
             </div>
           </motion.div>
@@ -612,6 +615,7 @@ function ProductImageCarousel({
                 <ImageWithFallback
                   src={image.src}
                   alt={image.alt}
+                  loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
@@ -778,6 +782,7 @@ function CertificateSection() {
                               src={certificateImages[0].src}
                               alt={certificateImages[0].alt}
                               className="w-full h-full object-cover"
+                              loading="lazy"
                             />
                           </div>
                         </div>
