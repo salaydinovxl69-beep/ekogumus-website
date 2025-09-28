@@ -1,11 +1,11 @@
 import { motion } from "motion/react";
 import { Link } from "react-router-dom";
-import { 
-  Phone, 
-  Mail, 
-  MapPin, 
-  Youtube, 
-  Send, 
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Youtube,
+  Send,
   Leaf,
   Award,
   Heart,
@@ -22,7 +22,7 @@ export function Footer() {
       {/* Main Footer Content */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-          
+
           {/* Company Info */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -30,18 +30,37 @@ export function Footer() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="lg:col-span-1"
           >
-            {/* Logo */}
-            <Link to="/" className="flex items-center space-x-3 mb-6">
-            <img
-              src="images/originals/logo.png"
-              alt="Ekogumus Logo"
-              className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain"
-            />
+            {/* Logo and Text Container for Footer */}
+            <Link to="/" className="flex items-start space-x-3 mb-6">
+
+              {/* Контейнер для двух логотипов */}
+              {/* Используем flex items-center и space-x-2 для горизонтального размещения и отступа */}
+              <div className="flex items-center space-x-2">
+
+                {/* Первый логотип (logo_2.png) */}
+                <img
+                  src="/images/originals/logo_2.png" // Используем слэш в начале, если это корневой путь
+                  alt="Second Logo"
+                  // Задаем единый адаптивный размер для обоих логотипов
+                  className="w-8 h-8 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain"
+                />
+
+                {/* Второй логотип (logo.png) */}
+                <img
+                  src="/images/originals/logo.png" // Используем слэш в начале, если это корневой путь
+                  alt="Ekogumus Logo"
+                  // Задаем единый адаптивный размер для обоих логотипов
+                  className="w-8 h-8 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain"
+                />
+              </div>
+
+              {/* Название сайта (текстовый блок) */}
               <div className="flex flex-col">
                 <span className="text-2xl font-montserrat font-bold text-white">
-                  EKOGUMUS
                 </span>
+                {/* Дополнительная строка текста (слоган/подпись) */}
                 <span className="text-sm text-gray-400 font-opensans -mt-1">
+                  {/* Здесь может быть ваш слоган или подпись */}
                 </span>
               </div>
             </Link>
@@ -103,8 +122,8 @@ export function Footer() {
 
               <div className="flex items-center gap-3">
                 <Phone className="w-5 h-5 text-ekogumus-green-light flex-shrink-0" />
-                <a 
-                  href="tel:+998936418545" 
+                <a
+                  href="tel:+998936418545"
                   className="text-gray-300 hover:text-white font-opensans transition-colors duration-300"
                 >
                   +998 (93) 641-85-45
@@ -113,8 +132,8 @@ export function Footer() {
 
               <div className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-ekogumus-green-light flex-shrink-0" />
-                <a 
-                  href="mailto:bashfergana@mail.ru" 
+                <a
+                  href="mailto:bashfergana@mail.ru"
                   className="text-gray-300 hover:text-white font-opensans transition-colors duration-300"
                 >
                   bashfergana@mail.ru
@@ -132,11 +151,11 @@ export function Footer() {
             <h3 className="text-lg font-montserrat font-semibold text-white mb-6">
               {t.footer.follow}
             </h3>
-            
+
             {/* Social Links */}
             <div className="flex items-center gap-4 mb-6">
-              <a 
-                href="https://www.youtube.com/@biogumusfargonaekogumus8419" 
+              <a
+                href="https://www.youtube.com/@biogumusfargonaekogumus8419"
                 className="w-10 h-10 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -173,7 +192,7 @@ export function Footer() {
               <p>© {currentYear} EKOGUMUS {t.footer.copyright}</p>
               <div className="hidden md:block w-1 h-1 bg-gray-600 rounded-full"></div>
             </div>
-            
+
             <div className="flex items-center gap-2 text-sm text-gray-400 font-opensans">
               <span className="bg-gradient-to-r from-ekogumus-green to-ekogumus-green-light bg-clip-text text-transparent font-semibold">
               </span>

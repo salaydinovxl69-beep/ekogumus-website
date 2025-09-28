@@ -186,7 +186,6 @@ function LiquidFertilizers() {
               {liquidFertilizerData.main}
             </Badge>
           </div>
-
           <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl text-ekogumus-green mb-4 sm:mb-6">
             {liquidFertilizerData.title}
           </h2>
@@ -211,7 +210,7 @@ function LiquidFertilizers() {
                     <ImageWithFallback
                       src={liquidProductImages[index % liquidProductImages.length]}
                       alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-yellow-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
@@ -508,7 +507,7 @@ function ProductCards() {
   );
 }
 
-// NEW: Section for Biohumus Info + Composition Table
+// NEW: Section for Biogumus Info + Composition Table
 function BiohumusInfoSection() {
   const { t } = useLanguage();
 
@@ -561,7 +560,10 @@ function ProductionProcessSection() {
 
   return (
     <SectionContainer compact={true}>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        {/*
+          КОЛОНКА 1: ТЕКСТОВЫЙ КОНТЕНТ (Процесс производства)
+        */}
         <Card className="bg-glass-card h-full">
           <CardContent className="p-4 sm:p-6 lg:p-8 space-y-4 text-gray-700">
             <h3 className="text-base sm:text-lg font-semibold text-green-900">
@@ -596,12 +598,44 @@ function ProductionProcessSection() {
             <p className="text-sm">{(t.products.productionProcess.advantagesDescription)}</p>
           </CardContent>
         </Card>
-        <BasicBatchTable />
+
+        {/*
+          КОЛОНКА 2: ТАБЛИЦА + ИЗОБРАЖЕНИЕ
+          Обернуты во flex-col для вертикального размещения.
+        */}
+        <div className="flex flex-col space-y-8">
+            {/* 1. Таблица BasicBatchTable */}
+            <BasicBatchTable />
+
+            {/* 2. ИЗОБРАЖЕНИЕ A4 (Добавлено под таблицей) */}
+            <div className="w-full flex justify-center">
+    {/*
+      1. Ссылка (<a>) для открытия в полном размере.
+      2. w-full (на мобильных) и lg:w-1/2 (на десктопе) для уменьшения на 50%.
+    */}
+    <a 
+        href="/images/originals/IMG_4102.jpg" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        // На мобильных - 100%, на десктопе (lg) - 50% ширины колонки
+        className="w-full lg:w-1/2 cursor-pointer block group" 
+    >
+        <img
+            // Убедитесь, что этот путь верен для вашего проекта
+            src="/images/originals/IMG_4102.jpg"
+            alt="Схема процесса производства или спецификация"
+            // w-full обеспечивает 100% от ширины родительской ссылки (которая 50% или 100%)
+            // Добавлен эффект масштабирования при наведении (hover:scale)
+            className="w-full h-auto object-contain rounded-xl shadow-lg border border-gray-100 transition-transform duration-300 group-hover:scale-[1.02]"
+        />
+    </a>
+</div>
+        </div>
       </div>
     </SectionContainer>
   );
 }
-
+//Таблица с составом NANOECOVERM
 function BasicBatchTable() {
   const { t } = useLanguage();
 
@@ -662,7 +696,7 @@ function BasicBatchTable() {
   );
 }
 
-//Таблица с составом ECOGUMUS
+//Таблица с составом BIOGUMUS
 function CompositionTable() {
   const { t } = useLanguage();
 
@@ -785,7 +819,7 @@ function CompositionTable() {
     </Card>
   );
 }
-// +++ НОВАЯ СЕКЦИЯ С ВИДЕО +++
+//СЕКЦИЯ С ВИДЕО
 
 function YouTubeVideoSection() {
   // const { t } = useLanguage(); // Раскомментируйте, когда добавите переводы
@@ -875,4 +909,4 @@ function YouTubeVideoSection() {
   );
 }
 
-export default YouTubeVideoSection; // Не забудьте экспортировать компонент для использования в других частях приложения
+export default YouTubeVideoSection;
