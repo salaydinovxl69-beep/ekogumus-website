@@ -20,8 +20,9 @@ export function Footer() {
   return (
     <footer className="bg-gradient-to-b from-gray-900 to-black text-white">
       {/* Main Footer Content */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 lg:py-16"> {/* Немного уменьшил вертикальный padding на мобилках */}
+        {/* Сетка: 1 колонка на мобилке, 2 на md, 4 на lg */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
 
           {/* Company Info */}
           <motion.div
@@ -31,41 +32,39 @@ export function Footer() {
             className="lg:col-span-1"
           >
             {/* Logo and Text Container for Footer */}
-            <Link to="/" className="flex items-start space-x-3 mb-6">
+            <Link to="/" className="flex items-start space-x-3 mb-4 sm:mb-6">
 
               {/* Контейнер для двух логотипов */}
-              {/* Используем flex items-center и space-x-2 для горизонтального размещения и отступа */}
               <div className="flex items-center space-x-2">
 
                 {/* Первый логотип (logo_2.png) */}
                 <img
-                  src="/images/originals/logo_2.png" // Используем слэш в начале, если это корневой путь
+                  src="/images/originals/logo_2.webp" 
                   alt="Second Logo"
-                  // Задаем единый адаптивный размер для обоих логотипов
-                  className="w-8 h-8 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain"
+                  className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 object-contain" // Адаптированный размер
                 />
 
                 {/* Второй логотип (logo.png) */}
                 <img
-                  src="/images/originals/logo.png" // Используем слэш в начале, если это корневой путь
+                  src="/images/originals/logo.webp" 
                   alt="Ekogumus Logo"
-                  // Задаем единый адаптивный размер для обоих логотипов
-                  className="w-8 h-8 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain"
+                  className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 object-contain" // Адаптированный размер
                 />
               </div>
 
               {/* Название сайта (текстовый блок) */}
               <div className="flex flex-col">
-                <span className="text-2xl font-montserrat font-bold text-white">
+                <span className="text-xl sm:text-2xl font-montserrat font-bold text-white">
+                  {/* Добавьте здесь название, если оно должно быть */}
                 </span>
                 {/* Дополнительная строка текста (слоган/подпись) */}
-                <span className="text-sm text-gray-400 font-opensans -mt-1">
+                <span className="text-xs sm:text-sm text-gray-400 font-opensans -mt-1">
                   {/* Здесь может быть ваш слоган или подпись */}
                 </span>
               </div>
             </Link>
 
-            <p className="text-gray-300 font-opensans leading-relaxed mb-6">
+            <p className="text-gray-300 font-opensans leading-relaxed text-sm sm:text-base mb-6"> {/* Адаптировал размер текста */}
               {t.footer.description}
             </p>
           </motion.div>
@@ -76,10 +75,10 @@ export function Footer() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <h3 className="text-lg font-montserrat font-semibold text-white mb-6">
+            <h3 className="text-base sm:text-lg font-montserrat font-semibold text-white mb-4 sm:mb-6"> {/* Адаптировал размер заголовка и отступ */}
               {t.footer.quickLinks}
             </h3>
-            <nav className="space-y-3">
+            <nav className="space-y-2 sm:space-y-3"> {/* Уменьшил вертикальный отступ */}
               {[
                 { name: t.nav.home, path: "/" },
                 { name: t.nav.about, path: "/about" },
@@ -91,7 +90,7 @@ export function Footer() {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className="block text-gray-300 hover:text-ekogumus-green-light font-opensans transition-colors duration-300 hover:translate-x-1 transform"
+                  className="block text-sm sm:text-base text-gray-300 hover:text-ekogumus-green-light font-opensans transition-colors duration-300 hover:translate-x-1 transform"
                 >
                   {link.name}
                 </Link>
@@ -105,14 +104,14 @@ export function Footer() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <h3 className="text-lg font-montserrat font-semibold text-white mb-6">
+            <h3 className="text-base sm:text-lg font-montserrat font-semibold text-white mb-4 sm:mb-6">
               {t.footer.contact}
             </h3>
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4"> {/* Уменьшил вертикальный отступ */}
               <div className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-ekogumus-green-light mt-0.5 flex-shrink-0" />
+                <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-ekogumus-green-light mt-0.5 flex-shrink-0" />
                 <div>
-                  <p className="text-gray-300 font-opensans text-sm leading-relaxed">
+                  <p className="text-gray-300 font-opensans text-xs sm:text-sm leading-relaxed">
                     {t.footer.address.country}<br />
                     {t.footer.address.city}<br />
                     {t.footer.address.street}
@@ -121,20 +120,20 @@ export function Footer() {
               </div>
 
               <div className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-ekogumus-green-light flex-shrink-0" />
+                <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-ekogumus-green-light flex-shrink-0" />
                 <a
                   href="tel:+998936418545"
-                  className="text-gray-300 hover:text-white font-opensans transition-colors duration-300"
+                  className="text-xs sm:text-sm text-gray-300 hover:text-white font-opensans transition-colors duration-300"
                 >
                   +998 (93) 641-85-45
                 </a>
               </div>
 
               <div className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-ekogumus-green-light flex-shrink-0" />
+                <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-ekogumus-green-light flex-shrink-0" />
                 <a
                   href="mailto:bashfergana@mail.ru"
-                  className="text-gray-300 hover:text-white font-opensans transition-colors duration-300"
+                  className="text-xs sm:text-sm text-gray-300 hover:text-white font-opensans transition-colors duration-300"
                 >
                   bashfergana@mail.ru
                 </a>
@@ -142,13 +141,13 @@ export function Footer() {
             </div>
           </motion.div>
 
-          {/* Social & Newsletter */}
+          {/* Social & Working Hours */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <h3 className="text-lg font-montserrat font-semibold text-white mb-6">
+            <h3 className="text-base sm:text-lg font-montserrat font-semibold text-white mb-4 sm:mb-6">
               {t.footer.follow}
             </h3>
 
@@ -156,21 +155,22 @@ export function Footer() {
             <div className="flex items-center gap-4 mb-6">
               <a
                 href="https://www.youtube.com/@biogumusfargonaekogumus8419"
-                className="w-10 h-10 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+                className="w-9 h-9 sm:w-10 sm:h-10 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
                 target="_blank"
                 rel="noopener noreferrer"
                 title={t.a11y.youtube}
               >
-                <Youtube className="w-5 h-5 text-white" />
+                <Youtube className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </a>
+              {/* Добавьте другие социальные сети здесь, например Telegram, Instagram */}
             </div>
 
             {/* Working Hours */}
-            <div className="bg-gray-800/50 rounded-lg p-4 border border-white">
-              <h4 className="text-sm font-montserrat font-semibold text-white mb-3">
+            <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-700"> {/* Изменил цвет бордера для контраста */}
+              <h4 className="text-xs sm:text-sm font-montserrat font-semibold text-white mb-2">
                 {t.footer.workingHours.title}
               </h4>
-              <div className="space-y-1 text-sm text-white font-opensans">
+              <div className="space-y-1 text-xs sm:text-sm text-white font-opensans">
                 <p className="text-white">{t.footer.workingHours.weekdays}</p>
                 <p className="text-white">{t.footer.workingHours.sunday}</p>
               </div>
@@ -181,20 +181,21 @@ export function Footer() {
 
       {/* Bottom Bar */}
       <div className="border-t border-gray-800">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex flex-col md:flex-row justify-between items-center gap-4"
+            className="flex flex-col md:flex-row justify-between items-center gap-3 md:gap-4"
           >
-            <div className="flex flex-col md:flex-row items-center gap-4 text-sm text-gray-400 font-opensans">
+            <div className="flex flex-col md:flex-row items-center gap-2 text-xs sm:text-sm text-gray-400 font-opensans order-2 md:order-1 text-center">
               <p>© {currentYear} EKOGUMUS {t.footer.copyright}</p>
-              <div className="hidden md:block w-1 h-1 bg-gray-600 rounded-full"></div>
+              {/* Убрал разделитель, так как он выглядит лишним на мобилке */}
             </div>
 
-            <div className="flex items-center gap-2 text-sm text-gray-400 font-opensans">
+            <div className="text-xs sm:text-sm text-gray-400 font-opensans order-1 md:order-2"> {/* Поменял порядок, чтобы слоган был сверху на мобилке */}
               <span className="bg-gradient-to-r from-ekogumus-green to-ekogumus-green-light bg-clip-text text-transparent font-semibold">
+                 {/* Здесь может быть ваш слоган/текст */}
               </span>
             </div>
           </motion.div>

@@ -105,36 +105,9 @@ export function CooperationPage() {
   // перевод (ваш useLanguage)
   const { t } = (useLanguage as any) ? useLanguage() : { t: ({} as any) };
   const cooperation = (t && (t.cooperation)) || (window as any).__COOPERATION_TRANSLATIONS__ || {
-    // fallback minimal structure, если переводов нет — замените на реальные тексты
-    hero: { badge: 'Партнёры', subtitle: 'Подзаголовок', stats: { years: 'Лет', partners: 'Партнёров', countries: 'Стран' } },
-    title: 'Сотрудничество',
-    conditions: { title: 'Виды сотрудничества', subtitle: '', wholesale: { title: 'Опт', items: ['Условие 1'] }, dealer: { title: 'Дилерам', items: ['Условие 2'] }, export: { title: 'Экспорт', items: ['Условие 3'] } },
-    advantages: { title: 'Преимущества', subtitle: '', quality: { title: 'Качество', description: '' }, supply: { title: 'Поставка', description: '' }, support: { title: 'Поддержка', description: '' }, prices: { title: 'Цены', description: '' }, delivery: { title: 'Доставка', description: '' }, approach: { title: 'Подход', description: '' } },
-    process: { title: 'Процесс', subtitle: '', step1: { title: 'Шаг 1', description: '' }, step2: { title: 'Шаг 2', description: '' }, step3: { title: 'Шаг 3', description: '' }, step4: { title: 'Шаг 4', description: '' } },
-    form: {
-      title: 'Связаться',
-      subtitle: '',
-      fields: {
-        name: { label: 'Имя', placeholder: 'Ваше имя', required: true, minLength: 'Минимум 2 символа', invalid: 'Неверное имя', requiredText: 'Обязательное поле' },
-        company: { label: 'Компания', placeholder: 'Название компании' },
-        email: { label: 'Email', placeholder: 'example@mail.com', required: true, invalid: 'Неверный email', requiredText: 'Обязательное поле' },
-        phone: { label: 'Телефон', placeholder: '+998...', required: true, invalid: 'Неверный телефон', requiredText: 'Обязательное поле' },
-        message: { label: 'Сообщение', placeholder: 'Расскажите о запросе', required: true, minLength: 'Минимум 10 символов', invalid: 'Неверное сообщение' }
-      },
-      submit: { idle: 'Отправить', submitting: 'Отправка...', success: 'Отправлено', successDescription: '', error: 'Ошибка отправки' },
-      required: 'Поля, отмеченные * обязательны'
-    },
-    contact: {
-      title: 'Контакты',
-      subtitle: '',
-      methods: { phone: { title: 'Телефон', value: '+998...' }, email: { title: 'Email', value: 'mail@domain' }, telegram: { title: 'Telegram', value: '@username' } },
-      workingHours: { title: 'Время работы', weekdays: 'Пн-Пт', saturday: 'Сб', sunday: 'Вс' }
-    }
   };
-
   const heroRef = useRef<HTMLDivElement | null>(null);
   const isHeroInView = useInView(heroRef, { once: true });
-
   const [formData, setFormData] = useState({
     name: '',
     company: '',
@@ -143,7 +116,6 @@ export function CooperationPage() {
     cooperationType: 'wholesale',
     message: ''
   });
-
   const [formErrors, setFormErrors] = useState<FormErrors>({});
   const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -251,7 +223,7 @@ export function CooperationPage() {
   ]), [cooperation.process]);
 
   return (
-    <div className="py-8 space-y-12">
+    <div className="py-8 space-y-0">
       {/* Hero Section */}
       <SectionContainer>
         <motion.div
@@ -270,11 +242,11 @@ export function CooperationPage() {
             <Users className="w-5 h-5 text-ekogumus-green" />
             <span className="text-ekogumus-green font-medium">{cooperation.hero.badge}</span>
           </motion.div>
-          
+
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-montserrat text-ekogumus-green mb-6">
             {cooperation.title}
           </h1>
-          
+
           <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             {cooperation.hero.subtitle}
           </p>
@@ -321,14 +293,14 @@ export function CooperationPage() {
           </div>
 
           <Tabs defaultValue="wholesale" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-8">
+            <TabsList className="flex flex-col space-y-2 w-full mb-8 p-2 rounded-lg md:flex md:flex-row md:space-y-0 md:gap-4 md:justify-center md:p-0">
               {cooperationTypes.map((type) => (
-                <TabsTrigger 
-                  key={type.id} 
+                <TabsTrigger
+                  key={type.id}
                   value={type.id}
-                  className="data-[state=active]:bg-ekogumus-green data-[state=active]:text-white"
+                  className="w-full md:w-auto py-3 px-4 rounded-lg text-gray-700 bg-white hover:bg-gray-50 data-[state=active]:bg-ekogumus-green data-[state=active]:text-white data-[state=active]:shadow-md transition-all"
                 >
-                  <type.icon className="w-4 h-4 mr-2" />
+                  <type.icon className="w-5 h-5 mr-2" />
                   {type.title}
                 </TabsTrigger>
               ))}
@@ -340,21 +312,21 @@ export function CooperationPage() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.4 }}
-                  className="bg-glass-card p-8 rounded-2xl"
+                  className="bg-glass-card p-4 sm:p-8 rounded-2xl shadow-sm"
                 >
-                  <div className="flex items-center space-x-4 mb-6">
-                    <div className={`w-16 h-16 ${type.color} rounded-2xl flex items-center justify-center`}>
-                      <type.icon className="w-8 h-8 text-white" />
+                  <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 mb-6">
+                    <div className={`w-14 h-14 sm:w-16 sm:h-16 ${type.color} rounded-xl sm:rounded-2xl flex items-center justify-center flex-shrink-0`}>
+                      <type.icon className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
                     </div>
-                    <div>
-                      <h3 className="text-2xl font-montserrat text-ekogumus-green">
+                    <div className="text-center sm:text-left">
+                      <h3 className="text-xl sm:text-2xl font-montserrat text-ekogumus-green">
                         {type.title}
                       </h3>
-                      <p className="text-gray-600">Условия и преимущества</p>
+                      <p className="text-sm text-gray-600">Условия и преимущества</p>
                     </div>
                   </div>
-                  
-                  <div className="grid md:grid-cols-2 gap-4">
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {type.items.map((item: string, itemIndex: number) => (
                       <motion.div
                         key={itemIndex}
@@ -364,7 +336,7 @@ export function CooperationPage() {
                         className="flex items-start space-x-3"
                       >
                         <CheckCircle className="w-5 h-5 text-ekogumus-green mt-0.5 flex-shrink-0" />
-                        <span className="text-gray-700">{item}</span>
+                        <span className="text-gray-700 text-sm sm:text-base">{item}</span>
                       </motion.div>
                     ))}
                   </div>
@@ -454,8 +426,8 @@ export function CooperationPage() {
                     <div className="w-16 h-16 bg-ekogumus-green text-white rounded-2xl flex items-center justify-center mx-auto mb-4">
                       <step.icon className="w-8 h-8" />
                     </div>
-                    <Badge 
-                      variant="secondary" 
+                    <Badge
+                      variant="secondary"
                       className="absolute -top-2 -right-2 bg-ekogumus-yellow text-ekogumus-brown"
                     >
                       {step.number}
@@ -468,7 +440,7 @@ export function CooperationPage() {
                     {step.description}
                   </p>
                 </div>
-                
+
                 {/* Connection Line */}
                 {index < processSteps.length - 1 && (
                   <div className="hidden lg:block absolute top-8 left-full w-full h-0.5 bg-gradient-to-r from-ekogumus-green to-transparent opacity-30 z-10"></div>
@@ -480,121 +452,132 @@ export function CooperationPage() {
       </SectionContainer>
 
       {/* FORM */}
-      <SectionContainer>
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
-          <div className="bg-glass-card p-8 rounded-2xl">
-            <div className="mb-6">
-              <h3 className="text-2xl font-montserrat text-ekogumus-green mb-2">{cooperation.form.title}</h3>
-              <p className="text-gray-600">{cooperation.form.subtitle}</p>
-            </div>
+<SectionContainer>
+  <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start"> {/* Немного уменьшил gap для мобилок */}
+    
+    {/* КОНТЕЙНЕР ФОРМЫ */}
+    <div className="bg-glass-card p-6 sm:p-8 rounded-2xl"> {/* Уменьшил padding на мобилках до p-6 */}
+      <div className="mb-6">
+        <h3 className="text-xl sm:text-2xl font-montserrat text-ekogumus-green mb-2">{cooperation.form.title}</h3>
+        <p className="text-gray-600 text-sm sm:text-base">{cooperation.form.subtitle}</p>
+      </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-4">
-                <FormField
-                  name="name"
-                  label={cooperation.form.fields.name.label}
-                  placeholder={cooperation.form.fields.name.placeholder}
-                  required
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  onBlur={handleFieldBlur}
-                  error={formErrors.name}
-                />
-                <FormField
-                  name="company"
-                  label={cooperation.form.fields.company.label}
-                  placeholder={cooperation.form.fields.company.placeholder}
-                  value={formData.company}
-                  onChange={handleInputChange}
-                  onBlur={handleFieldBlur}
-                />
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-4">
-                <FormField
-                  name="email"
-                  label={cooperation.form.fields.email.label}
-                  placeholder={cooperation.form.fields.email.placeholder}
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  onBlur={handleFieldBlur}
-                  error={formErrors.email}
-                />
-                <FormField
-                  name="phone"
-                  label={cooperation.form.fields.phone.label}
-                  placeholder={cooperation.form.fields.phone.placeholder}
-                  type="tel"
-                  required
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  onBlur={handleFieldBlur}
-                  error={formErrors.phone}
-                />
-              </div>
-
-              <FormField
-                name="message"
-                label={cooperation.form.fields.message.label}
-                placeholder={cooperation.form.fields.message.placeholder}
-                as="textarea"
-                rows={4}
-                required
-                value={formData.message}
-                onChange={handleInputChange}
-                onBlur={handleFieldBlur}
-                error={formErrors.message}
-              />
-
-              <Button type="submit" disabled={isSubmitting} className="w-full bg-ekogumus-green hover:bg-ekogumus-green/90 py-6" size="lg">
-                {isSubmitting ? (
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    <span>{cooperation.form.submit.submitting}</span>
-                  </div>
-                ) : (
-                  <div className="flex items-center space-x-2">
-                    <Send className="w-4 h-4" />
-                    <span>{cooperation.form.submit.idle}</span>
-                  </div>
-                )}
-              </Button>
-
-              <p className="text-sm text-gray-500 text-center">* {cooperation.form.required}</p>
-            </form>
-          </div>
-
-          {/* Контакты (сокращённо) */}
-          <div className="space-y-6">
-            <div>
-              <h3 className="text-2xl font-montserrat text-ekogumus-green mb-4">{cooperation.contact.title}</h3>
-              <p className="text-gray-600 leading-relaxed mb-6">{cooperation.contact.subtitle}</p>
-            </div>
-
-            <a href="tel:+998936418545" className="bg-glass-green p-4 rounded-xl flex items-center space-x-4">
-              <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center"><Phone className="w-6 h-6 text-blue-600" /></div>
-              <div><div className="font-medium text-ekogumus-green">{cooperation.contact.methods.phone.title}</div><div className="text-gray-600">{cooperation.contact.methods.phone.value}</div></div>
-            </a>
-
-            <a href="mailto:bashfergana@mail.ru" className="bg-glass-green p-4 rounded-xl flex items-center space-x-4">
-              <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center"><Mail className="w-6 h-6 text-green-600" /></div>
-              <div><div className="font-medium text-ekogumus-green">{cooperation.contact.methods.email.title}</div><div className="text-gray-600">{cooperation.contact.methods.email.value}</div></div>
-            </a>
-
-            <a href="https://t.me/BahodirBX" target="_blank" rel="noopener noreferrer" className="bg-glass-green p-4 rounded-xl flex items-center space-x-4">
-              <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center"><MessageCircle className="w-6 h-6 text-blue-600" /></div>
-              <div><div className="font-medium text-ekogumus-green">{cooperation.contact.methods.telegram.title}</div><div className="text-gray-600">{cooperation.contact.methods.telegram.value}</div></div>
-            </a>
-
-            <div className="bg-glass-green p-6 rounded-xl">
-              <h4 className="font-montserrat text-ekogumus-green mb-2">{cooperation.contact.workingHours.title}</h4>
-              <div className="space-y-1 text-gray-600"><div>{cooperation.contact.workingHours.weekdays}</div><div>{cooperation.contact.workingHours.saturday}</div><div>{cooperation.contact.workingHours.sunday}</div></div>
-            </div>
-          </div>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        
+        {/* Сетка полей: 1 колонка на смартфонах, 2 на sm и выше */}
+        <div className="grid sm:grid-cols-2 gap-4"> 
+          <FormField
+            name="name"
+            label={cooperation.form.fields.name.label}
+            placeholder={cooperation.form.fields.name.placeholder}
+            required
+            value={formData.name}
+            onChange={handleInputChange}
+            onBlur={handleFieldBlur}
+            error={formErrors.name}
+          />
+          <FormField
+            name="company"
+            label={cooperation.form.fields.company.label}
+            placeholder={cooperation.form.fields.company.placeholder}
+            value={formData.company}
+            onChange={handleInputChange}
+            onBlur={handleFieldBlur}
+          />
         </div>
-      </SectionContainer>
+
+        {/* Сетка полей: 1 колонка на смартфонах, 2 на sm и выше */}
+        <div className="grid sm:grid-cols-2 gap-4"> 
+          <FormField
+            name="email"
+            label={cooperation.form.fields.email.label}
+            placeholder={cooperation.form.fields.email.placeholder}
+            type="email"
+            required
+            value={formData.email}
+            onChange={handleInputChange}
+            onBlur={handleFieldBlur}
+            error={formErrors.email}
+          />
+          <FormField
+            name="phone"
+            label={cooperation.form.fields.phone.label}
+            placeholder={cooperation.form.fields.phone.placeholder}
+            type="tel"
+            required
+            value={formData.phone}
+            onChange={handleInputChange}
+            onBlur={handleFieldBlur}
+            error={formErrors.phone}
+          />
+        </div>
+
+        <FormField
+          name="message"
+          label={cooperation.form.fields.message.label}
+          placeholder={cooperation.form.fields.message.placeholder}
+          as="textarea"
+          rows={4}
+          required
+          value={formData.message}
+          onChange={handleInputChange}
+          onBlur={handleFieldBlur}
+          error={formErrors.message}
+        />
+
+        <Button 
+          type="submit" 
+          disabled={isSubmitting} 
+          className="w-full bg-ekogumus-green hover:bg-ekogumus-green/90 py-5 sm:py-6" // Немного уменьшил высоту кнопки на мобилке
+          size="lg"
+        >
+          {isSubmitting ? (
+            <div className="flex items-center space-x-2">
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              <span>{cooperation.form.submit.submitting}</span>
+            </div>
+          ) : (
+            <div className="flex items-center space-x-2">
+              <Send className="w-4 h-4" />
+              <span>{cooperation.form.submit.idle}</span>
+            </div>
+          )}
+        </Button>
+
+        <p className="text-xs sm:text-sm text-gray-500 text-center">* {cooperation.form.required}</p>
+      </form>
+    </div>
+
+    {/* КОНТАКТЫ */}
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-xl sm:text-2xl font-montserrat text-ekogumus-green mb-4">{cooperation.contact.title}</h3>
+        <p className="text-gray-600 leading-relaxed mb-6 text-sm sm:text-base">{cooperation.contact.subtitle}</p>
+      </div>
+
+      {/* Элементы контактов не требуют изменений, так как они flex/block по умолчанию */}
+      <a href="tel:+998936418545" className="bg-glass-green p-4 rounded-xl flex items-center space-x-4">
+        <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center"><Phone className="w-6 h-6 text-blue-600" /></div>
+        <div><div className="font-medium text-ekogumus-green">{cooperation.contact.methods.phone.title}</div><div className="text-gray-600">{cooperation.contact.methods.phone.value}</div></div>
+      </a>
+
+      <a href="mailto:bashfergana@mail.ru" className="bg-glass-green p-4 rounded-xl flex items-center space-x-4">
+        <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center"><Mail className="w-6 h-6 text-green-600" /></div>
+        <div><div className="font-medium text-ekogumus-green">{cooperation.contact.methods.email.title}</div><div className="text-gray-600">{cooperation.contact.methods.email.value}</div></div>
+      </a>
+
+      <a href="https://t.me/BahodirBX" target="_blank" rel="noopener noreferrer" className="bg-glass-green p-4 rounded-xl flex items-center space-x-4">
+        <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center"><MessageCircle className="w-6 h-6 text-blue-600" /></div>
+        <div><div className="font-medium text-ekogumus-green">{cooperation.contact.methods.telegram.title}</div><div className="text-gray-600">{cooperation.contact.methods.telegram.value}</div></div>
+      </a>
+
+      <div className="bg-glass-green p-6 rounded-xl">
+        <h4 className="font-montserrat text-ekogumus-green mb-2">{cooperation.contact.workingHours.title}</h4>
+        <div className="space-y-1 text-gray-600"><div>{cooperation.contact.workingHours.weekdays}</div><div>{cooperation.contact.workingHours.saturday}</div><div>{cooperation.contact.workingHours.sunday}</div></div>
+      </div>
+    </div>
+  </div>
+</SectionContainer>
     </div>
   );
 }

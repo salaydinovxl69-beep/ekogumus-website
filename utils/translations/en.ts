@@ -430,6 +430,23 @@ export const en = {
         },
       ],
     },
+    LiqPresentation: {
+      title: "NANOECOVERM Product Presentation",
+      subtitle: "View slides about our product",
+      openPresentation: "Open Presentation",
+      slideView: "Slide",
+      gridView: "Grid",
+      lang: "Language:",
+    },
+    SolidPresentation: {
+      title: "BIOGUMUS Product Presentation",
+      subtitle: "View slides about our product",
+      openPresentation: "Open Presentation",
+    },
+    youtubeSection: {
+      title: "The production process of our BIOGUMUS and NANOECOVERM fertilizer",
+      button: "Our YouTube channel"
+    },
   },
 
   // About Page Sections
@@ -576,6 +593,7 @@ export const en = {
       workingHours: 'Working Hours',
       clickForDetails: 'Click on buttons to interact with the map',
       getDirections: 'Get Directions',
+      openInYandexMaps: "Open in Yandex.Maps"
     },
     workingHours: {
       title: 'Working Hours',
@@ -595,6 +613,14 @@ export const en = {
         sunday: 'Sunday:',
         sundayTime: 'Day off',
       },
+    },
+    actions: {
+      call: "Call",
+      write: "Write",
+      open: "Open",
+      copy: "Copy",
+      copied: "Copied to clipboard!",
+      copyFail: "Failed to copy",
     },
     contactPersons: {
       title: 'Contact Persons',

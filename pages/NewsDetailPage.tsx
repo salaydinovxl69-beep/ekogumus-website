@@ -18,10 +18,10 @@ interface NewsItem {
 
 const getNewsImage = (imageKey: string): string => {
   const imageMap: Record<string, string> = {
-    'factory production line': '../images/originals/news_content_5.jpg',
-    'international shipping fertilizers': '../images/originals/news_card_img_1.jpg',
-    'certificate quality standards': '../images/originals/news_card_img_2.jpg',
-    'cotton field fertilizer': '../images/originals/news_4.png',
+    'factory production line': '../images/originals/news_content_5.webp',
+    'international shipping fertilizers': '../images/originals/news_card_img_1.webp',
+    'certificate quality standards': '../images/originals/news_card_img_2.webp',
+    'cotton field fertilizer': '../images/originals/news_4.webp',
     'agriculture exhibition booth': 'https://images.unsplash.com/photo-1642414163525-1fd68c8584ad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZ3JpY3VsdHVyZSUyMGV4aGliaXRpb24lMjBib290aHxlbnwxfHx8fDE3NTY3NDUxNzF8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
     'digital monitoring technology': 'https://images.unsplash.com/photo-1744230673231-865d54a0aba4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkaWdpdGFsJTIwbW9uaXRvcmluZyUyMHRlY2hub2xvZ3l8ZW58MXx8fHwxNzU2NzQ1MTc1fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral'
   };

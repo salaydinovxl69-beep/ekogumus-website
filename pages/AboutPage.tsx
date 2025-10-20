@@ -47,55 +47,55 @@ export function AboutPage() {
 
   const certificates = [
     {
-      url: "../images/originals/certificate_1.png",
+      url: "../images/originals/certificate_1.webp",
       alt: (t.aboutPage.certificates.certificate1Alt)
     },
     {
-      url: "../images/originals/certificate_2.png",
+      url: "../images/originals/certificate_2.webp",
       alt: (t.aboutPage.certificates.certificate2Alt)
     },
     {
-      url: "../images/originals/certificate_3.png",
+      url: "../images/originals/certificate_3.webp",
       alt: (t.aboutPage.certificates.certificate3Alt)
     },
     {
-      url: "../images/originals/certificate_4.png",
+      url: "../images/originals/certificate_4.webp",
       alt: (t.aboutPage.certificates.certificate2Alt)
     },
     {
-      url: "../images/originals/certificate_5.png",
+      url: "../images/originals/certificate_5.webp",
       alt: (t.aboutPage.certificates.certificate3Alt)
     },
     {
-      url: "../images/originals/certificate_7.png",
+      url: "../images/originals/certificate_7.webp",
       alt: (t.aboutPage.certificates.certificate3Alt)
     },
     {
-      url: "../images/originals/certificate_8.png",
+      url: "../images/originals/certificate_8.webp",
       alt: (t.aboutPage.certificates.certificate3Alt)
     },
     {
-      url: "../images/originals/certificate_9.png",
+      url: "../images/originals/certificate_9.webp",
       alt: (t.aboutPage.certificates.certificate3Alt)
     },
     {
-      url: "../images/originals/certificate_10.png",
+      url: "../images/originals/certificate_10.webp",
       alt: (t.aboutPage.certificates.certificate3Alt)
     },
     {
-      url: "../images/originals/certificate_11.png",
+      url: "../images/originals/certificate_11.webp",
       alt: (t.aboutPage.certificates.certificate3Alt)
     },
     {
-      url: "../images/originals/certificate_12.png",
+      url: "../images/originals/certificate_12.webp",
       alt: (t.aboutPage.certificates.certificate3Alt)
     },
     {
-      url: "../images/originals/certificate_13.png",
+      url: "../images/originals/certificate_13.webp",
       alt: (t.aboutPage.certificates.certificate3Alt)
     },
     {
-      url: "../images/originals/certificate_14.png",
+      url: "../images/originals/certificate_14.webp",
       alt: (t.aboutPage.certificates.certificate3Alt)
     }
   ];
@@ -183,7 +183,7 @@ export function AboutPage() {
               >
                 <div className="inline-block relative rounded-2xl overflow-hidden shadow-2xl ml-20">
                   <ImageWithFallback
-                    src="../images/originals/Generated Image August 29, 2025 - 1_06PM.jpeg"
+                    src="../images/originals/Generated Image August 29, 2025 - 1_06PM.webp"
                     alt={t.about.founderAlt}
                     className=" lg:h-[500px] object-contain"
                   />
@@ -365,8 +365,8 @@ export function AboutPage() {
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white border-0 shadow-lg" />
-                <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white border-0 shadow-lg" />
+                <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:green border-1 shadow-lg" />
+                <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:green border-1 shadow-lg" />
               </Carousel>
               
               {/* Индикаторы слайдов */}
@@ -434,10 +434,10 @@ export function AboutPage() {
                 <span className="text-2xl">🏭</span>
               </div>
               <h3 className="text-xl font-semibold text-green-700 mb-2">
-                {(t.aboutPage.team.production.title)}
+                {t.aboutPage.team.production.title}
               </h3>
               <p className="text-gray-600">
-                {(t.aboutPage.team.production.description)}
+                {t.aboutPage.team.production.description}
               </p>
             </div>
           </div>

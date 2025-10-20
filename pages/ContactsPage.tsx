@@ -24,18 +24,19 @@ function InteractiveContactTile({
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const [copied, setCopied] = useState(false);
+  const { t } = useLanguage();
 
   const copyToClipboard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
-      toast.success('Скопировано в буфер обмена!', {
+      toast.success(t.contacts.actions.copied, {
         description: text,
         duration: 2000,
       });
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      toast.error('Не удалось скопировать');
+      toast.error(t.contacts.actions.copyFail);
     }
   };
 
@@ -74,13 +75,13 @@ function InteractiveContactTile({
   const getActionText = () => {
     switch (type) {
       case 'phone':
-        return 'Позвонить';
+        return t.contacts.actions.call;
       case 'email':
-        return 'Написать';
+        return t.contacts.actions.write;
       case 'telegram':
-        return 'Открыть';
+        return t.contacts.actions.open;
       case 'url':
-        return 'Открыть';
+        return t.contacts.actions.open;
     }
   };
 
@@ -170,7 +171,7 @@ function InteractiveContactTile({
               className="flex items-center justify-center w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-lg transition-all duration-300"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              title="Скопировать"
+              title={t.contacts.actions.copy}
             >
               {copied ? (
                 <Check className="w-4 h-4 text-green-500" />
@@ -300,7 +301,7 @@ export function ContactsPage() {
                   <button
                     onClick={() => window.open(`https://yandex.ru/maps/?ll=71.771205%2C40.390203&z=17&pt=71.771205%2C40.390203`, '_blank')}
                     className="bg-white/90 text-ekogumus-green px-3 py-2 rounded-lg shadow-lg hover:bg-white transition-colors duration-200 font-opensans text-sm border border-ekogumus-green/20"
-                    title="Открыть в Яндекс.Картах"
+                    title={t.contacts.map.openInYandexMaps}
                   >
                     <ExternalLink className="w-4 h-4" />
                   </button>
