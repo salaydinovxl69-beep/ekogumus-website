@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { motion } from "motion/react";
+import { Images } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
 import { useLanguage } from "../contexts/LanguageContext";
@@ -16,6 +18,7 @@ export function ProductPage() {
       <ProductSection />
       <BiohumusInfoSection />
       <ProductionProcessSection />
+      <LiqPresentationSection />
       <LiquidFertilizers />
       <ProductCards />
       <YouTubeVideoSection />
@@ -180,22 +183,26 @@ function LiquidFertilizers() {
           transition={{ duration: 0.6 }}
           className="text-center mb-8 sm:mb-12 lg:mb-16"
         >
+          {/* Убедитесь, что текст в Badge остается читаемым на мобильных */}
           <div className="flex items-center justify-center mb-4">
-            <Badge className="bg-gradient-to-r from-yellow-500 to-amber-500 text-white px-4 py-2 mb-4">
+            <Badge className="bg-gradient-to-r from-yellow-500 to-amber-500 text-white px-3 py-1 text-sm mb-4">
               <Zap className="w-4 h-4 mr-2" />
               {liquidFertilizerData.main}
             </Badge>
           </div>
+          {/* Адаптивный размер заголовка */}
           <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl text-ekogumus-green mb-4 sm:mb-6">
             {liquidFertilizerData.title}
           </h2>
+          {/* Адаптивный размер подзаголовка */}
           <p className="text-gray-600 max-w-4xl mx-auto text-base sm:text-lg lg:text-xl mb-6">
             {liquidFertilizerData.subtitle}
           </p>
           <div className="w-24 h-1 bg-gradient-to-r from-yellow-500 to-amber-500 mx-auto"></div>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        {/* Адаптированная сетка: 1 колонка на мобильных, 2 на планшетах (sm), 3 на MD и выше */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {products.map((product, index) => (
             <motion.div
               key={index}
@@ -206,7 +213,7 @@ function LiquidFertilizers() {
               <Card className="group h-full bg-glass-card border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 cursor-pointer overflow-hidden relative">
                 <CardContent className="p-0">
                   {/* Изображение продукта */}
-                  <div className="relative h-56 overflow-hidden">
+                  <div className="relative h-48 sm:h-56 overflow-hidden"> {/* Оптимизация высоты для маленьких экранов */}
                     <ImageWithFallback
                       src={liquidProductImages[index % liquidProductImages.length]}
                       alt={product.name}
@@ -216,7 +223,7 @@ function LiquidFertilizers() {
 
                     {/* Бейдж объема */}
                     <Badge
-                      className="absolute top-3 left-3 bg-gradient-to-r from-yellow-500 to-amber-500 text-white px-3 py-1 shadow-lg"
+                      className="absolute top-3 left-3 bg-gradient-to-r from-yellow-500 to-amber-500 text-white px-3 py-1 shadow-lg text-xs sm:text-sm"
                       variant="secondary"
                     >
                       <Droplets className="w-3 h-3 mr-1" />
@@ -224,14 +231,14 @@ function LiquidFertilizers() {
                     </Badge>
 
                     {/* Индикатор жидкости */}
-                    <div className="absolute top-3 right-3 w-8 h-8 bg-yellow-500/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                    <div className="absolute top-3 right-3 w-7 h-7 sm:w-8 sm:h-8 bg-yellow-500/20 backdrop-blur-sm rounded-full flex items-center justify-center">
                       <Beaker className="w-4 h-4 text-yellow-600" />
                     </div>
                   </div>
 
                   {/* Содержимое карточки */}
                   <div className="p-4 sm:p-5">
-                    {/* Название и описание */}
+                    {/* Название и описание - line-clamp обеспечивает чистый вид на мобильных */}
                     <div className="mb-4">
                       <h3 className="text-lg font-montserrat font-semibold text-ekogumus-green mb-2 line-clamp-1 group-hover:text-yellow-600 transition-colors duration-300">
                         {product.name}
@@ -252,7 +259,7 @@ function LiquidFertilizers() {
                       </div>
                     </div>
 
-                    {/* Кнопка покупки */}
+                    {/* Кнопка покупки - w-full и size="sm" идеальны для мобильных */}
                     <div>
                       <Button
                         onClick={() => handleBuyClick(product)}
@@ -265,7 +272,7 @@ function LiquidFertilizers() {
                     </div>
                   </div>
 
-                  {/* Hover эффект */}
+                  {/* Hover эффект - игнорируется на touch-устройствах, что корректно */}
                   <div className="absolute inset-0 bg-gradient-to-t from-yellow-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                 </CardContent>
               </Card>
@@ -281,7 +288,8 @@ function LiquidFertilizers() {
           className="mt-12 text-center"
         >
           <div className="bg-glass-green rounded-2xl p-6 sm:p-8">
-            <div className="flex items-center justify-center gap-4 flex-wrap">
+            {/* flex-wrap обеспечивает перенос элементов на новую строку на узких экранах */}
+            <div className="flex items-center justify-center gap-4 flex-wrap text-sm sm:text-base">
               <div className="flex items-center gap-2 text-yellow-600">
                 <Droplets className="w-5 h-5" />
                 <span className="font-medium">{liquidFertilizerData.features.fastAction}</span>
@@ -394,7 +402,8 @@ function ProductCards() {
           <div className="w-24 h-1 bg-gradient-to-r from-ekogumus-green to-ekogumus-green-light mx-auto"></div>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+        {/* Адаптированная сетка: gap-4 на мобильных, gap-6 на sm, gap-8 на lg */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
           {products.map((product, index) => (
             <motion.div
               key={index}
@@ -411,11 +420,12 @@ function ProductCards() {
                       alt={product.name}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
+                    {/* Hover эффект изображения - не активен на touch-устройствах */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
                     {/* Бейдж веса */}
                     <Badge
-                      className="absolute top-3 left-3 bg-ekogumus-green text-white px-3 py-1 shadow-lg"
+                      className="absolute top-3 left-3 bg-ekogumus-green text-white px-3 py-1 shadow-lg text-xs" // Добавил text-xs для лучшей читаемости на мобильных
                       variant="secondary"
                     >
                       <Scale className="w-3 h-3 mr-1" />
@@ -451,7 +461,7 @@ function ProductCards() {
                       <Button
                         onClick={() => handleBuyClick(product)}
                         className="w-full bg-ekogumus-green hover:bg-ekogumus-green-light text-white transition-all duration-300 group-hover:shadow-lg"
-                        size="sm"
+                        size="sm" // Размер "sm" идеален для мобильных карточек
                       >
                         <ShoppingCart className="w-4 h-4 mr-2" />
                         {productCardsData.buyButton}
@@ -459,7 +469,7 @@ function ProductCards() {
                     </div>
                   </div>
 
-                  {/* Hover эффект */}
+                  {/* Hover эффект карточки - не активен на touch-устройствах */}
                   <div className="absolute inset-0 bg-gradient-to-t from-ekogumus-green/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                 </CardContent>
               </Card>
@@ -475,18 +485,19 @@ function ProductCards() {
           className="mt-12 text-center"
         >
           <div className="bg-glass-green rounded-2xl p-6 sm:p-8">
-            <div className="flex items-center justify-center gap-4 flex-wrap">
-              <div className="flex items-center gap-2 text-ekogumus-green">
+            {/* Использование flex-wrap отлично адаптирует этот блок */}
+            <div className="flex items-center justify-center gap-4 flex-wrap"> 
+              <div className="flex items-center gap-2 text-ekogumus-green text-sm sm:text-base">
                 <Package className="w-5 h-5" />
                 <span className="font-medium">{productCardsData.features.organicProduct}</span>
               </div>
               <div className="w-2 h-2 bg-ekogumus-green rounded-full hidden sm:block"></div>
-              <div className="flex items-center gap-2 text-ekogumus-green">
+              <div className="flex items-center gap-2 text-ekogumus-green text-sm sm:text-base">
                 <Scale className="w-5 h-5" />
                 <span className="font-medium">{productCardsData.features.certified}</span>
               </div>
               <div className="w-2 h-2 bg-ekogumus-green rounded-full hidden sm:block"></div>
-              <div className="flex items-center gap-2 text-ekogumus-green">
+              <div className="flex items-center gap-2 text-ekogumus-green text-sm sm:text-base">
                 <ExternalLink className="w-5 h-5" />
                 <span className="font-medium">{productCardsData.features.delivery}</span>
               </div>
@@ -507,7 +518,40 @@ function ProductCards() {
   );
 }
 
-// NEW: Section for Biogumus Info + Composition Table
+function LiqPresentationSection() {
+  const { t } = useLanguage();
+  const navigate = useNavigate();
+
+  const handleOpenPresentation = () => {
+    navigate("/LiqPresentation");
+  };
+
+  return (
+    <SectionContainer className="py-12">
+      <div className="text-center space-y-6">
+        <div className="space-y-4">
+          <h2 className="font-montserrat font-bold text-3xl lg:text-4xl text-ekogumus-green dark:text-ekogumus-green-light">
+            {t.products.LiqPresentation.title}
+          </h2>
+          <p className="font-opensans text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            {t.products.LiqPresentation.subtitle}
+          </p>
+        </div>
+
+        <Button
+          onClick={handleOpenPresentation}
+          size="lg"
+          className="bg-gradient-to-r from-ekogumus-green to-ekogumus-green-light hover:from-ekogumus-green-light hover:to-ekogumus-green text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+        >
+          <Images className="w-5 h-5 mr-2" />
+          {t.products.LiqPresentation.openPresentation}
+        </Button>
+      </div>
+    </SectionContainer>
+  );
+}
+
+//Section for Biogumus Info + Composition Table
 function BiohumusInfoSection() {
   const { t } = useLanguage();
 
@@ -554,6 +598,7 @@ function BiohumusInfoSection() {
     </SectionContainer>
   );
 }
+
 
 function ProductionProcessSection() {
   const { t } = useLanguage();
@@ -635,6 +680,7 @@ function ProductionProcessSection() {
     </SectionContainer>
   );
 }
+
 //Таблица с составом NANOECOVERM
 function BasicBatchTable() {
   const { t } = useLanguage();
@@ -819,8 +865,8 @@ function CompositionTable() {
     </Card>
   );
 }
-//СЕКЦИЯ С ВИДЕО
 
+//СЕКЦИЯ С ВИДЕО
 function YouTubeVideoSection() {
   // const { t } = useLanguage(); // Раскомментируйте, когда добавите переводы
 

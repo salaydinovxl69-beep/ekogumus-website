@@ -365,8 +365,8 @@ export function AboutPage() {
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white border-0 shadow-lg" />
-                <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white border-0 shadow-lg" />
+                <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:green border-1 shadow-lg" />
+                <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:green border-1 shadow-lg" />
               </Carousel>
               
               {/* Индикаторы слайдов */}
@@ -434,10 +434,10 @@ export function AboutPage() {
                 <span className="text-2xl">🏭</span>
               </div>
               <h3 className="text-xl font-semibold text-green-700 mb-2">
-                {(t.aboutPage.team.production.title)}
+                {t.aboutPage.team.production.title}
               </h3>
               <p className="text-gray-600">
-                {(t.aboutPage.team.production.description)}
+                {t.aboutPage.team.production.description}
               </p>
             </div>
           </div>

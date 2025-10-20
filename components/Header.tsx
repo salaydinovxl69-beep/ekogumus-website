@@ -1,40 +1,61 @@
 import { Button } from "./ui/button";
 import { Moon, Sun } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "./ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription, SheetClose } from "./ui/sheet";
 import { Menu, Phone, Youtube, Mail } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+// ИСПРАВЛЕНИЕ 1: Импортируем тип Language из того же места, что и LanguageContext
 import { useLanguage } from "../contexts/LanguageContext";
+import { Language } from "../utils/i18n"; // <--- Вот правильный импорт типа Language
+import { useState } from "react";
 
 export function Header() {
   const location = useLocation();
   const { language, setLanguage, t } = useLanguage();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isActive = (path: string) => {
     return location.pathname === path;
   };
+  const handleLanguageChange = (lang: Language) => {
+    setLanguage(lang);
+  };
+  const MobileLogo = () => (
+    <Link to="/" className="flex items-center space-x-2 mb-8 mt-4" onClick={() => setIsMenuOpen(false)}>
+      <div className="flex items-center space-x-1">
+        <img
+          src="/images/originals/logo_2.png"
+          alt="Second Logo"
+          className="w-8 h-8 object-contain" 
+        />
+        <img
+          src="/images/originals/logo.png"
+          alt="Ekogumus Logo"
+          className="w-8 h-8 object-contain"
+        />
+      </div>
+      <div className="flex flex-col">
+        <span className="text-xl font-montserrat font-bold text-ekogumus-green">
+          EKOGUMUS
+        </span>
+      </div>
+    </Link>
+  );
 
   return (
     <header className="bg-white/70 dark:bg-black/40 backdrop-blur-xl shadow-lg border-b border-white/30 dark:border-white/10 sticky top-0 z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
-          {/* Logo and Text Container */}
+          {/* Logo and Text Container - Десктоп/Общий */}
           <Link to="/" className="flex items-center space-x-2 sm:space-x-3 ">
-
             {/* Контейнер для двух логотипов */}
-            {/* Используем flex items-center и space-x-1 для горизонтального размещения и небольшого отступа */}
             <div className="flex items-center space-x-1">
-              {/* Первый логотип: logo_2.png */}
               <img
                 src="/images/originals/logo_2.png"
                 alt="Second Logo"
-                // Задаем единый адаптивный размер для обоих
                 className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain"
               />
-
-              {/* Второй логотип: logo.png */}
               <img
                 src="/images/originals/logo.png"
                 alt="Ekogumus Logo"
-                // Задаем единый адаптивный размер для обоих, как и в первом логотипе
                 className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain"
               />
             </div>
@@ -47,8 +68,9 @@ export function Header() {
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation (lg:flex) */}
           <nav className="hidden lg:flex items-center space-x-8 xl:space-x-5">
+             {/* ... Десктопные ссылки без изменений ... */}
             <Link
               to="/"
               className={`text-base  font-opensans font-medium transition-all duration-300 hover:scale-105 ${isActive('/')
@@ -104,8 +126,8 @@ export function Header() {
               {t.nav.contacts}
             </Link>
           </nav>
-
-          {/* Medium screen navigation */}
+          
+          {/* Medium screen navigation (md:flex lg:hidden) - Сокращенные ссылки */}
           <nav className="hidden md:flex lg:hidden items-center space-x-6">
             <Link
               to="/"
@@ -130,7 +152,7 @@ export function Header() {
             </Link>
           </nav>
 
-          {/* Right side - Language and Contact */}
+          {/* Right side - Language and Contact (Desktop) */}
           <div className="hidden lg:flex items-center space-x-4 xl:space-x-6">
             {/* Contact Icons */}
             <div className="flex items-center space-x-3">
@@ -159,8 +181,8 @@ export function Header() {
               </a>
             </div>
 
-
-            {/* Language Switcher */}
+            {/* Language Switcher (Desktop) */}
+            {/* На десктопе используем setLanguage напрямую, так как оно типизировано */}
             <div className="flex items-center space-x-1 bg-gray-100 rounded-lg p-1">
               <Button
                 variant={language === 'ru' ? "default" : "ghost"}
@@ -169,7 +191,7 @@ export function Header() {
                   ? 'bg-ekogumus-green text-white'
                   : 'text-gray-600 hover:text-ekogumus-green'
                   }`}
-                onClick={() => setLanguage('ru')}
+                onClick={() => setLanguage('ru')} 
               >
                 РУ
               </Button>
@@ -180,7 +202,7 @@ export function Header() {
                   ? 'bg-ekogumus-green text-white'
                   : 'text-gray-600 hover:text-ekogumus-green'
                   }`}
-                onClick={() => setLanguage('uz')}
+                onClick={() => setLanguage('uz')} 
               >
                 O'Z
               </Button>
@@ -191,7 +213,7 @@ export function Header() {
                   ? 'bg-ekogumus-green text-white'
                   : 'text-gray-600 hover:text-ekogumus-green'
                   }`}
-                onClick={() => setLanguage('en')}
+                onClick={() => setLanguage('en')} 
               >
                 EN
               </Button>
@@ -208,71 +230,92 @@ export function Header() {
             </a>
           </div>
 
-          {/* Mobile menu */}
-          <Sheet>
+          {/* Mobile menu (Sheet) */}
+          <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
             <SheetTrigger asChild className="md:hidden">
               <Button variant="ghost" size="sm" className="text-ekogumus-green">
                 <Menu className="w-6 h-6" />
               </Button>
             </SheetTrigger>
+            {/* SheetContent обычно имеет padding-x по умолчанию, но мы используем его для общего контейнера */}
             <SheetContent className="w-80 sm:w-96 bg-white">
               <SheetTitle className="sr-only">{t.a11y.navigation}</SheetTitle>
               <SheetDescription className="sr-only">
                 {t.a11y.navigationDescription}
               </SheetDescription>
               <div className="flex flex-col h-full">
-                {/* Mobile Logo */}
-                <div className="flex items-center space-x-3 mb-8 mt-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-ekogumus-green to-ekogumus-green-light rounded-full flex items-center justify-center">
-                    <span className="text-white font-montserrat font-bold text-xl">E</span>
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-2xl font-montserrat font-bold text-ekogumus-green">Ekogumus</span>
-                    <span className="text-sm text-ekogumus-brown font-opensans -mt-1">
-                      {language === 'ru' ? 'Органоминеральные удобрения' :
-                        language === 'uz' ? 'Organik-mineral o\'g\'itlar' :
-                          'Organic-mineral fertilizers'}
-                    </span>
-                  </div>
-                </div>
+                {/* Mobile Logo с закрытием меню по клику */}
+                <MobileLogo />
 
-                {/* Mobile Navigation */}
-                <nav className="flex flex-col space-y-6 flex-1">
-                  <Link
-                    to="/"
-                    className={`text-lg font-opensans font-medium transition-colors ${isActive('/') ? 'text-ekogumus-green' : 'text-gray-700 hover:text-ekogumus-green'
-                      }`}
-                  >
-                    {t.nav.home}
-                  </Link>
-                  <Link
-                    to="/about"
-                    className={`text-lg font-opensans font-medium transition-colors ${isActive('/about') ? 'text-ekogumus-green' : 'text-gray-700 hover:text-ekogumus-green'
-                      }`}
-                  >
-                    {t.nav.about}
-                  </Link>
-                  <Link
-                    to="/products"
-                    className={`text-lg font-opensans font-medium transition-colors ${isActive('/products') ? 'text-ekogumus-green' : 'text-gray-700 hover:text-ekogumus-green'
-                      }`}
-                  >
-                    {t.nav.products}
-                  </Link>
-                  <Link
-                    to="/news"
-                    className={`text-lg font-opensans font-medium transition-colors ${isActive('/news') ? 'text-ekogumus-green' : 'text-gray-700 hover:text-ekogumus-green'
-                      }`}
-                  >
-                    {t.nav.news}
-                  </Link>
-                  <Link
-                    to="/contacts"
-                    className={`text-lg font-opensans font-medium transition-colors ${isActive('/contacts') ? 'text-ekogumus-green' : 'text-gray-700 hover:text-ekogumus-green'
-                      }`}
-                  >
-                    {t.nav.contacts}
-                  </Link>
+                {/* Mobile Navigation с автоматическим закрытием (SheetClose) */}
+                {/* ИСПРАВЛЕНИЕ: Добавлен px-4 для сдвига навигационных ссылок вправо */}
+                <nav className="flex flex-col space-y-6 flex-1 px-4"> 
+                  
+                  {/* Главная */}
+                  <SheetClose asChild>
+                    <Link
+                      to="/"
+                      className={`text-lg font-opensans font-medium transition-colors ${isActive('/') ? 'text-ekogumus-green' : 'text-gray-700 hover:text-ekogumus-green'
+                        }`}
+                    >
+                      {t.nav.home}
+                    </Link>
+                  </SheetClose>
+                  
+                  {/* О нас */}
+                  <SheetClose asChild>
+                    <Link
+                      to="/about"
+                      className={`text-lg font-opensans font-medium transition-colors ${isActive('/about') ? 'text-ekogumus-green' : 'text-gray-700 hover:text-ekogumus-green'
+                        }`}
+                    >
+                      {t.nav.about}
+                    </Link>
+                  </SheetClose>
+                  
+                  {/* Продукты */}
+                  <SheetClose asChild>
+                    <Link
+                      to="/products"
+                      className={`text-lg font-opensans font-medium transition-colors ${isActive('/products') ? 'text-ekogumus-green' : 'text-gray-700 hover:text-ekogumus-green'
+                        }`}
+                    >
+                      {t.nav.products}
+                    </Link>
+                  </SheetClose>
+                  
+                  {/* Сотрудничество (Добавлено) */}
+                  <SheetClose asChild>
+                    <Link
+                      to="/cooperation"
+                      className={`text-lg font-opensans font-medium transition-colors ${isActive('/cooperation') ? 'text-ekogumus-green' : 'text-gray-700 hover:text-ekogumus-green'
+                        }`}
+                    >
+                      {t.nav.cooperation}
+                    </Link>
+                  </SheetClose>
+                  
+                  {/* Новости */}
+                  <SheetClose asChild>
+                    <Link
+                      to="/news"
+                      className={`text-lg font-opensans font-medium transition-colors ${isActive('/news') ? 'text-ekogumus-green' : 'text-gray-700 hover:text-ekogumus-green'
+                        }`}
+                    >
+                      {t.nav.news}
+                    </Link>
+                  </SheetClose>
+                  
+                  {/* Контакты */}
+                  <SheetClose asChild>
+                    <Link
+                      to="/contacts"
+                      className={`text-lg font-opensans font-medium transition-colors ${isActive('/contacts') ? 'text-ekogumus-green' : 'text-gray-700 hover:text-ekogumus-green'
+                        }`}
+                    >
+                      {t.nav.contacts}
+                    </Link>
+                  </SheetClose>
                 </nav>
 
                 {/* Mobile Footer */}
@@ -280,10 +323,11 @@ export function Header() {
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-gray-600 font-opensans">{t.footer.contactUs}</span>
                     <div className="flex space-x-4">
+                      {/* Контактные иконки в мобильном меню */}
                       <a href="tel:+998936418545" className="text-ekogumus-green">
                         <Phone className="w-6 h-6" />
                       </a>
-                      <a href="mailto:info@ekogumus.com" className="text-ekogumus-green">
+                      <a href="mailto:bashfergana@mail.ru" className="text-ekogumus-green">
                         <Mail className="w-6 h-6" />
                       </a>
                       <a
@@ -297,8 +341,9 @@ export function Header() {
                     </div>
                   </div>
 
-                  {/* Mobile Language Switcher */}
+                  {/* Mobile Language Switcher БЕЗ SheetClose */}
                   <div className="grid grid-cols-3 gap-2">
+                    {/* УДАЛЕН SheetClose asChild, чтобы меню не закрывалось */}
                     <Button
                       variant={language === 'ru' ? "default" : "outline"}
                       size="sm"
@@ -306,10 +351,11 @@ export function Header() {
                         ? 'bg-ekogumus-green text-white'
                         : 'border-ekogumus-green text-ekogumus-green'
                         }`}
-                      onClick={() => setLanguage('ru')}
+                      onClick={() => handleLanguageChange('ru' as Language)} 
                     >
                       РУ
                     </Button>
+                    {/* УДАЛЕН SheetClose asChild, чтобы меню не закрывалось */}
                     <Button
                       variant={language === 'uz' ? "default" : "outline"}
                       size="sm"
@@ -317,10 +363,11 @@ export function Header() {
                         ? 'bg-ekogumus-green text-white'
                         : 'border-ekogumus-green text-ekogumus-green'
                         }`}
-                      onClick={() => setLanguage('uz')}
+                      onClick={() => handleLanguageChange('uz' as Language)} 
                     >
                       O'Z
                     </Button>
+                    {/* УДАЛЕН SheetClose asChild, чтобы меню не закрывалось */}
                     <Button
                       variant={language === 'en' ? "default" : "outline"}
                       size="sm"
@@ -328,7 +375,7 @@ export function Header() {
                         ? 'bg-ekogumus-green text-white'
                         : 'border-ekogumus-green text-ekogumus-green'
                         }`}
-                      onClick={() => setLanguage('en')}
+                      onClick={() => handleLanguageChange('en' as Language)} 
                     >
                       EN
                     </Button>

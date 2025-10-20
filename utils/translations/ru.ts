@@ -348,7 +348,6 @@ export const ru = {
             "Высококонцентрированное жидкое удобрение быстрого действия",
           volume: "1",
           price: "30000",
-          marketplace: "https://uzum.uz/products/ekoliquid-1l",
           image: "images/originals/ECO_10_KG.png"
         },
         {
@@ -357,7 +356,6 @@ export const ru = {
             "Высококонцентрированное жидкое удобрение быстрого действия",
           volume: "5",
           price: "150000",
-          marketplace: "https://uzum.uz/products/ekoliquid-2l",
           image: "images/originals/ECO_10_KG.png"
         },
         {
@@ -366,7 +364,6 @@ export const ru = {
             "Высококонцентрированное жидкое удобрение быстрого действия",
           volume: "10",
           price: "300000",
-          marketplace: "https://uzum.uz/products/ekoliquid-3l",
           image: "images/originals/ECO_10_KG.png"
         },
       ],
@@ -392,7 +389,6 @@ export const ru = {
             "Компактная упаковка для небольших участков и домашнего использования",
           weight: "1",
           price: "6500",
-          marketplace: "https://uzum.uz/products/EKOGUMUS-1kg",
           image: "images/originals/ECO_10_KG.png"
         },
         {
@@ -401,7 +397,7 @@ export const ru = {
             "Оптимальная упаковка для комнатных растений и рассады",
           weight: "1.5",
           price: "8500",
-          marketplace: "https://uzum.uz/products/EKOGUMUS-1-5kg",
+
           image: "images/originals/ECO_10_KG.png"
         },
         {
@@ -410,7 +406,6 @@ export const ru = {
             "Удобная упаковка для небольшого огорода и балконных растений",
           weight: "2",
           price: "13000",
-          marketplace: "https://uzum.uz/products/EKOGUMUS-2kg",
           image: "images/originals/ECO_10_KG.png"
         },
         {
@@ -419,7 +414,7 @@ export const ru = {
             "Идеальный выбор для садовых растений и цветников",
           weight: "2.5",
           price: "14500",
-          marketplace: "https://uzum.uz/products/EKOGUMUS-2-5kg",
+
           image: "images/originals/ECO_10_KG.png"
         },
         {
@@ -428,7 +423,6 @@ export const ru = {
             "Популярная упаковка для дачных участков и теплиц",
           weight: "3",
           price: "16500",
-          marketplace: "https://uzum.uz/products/EKOGUMUS-3kg",
           image: "images/originals/ECO_10_KG.png"
         },
         {
@@ -437,7 +431,6 @@ export const ru = {
             "Экономичная упаковка для средних участков и хозяйств",
           weight: "7",
           price: "33000",
-          marketplace: "https://uzum.uz/products/EKOGUMUS-7kg",
           image: "images/originals/ECO_10_KG.png"
         },
         {
@@ -446,7 +439,6 @@ export const ru = {
             "Практичная упаковка для фермерских хозяйств",
           weight: "10",
           price: "48000",
-          marketplace: "https://uzum.uz/products/EKOGUMUS-10kg",
           image: "images/originals/ECO_10_KG.png"
         },
         {
@@ -455,11 +447,18 @@ export const ru = {
             "Профессиональная упаковка для крупных теплиц и плантаций",
           weight: "20",
           price: "93000",
-          marketplace: "https://uzum.uz/products/EKOGUMUS-20kg",
           image: "images/originals/ECO_10_KG.png"
         },
       ],
     },
+    LiqPresentation: {
+      title: "Презентация продукта NANOECOVERM",
+      subtitle: "Посмотрите слайды о нашем продукте",
+      openPresentation: "Открыть презентацию",
+      slideView: "Слайд",
+      gridView: "Сетка",
+      lang: "Язык:",
+    }
   },
 
   // About Page Sections
@@ -540,16 +539,7 @@ export const ru = {
       weekdays: "Пн-Пт: 09:00 - 18:00",
       sunday: "Вс: Выходной",
     },
-    features: {
-      eco: "Экологично",
-      certified: "Сертифицировано",
-      yield: "+40% урожай",
-      love: "С любовью",
-    },
     copyright: "Все права защищены.",
-    founded: "Основано в 1997 году",
-    foundedYear: "1997 году",
-    foundedPrefix: "Основано в",
   },
 
   // Common
@@ -712,7 +702,7 @@ export const ru = {
         items: [
           "Минимальный заказ от 1 т",
           "Скидки при больших объемах",
-          "Бесплатная доставка от 10 тонн",
+          "Бесплатная доставка от 10 т",
           "Гибкие условия оплаты",
         ],
       },

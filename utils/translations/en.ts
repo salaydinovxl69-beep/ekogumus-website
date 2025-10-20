@@ -430,6 +430,14 @@ export const en = {
         },
       ],
     },
+    LiqPresentation: {
+      title: "NANOECOVERM Product Presentation",
+      subtitle: "View slides about our product",
+      openPresentation: "Open Presentation",
+      slideView: "Slide",
+      gridView: "Grid",
+      lang: "Language:",
+    },
   },
 
   // About Page Sections

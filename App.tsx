@@ -8,6 +8,7 @@ import { Footer } from "./components/Footer";
 import { HomePage } from "./pages/HomePage";
 import { AboutPage } from "./pages/AboutPage";
 import { ProductPage } from "./pages/ProductPage";
+import { LiqPresentation } from "./pages/LiqPresentationPage";
 import { CooperationPage } from "./pages/CooperationPage";
 import { ContactsPage } from "./pages/ContactsPage";
 import { NewsPage } from "./pages/NewsPage";
@@ -44,6 +45,8 @@ export default function App() {
                 <Route path="/news" element={<NewsPage />} />
                 <Route path="/news/:id" element={<NewsDetail />} />
                 <Route path="/contacts" element={<ContactsPage />} />
+                <Route path="/liqpresentation" element={<LiqPresentation />} />
+                
                 {/* Redirect preview_page.html to home */}
                 <Route path="/preview_page.html" element={<Navigate to="/" replace />} />
                 {/* Catch-all route for any unmatched paths */}
