@@ -66,24 +66,13 @@
       />
     </noscript>
 
-    <!-- Preload LCP hero image (responsive) -->
+    <!-- Preload LCP hero image (critical for mobile viewports) -->
+    <!-- Only preload mobile version - desktop version loads with page layout -->
     <link
       rel="preload"
       as="image"
       href="/images/hero/hero-640.webp"
-      imagesrcset="/images/hero/hero-640.webp 640w"
-      imagesizes="100vw"
       fetchpriority="high"
-      media="(max-width: 767px)"
-    />
-    <link
-      rel="preload"
-      as="image"
-      href="/images/hero/hero-1920.webp"
-      imagesrcset="/images/hero/hero-1920.webp 1920w"
-      imagesizes="100vw"
-      fetchpriority="high"
-      media="(min-width: 768px)"
     />
 
     <!-- JSON-LD: Organization structured data -->
