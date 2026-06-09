@@ -334,7 +334,7 @@ export const ru = {
       buyButton: "Купить",
       moreButton: "Подробнее",
       fromLabel: "от",
-      priceUnit: " сум",
+      priceUnit: "сум",
       volumeUnit: "л",
       features: {
         fastAction: "Быстрое действие",
@@ -463,6 +463,9 @@ export const ru = {
       title: "Презентация продукта BIOGUMUS",
       subtitle: "Посмотрите слайды о нашем продукте",
       openPresentation: "Открыть презентацию",
+      slideView: "Слайд",
+      gridView: "Сетка",
+      lang: "Язык:",
     },
     youtubeSection: {
       title: "Процесс производства нашего удобрения BIOGUMUS И NANOECOVERM",
@@ -577,6 +580,7 @@ export const ru = {
     sendEmail: "Написать email",
     youtube: "YouTube канал",
     telegram: "Telegram",
+    LinkedIn: "Страница в LinkedIn"
   },
 
   // Contacts Page
@@ -700,7 +704,7 @@ export const ru = {
 
   // Cooperation Page
   cooperation: {
-    title: "Сотрудничество",
+    title: "Сотрудничество с EKOGUMUS",
     subtitle:
       "Присоединяйтесь к нашей сети партнеров и получите доступ к высококачественным органическим удобрениям с выгодными условиями сотрудничества",
     hero: {
@@ -841,6 +845,13 @@ export const ru = {
         successDescription: "Мы свяжемся с вами в ближайшее время.",
         error: "Ошибка при отправке заявки"
       },
+      errors: {
+        require: "Обязательное поле",
+        mail: "Неверный email",
+        phone: "Неверный телефон",
+        min1: "Минимум 2 символа",
+        min2: "Минимум 10 символов"
+      },
       required: "Обязательные поля для заполнения"
     },
     contact: {
@@ -896,6 +907,7 @@ export const ru = {
     subtitle:
       "Следите за последними событиями, достижениями и инновациями в мире органических удобрений",
     readMore: "Читать далее",
+    more: "Другие новости",
     backToNews: "Вернуться к новостям",
     noNews: "Новости появятся в ближайшее время",
     categories: {

@@ -22,8 +22,6 @@ const getNewsImage = (imageKey: string): string => {
     'international shipping fertilizers': 'images/originals/news_card_img_1.webp',
     'certificate quality standards': 'images/originals/news_card_img_2.webp',
     'cotton field fertilizer': 'images/originals/news_4.webp',
-    'agriculture exhibition booth': 'https://images.unsplash.com/photo-1642414163525-1fd68c8584ad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZ3JpY3VsdHVyZSUyMGV4aGliaXRpb24lMjBib290aHxlbnwxfHx8fDE3NTY3NDUxNzF8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-    'digital monitoring technology': 'https://images.unsplash.com/photo-1744230673231-865d54a0aba4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkaWdpdGFsJTIwbW9uaXRvcmluZyUyMHRlY2hub2xvZ3l8ZW58MXx8fHwxNzU2NzQ1MTc1fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral'
   };
 
   return imageMap[imageKey] || 'https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080';
@@ -40,7 +38,7 @@ export function NewsPage() {
   const filteredNews = selectedCategory === 'all'
     ? mockNews
     : mockNews.filter(item => item.category === selectedCategory);
-    filteredNews.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  filteredNews.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
 
   const handleNewsClick = (newsItem: NewsItem) => {
@@ -75,9 +73,10 @@ export function NewsPage() {
               variant={selectedCategory === key ? "default" : "outline"}
               onClick={() => setSelectedCategory(key)}
               className={`
+                cursor-pointer
                 ${selectedCategory === key
                   ? 'bg-ekogumus-green hover:bg-ekogumus-green/90'
-                  : 'border-ekogumus-green text-ekogumus-green hover:bg-ekogumus-green/10'
+                  : 'border-ekogumus-green text-ekogumus-green hover:bg-ekogumus-green/50'
                 }
               `}
             >

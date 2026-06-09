@@ -59,7 +59,7 @@ export function SolidPresentationPage({ isOpen = true, onClose, asModal = false 
   }, []);
 
 
-  const p = t.products.LiqPresentation;
+  const p = t.products.SolidPresentation;
 
   const presentationContent = (
     <div className="h-full bg-gradient-to-br from-gray-50 to-green-50 dark:from-gray-900 dark:to-gray-800 relative">
@@ -80,7 +80,7 @@ export function SolidPresentationPage({ isOpen = true, onClose, asModal = false 
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 pr-16 space-y-3 sm:space-y-0">
           <div className="flex items-center space-x-2 sm:space-x-4">
             <Badge variant="outline" className="bg-ekogumus-green text-white border-ekogumus-green flex-shrink-0">
-              <span className="hidden sm:inline">{t.products.LiqPresentation.lang} </span>
+              <span className="hidden sm:inline">{t.products.SolidPresentation.lang} </span>
               {language?.toUpperCase() || 'RU'}
             </Badge>
             <h1 className="font-montserrat font-bold text-lg sm:text-xl text-ekogumus-green dark:text-ekogumus-green-light truncate">
@@ -93,7 +93,7 @@ export function SolidPresentationPage({ isOpen = true, onClose, asModal = false 
               variant="outline"
               size="sm"
               onClick={toggleGridView}
-              className="text-ekogumus-green border-ekogumus-green hover:bg-ekogumus-green hover:text-white"
+              className="cursor-pointer text-ekogumus-green border-ekogumus-green hover:bg-ekogumus-green hover:text-white"
             >
               <Grid className="w-4 h-4 sm:mr-1" />
               <span className="hidden sm:inline">{isGridView ? p.slideView : p.gridView}</span>

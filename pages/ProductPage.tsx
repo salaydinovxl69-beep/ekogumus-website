@@ -97,7 +97,7 @@ function ProductSection() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
               >
-                <Card className={`group text-center h-full bg-white/90 backdrop-blur-sm border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 cursor-pointer overflow-hidden ${benefit.hoverColor}`}>
+                <Card className={`group text-center h-full bg-white/90 backdrop-blur-sm border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 overflow-hidden ${benefit.hoverColor}`}>
                   <CardHeader className="pb-3 pt-6">
                     <div className={`w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gradient-to-br ${benefit.color} rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
                       <Icon className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-white" />
@@ -210,7 +210,7 @@ function LiquidFertilizers() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.15 }}
             >
-              <Card className="group h-full bg-glass-card border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 cursor-pointer overflow-hidden relative">
+              <Card className="group h-full bg-glass-card border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 overflow-hidden relative">
                 <CardContent className="p-0">
                   {/* Изображение продукта */}
                   <div className="relative h-48 sm:h-56 overflow-hidden"> {/* Оптимизация высоты для маленьких экранов */}
@@ -263,7 +263,7 @@ function LiquidFertilizers() {
                     <div>
                       <Button
                         onClick={() => handleBuyClick(product)}
-                        className="w-full bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600 text-white transition-all duration-300 group-hover:shadow-lg"
+                        className="cursor-pointer w-full bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600 text-white transition-all duration-300 group-hover:shadow-lg"
                         size="sm"
                       >
                         <ShoppingCart className="w-4 h-4 mr-2" />
@@ -409,7 +409,7 @@ function ProductCards() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
             >
-              <Card className="group h-full bg-white/90 backdrop-blur-sm border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 cursor-pointer overflow-hidden relative">
+              <Card className="group h-full bg-white/90 backdrop-blur-sm border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 overflow-hidden relative">
                 <CardContent className="p-0">
                   {/* Изображение продукта */}
                   <div className="relative h-48 overflow-hidden">
@@ -458,7 +458,7 @@ function ProductCards() {
                     <div>
                       <Button
                         onClick={() => handleBuyClick(product)}
-                        className="w-full bg-ekogumus-green hover:bg-ekogumus-green-light text-white transition-all duration-300 group-hover:shadow-lg"
+                        className="cursor-pointer w-full bg-ekogumus-green hover:bg-ekogumus-green-light text-white transition-all duration-300 group-hover:shadow-lg"
                         size="sm" // Размер "sm" идеален для мобильных карточек
                       >
                         <ShoppingCart className="w-4 h-4 mr-2" />
@@ -484,7 +484,7 @@ function ProductCards() {
         >
           <div className="bg-glass-green rounded-2xl p-6 sm:p-8">
             {/* Использование flex-wrap отлично адаптирует этот блок */}
-            <div className="flex items-center justify-center gap-4 flex-wrap"> 
+            <div className="flex items-center justify-center gap-4 flex-wrap">
               <div className="flex items-center gap-2 text-ekogumus-green text-sm sm:text-base">
                 <Package className="w-5 h-5" />
                 <span className="font-medium">{productCardsData.features.organicProduct}</span>
@@ -525,7 +525,7 @@ function LiqPresentationSection() {
   };
 
   return (
-    <SectionContainer className="py-12">
+    <SectionContainer className="py-12 translate-y-[25%]">
       <div className="text-center space-y-6">
         <div className="space-y-4">
           <h2 className="font-montserrat font-bold text-3xl lg:text-4xl text-ekogumus-green dark:text-ekogumus-green-light">
@@ -539,7 +539,7 @@ function LiqPresentationSection() {
         <Button
           onClick={handleOpenPresentation}
           size="lg"
-          className="bg-gradient-to-r from-ekogumus-green to-ekogumus-green-light hover:from-ekogumus-green-light hover:to-ekogumus-green text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+          className="cursor-pointer bg-gradient-to-r from-ekogumus-green to-ekogumus-green-light hover:from-ekogumus-green-light hover:to-ekogumus-green text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
         >
           <Images className="w-5 h-5 mr-2" />
           {t.products.LiqPresentation.openPresentation}
@@ -606,7 +606,7 @@ function SolidPresentationSection() {
   };
 
   return (
-    <SectionContainer className="py-12">
+    <SectionContainer className="py-12 translate-y-[25%]">
       <div className="text-center space-y-6">
         <div className="space-y-4">
           <h2 className="font-montserrat font-bold text-3xl lg:text-4xl text-ekogumus-green dark:text-ekogumus-green-light">
@@ -620,7 +620,7 @@ function SolidPresentationSection() {
         <Button
           onClick={handleOpenPresentation}
           size="lg"
-          className="bg-gradient-to-r from-ekogumus-green to-ekogumus-green-light hover:from-ekogumus-green-light hover:to-ekogumus-green text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+          className="cursor-pointer bg-gradient-to-r from-ekogumus-green to-ekogumus-green-light hover:from-ekogumus-green-light hover:to-ekogumus-green text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
         >
           <Images className="w-5 h-5 mr-2" />
           {t.products.SolidPresentation.openPresentation}
@@ -680,32 +680,32 @@ function ProductionProcessSection() {
           Обернуты во flex-col для вертикального размещения.
         */}
         <div className="flex flex-col space-y-8">
-            {/* 1. Таблица BasicBatchTable */}
-            <BasicBatchTable />
+          {/* 1. Таблица BasicBatchTable */}
+          <BasicBatchTable />
 
-            {/* 2. ИЗОБРАЖЕНИЕ A4 (Добавлено под таблицей) */}
-            <div className="w-full flex justify-center">
-    {/*
+          {/* 2. ИЗОБРАЖЕНИЕ A4 (Добавлено под таблицей) */}
+          <div className="w-full flex justify-center">
+            {/*
       1. Ссылка (<a>) для открытия в полном размере.
       2. w-full (на мобильных) и lg:w-1/2 (на десктопе) для уменьшения на 50%.
     */}
-    <a 
-        href="/images/originals/IMG_4102.webp" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        // На мобильных - 100%, на десктопе (lg) - 50% ширины колонки
-        className="w-full lg:w-1/2 cursor-pointer block group" 
-    >
-        <img
-            // Убедитесь, что этот путь верен для вашего проекта
-            src="/images/originals/IMG_4102.webp"
-            alt="Схема процесса производства или спецификация"
-            // w-full обеспечивает 100% от ширины родительской ссылки (которая 50% или 100%)
-            // Добавлен эффект масштабирования при наведении (hover:scale)
-            className="w-full h-auto object-contain rounded-xl shadow-lg border border-gray-100 transition-transform duration-300 group-hover:scale-[1.02]"
-        />
-    </a>
-</div>
+            <a
+              href="/images/originals/IMG_4102.webp"
+              target="_blank"
+              rel="noopener noreferrer"
+              // На мобильных - 100%, на десктопе (lg) - 50% ширины колонки
+              className="w-full lg:w-1/2 cursor-pointer block group"
+            >
+              <img
+                // Убедитесь, что этот путь верен для вашего проекта
+                src="/images/originals/IMG_4102.webp"
+                alt="Схема процесса производства или спецификация"
+                // w-full обеспечивает 100% от ширины родительской ссылки (которая 50% или 100%)
+                // Добавлен эффект масштабирования при наведении (hover:scale)
+                className="w-full h-auto object-contain rounded-xl shadow-lg border border-gray-100 transition-transform duration-300 group-hover:scale-[1.02]"
+              />
+            </a>
+          </div>
         </div>
       </div>
     </SectionContainer>
@@ -725,7 +725,7 @@ function BasicBatchTable() {
     { component: (t.products.nanoecovermComposition.table.items.microelements), value: (t.products.nanoecovermComposition.table.unit.six) },
     { component: (t.products.nanoecovermComposition.table.items.aminoAcids), value: (t.products.nanoecovermComposition.table.unit.seven) },
     { component: (t.products.nanoecovermComposition.table.items.copperSulfate), value: (t.products.nanoecovermComposition.table.unit.eight) },
-    { component: (t.products.nanoecovermComposition.table.items.gibberellin), value:(t.products.nanoecovermComposition.table.unit.nine) },
+    { component: (t.products.nanoecovermComposition.table.items.gibberellin), value: (t.products.nanoecovermComposition.table.unit.nine) },
   ];
 
   return (
@@ -899,7 +899,7 @@ function CompositionTable() {
 
 //СЕКЦИЯ С ВИДЕО
 function YouTubeVideoSection() {
-  const { t } = useLanguage(); 
+  const { t } = useLanguage();
 
   // Замените на ID ваших видео и ссылку на ваш канал
   const videoId1 = "AE9L71IuN7A"; // ID первого видео
@@ -972,7 +972,7 @@ function YouTubeVideoSection() {
           <a href={channelUrl} target="_blank" rel="noopener noreferrer">
             <Button
               size="lg"
-              className="bg-red-600 hover:bg-red-700 text-white transition-all duration-300 shadow-lg hover:shadow-xl"
+              className="cursor-pointer bg-red-600 hover:bg-red-700 text-white transition-all duration-300 shadow-lg hover:shadow-xl"
             >
               <Youtube className="w-5 h-5 mr-2" />
               {t.products.youtubeSection.button}

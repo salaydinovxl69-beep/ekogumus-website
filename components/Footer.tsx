@@ -5,11 +5,7 @@ import {
   Mail,
   MapPin,
   Youtube,
-  Send,
-  Leaf,
-  Award,
-  Heart,
-  TrendingUp
+  Linkedin,
 } from "lucide-react";
 import { useLanguage } from "../contexts/LanguageContext";
 
@@ -39,14 +35,14 @@ export function Footer() {
 
                 {/* Первый логотип (logo_2.png) */}
                 <img
-                  src="/images/originals/logo_2.webp" 
+                  src="/images/originals/logo_2.webp"
                   alt="Second Logo"
                   className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 object-contain" // Адаптированный размер
                 />
 
                 {/* Второй логотип (logo.png) */}
                 <img
-                  src="/images/originals/logo.webp" 
+                  src="/images/originals/logo.webp"
                   alt="Ekogumus Logo"
                   className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 object-contain" // Адаптированный размер
                 />
@@ -162,7 +158,15 @@ export function Footer() {
               >
                 <Youtube className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </a>
-              {/* Добавьте другие социальные сети здесь, например Telegram, Instagram */}
+              <a
+                href="https://www.linkedin.com/in/bahadir-solijonov-734686338"
+                className="w-9 h-9 sm:w-10 sm:h-10 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+                target="_blank"
+                rel="noopener noreferrer"
+                title={t.a11y.LinkedIn}
+              >
+                <Linkedin className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+              </a>
             </div>
 
             {/* Working Hours */}
@@ -190,12 +194,10 @@ export function Footer() {
           >
             <div className="flex flex-col md:flex-row items-center gap-2 text-xs sm:text-sm text-gray-400 font-opensans order-2 md:order-1 text-center">
               <p>© {currentYear} EKOGUMUS {t.footer.copyright}</p>
-              {/* Убрал разделитель, так как он выглядит лишним на мобилке */}
             </div>
 
-            <div className="text-xs sm:text-sm text-gray-400 font-opensans order-1 md:order-2"> {/* Поменял порядок, чтобы слоган был сверху на мобилке */}
+            <div className="text-xs sm:text-sm text-gray-400 font-opensans order-1 md:order-2">
               <span className="bg-gradient-to-r from-ekogumus-green to-ekogumus-green-light bg-clip-text text-transparent font-semibold">
-                 {/* Здесь может быть ваш слоган/текст */}
               </span>
             </div>
           </motion.div>

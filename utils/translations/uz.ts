@@ -288,7 +288,7 @@ export const uz = {
         magnesium: '0.6-2.3%',
         iron: '0.6-2.5%',
         manganese: '60-80 mg/kg',
-        heavyMetals: 'tuproqlar uchun PDK dan past',
+        heavyMetals: 'PDK past',
         pathogenicMicroflora: 'yo\'q',
         helminthEggs: 'yo\'q',
       },
@@ -342,13 +342,13 @@ export const uz = {
     },
     liquidFertilizers: {
       main: 'YANGILIK',
-      title: 'Suyuq konsentrlangan o\'g\'itlar',
+      title: 'NANOECOVERM Suyuq konsentrlangan o\'g\'it',
       subtitle: 'ISHLAB CHIQARISH YANGILIKLARI - Tez ta\'sir ko\'rsatadigan yuqori konsentrlangan suyuq organik o\'g\'itlar',
       buyButton: 'Sotib olish',
       moreButton: 'Batafsil',
       fromLabel: 'dan',
       priceUnit: ' so\'m',
-      volumeUnit: 'l',
+      volumeUnit: 'L',
       features: {
         fastAction: 'Tez ta\'sir',
         highConcentration: 'Yuqori konsentratsiya',
@@ -379,7 +379,7 @@ export const uz = {
       ],
     },
     productCards: {
-      title: 'Mayda granulali o\'g\'itlar',
+      title: 'BIOGUMUS mayda granulali o\'g\'it',
       subtitle: 'Turli ehtiyojlar uchun mayda granulalarda klassik organik-mineral o\'g\'itlar',
       buyButton: 'Sotib olish',
       moreButton: 'Batafsil',
@@ -451,7 +451,7 @@ export const uz = {
       ],
     },
     LiqPresentation: {
-      title: "NANOECOVERM Mahsuloti Taqdimoti",
+      title: "NANOECOVERM mahsuloti taqdimoti",
       subtitle: "Mahsulotimiz haqida slaydlarni ko‘ring",
       openPresentation: "Taqdimotni ochish",
       slideView: "Slayd",
@@ -459,7 +459,7 @@ export const uz = {
       lang: "Til:",
     },
     SolidPresentation: {
-      title: "BIOGUMUS Mahsuloti Taqdimoti",
+      title: "BIOGUMUS mahsuloti taqdimoti",
       subtitle: "Mahsulotimiz haqida slaydlarni ko‘ring",
       openPresentation: "Taqdimotni ochish",
     },
@@ -574,6 +574,7 @@ export const uz = {
     sendEmail: 'Email yozish',
     youtube: 'YouTube kanal',
     telegram: 'Telegram',
+    LinkedIn: "LinkedIn"
   },
 
   // Contacts Page
@@ -826,6 +827,13 @@ export const uz = {
         successDescription: 'Biz tez orada siz bilan bog\'lanamiz.',
         error: 'Ariza yuborishda xatolik'
       },
+      errors: {
+        require: "Majburiy maydon",
+        mail: "Noto'g'ri email",
+        phone: "Noto'g'ri telefon",
+        min1: "Kamida 2 ta belgi",
+        min2: "Kamida 10 ta belgi"
+      },
       required: 'Majburiy maydonlar'
     },
     contact: {
@@ -858,6 +866,7 @@ export const uz = {
     title: 'Kompaniya yangiliklari',
     subtitle: 'Organik o\'g\'itlar dunyosidagi so\'nggi voqealar, yutuqlar va innovatsiyalarni kuzating',
     readMore: 'Davomini o\'qish',
+    more: "Boshqa yangiliklar",
     backToNews: 'Yangiliklarga qaytish',
     noNews: 'Yangiliklar yaqinda paydo bo\'ladi',
     categories: {

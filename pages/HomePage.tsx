@@ -8,16 +8,16 @@ import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { ImageLightbox } from "../components/ImageLightbox";
 import { useInView } from "react-intersection-observer";
 import { SectionContainer } from "../components/SectionContainer";
-import { 
-  ArrowRight, 
+import {
+  ArrowRight,
   Award,
   Leaf,
   Droplets,
   TrendingUp,
-  Target, 
-  Users, 
-  Heart, 
-  Shield, 
+  Target,
+  Users,
+  Heart,
+  Shield,
   Clock,
   Calendar,
   Truck,
@@ -44,10 +44,10 @@ export function HomePage() {
 function HeroSection() {
   const { t } = useLanguage();
   const navigate = useNavigate();
-  
+
   return (
     // ИЗМЕНЕНИЕ: min-h-[70vh] для лучшей адаптации на мобильных устройствах
-    <section className="relative min-h-[70vh] lg:h-[90vh] flex items-center justify-center overflow-hidden py-12 lg:py-0"> 
+    <section className="relative min-h-[70vh] lg:h-[90vh] flex items-center justify-center overflow-hidden py-12 lg:py-0">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <ImageWithFallback
@@ -64,10 +64,10 @@ function HeroSection() {
       {/* Content */}
       {/* ИЗМЕНЕНИЕ: Удаляем translate-y на мобильных устройствах, добавляем его только для LG */}
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 lg:-translate-y-[5vh]">
-        
+
         {/* ИЗМЕНЕНИЕ: На мобильных устройствах будет 1 колонка, на LG - 2 */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          
+
           {/* Left Column - Main Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -92,7 +92,7 @@ function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
               // ИЗМЕНЕНИЕ: Уменьшение размера текста для мобильных устройств
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-montserrat font-bold leading-tight mb-4 sm:mb-6" 
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-montserrat font-bold leading-tight mb-4 sm:mb-6"
             >
               {(t.hero.title).split(' ').slice(0, -3).join(' ')}{" "}
               <span className="bg-gradient-to-r from-green-300 to-emerald-600 bg-clip-text text-transparent">
@@ -106,7 +106,7 @@ function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
               // ИЗМЕНЕНИЕ: Уменьшение размера текста
-              className="text-base sm:text-lg xl:text-xl font-opensans mb-6 md:mb-9 text-white leading-relaxed" 
+              className="text-base sm:text-lg xl:text-xl font-opensans mb-6 md:mb-9 text-white leading-relaxed"
             >
               {(t.hero.subtitle)}
             </motion.p>
@@ -117,7 +117,7 @@ function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.7 }}
               // ИЗМЕНЕНИЕ: Уменьшение нижнего отступа (mb-20 -> mb-8)
-              className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 md:mb-20" 
+              className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 md:mb-20"
             >
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center">
@@ -138,13 +138,12 @@ function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.9 }}
-              // ИЗМЕНЕНИЕ: Стек кнопок на маленьких экранах
-              className="flex flex-col sm:flex-row gap-4 mb-12 lg:mb-0" 
+              className="flex flex-col sm:flex-row gap-4 mb-12 lg:mb-0"
             >
               <Button
                 size="lg"
                 onClick={() => navigate('/products')}
-                className="w-full sm:w-auto bg-gradient-to-r from-ekogumus-green to-ekogumus-green-light hover:from-ekogumus-green-light hover:to-ekogumus-green text-white font-opensans font-semibold px-8 py-4 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group"
+                className="cursor-pointer w-full sm:w-auto bg-gradient-to-r from-ekogumus-green to-ekogumus-green-light hover:from-ekogumus-green-light hover:to-ekogumus-green text-white font-opensans font-semibold px-8 py-4 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group"
               >
                 {(t.hero.cta.primary)}
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
@@ -153,7 +152,7 @@ function HeroSection() {
                 variant="outline"
                 size="lg"
                 onClick={() => navigate('/contacts')}
-                className="w-full sm:w-auto border-2 border-white/80 text-white bg-transparent hover:bg-white hover:text-ekogumus-green font-opensans font-semibold px-8 py-4 rounded-lg transition-all duration-300 hover:scale-105"
+                className="cursor-pointer w-full sm:w-auto border-2 border-white/80 text-white bg-transparent hover:bg-white hover:text-ekogumus-green font-opensans font-semibold px-8 py-4 rounded-lg transition-all duration-300 hover:scale-105"
               >
                 {(t.hero.cta.secondary)}
               </Button>
@@ -279,7 +278,7 @@ function AboutSection() {
     },
     {
       icon: <Target className="w-8 h-8" />,
-      title: (t.about.values.quality.title), 
+      title: (t.about.values.quality.title),
       description: (t.about.values.quality.description),
       color: "text-ekogumus-yellow"
     },
@@ -334,7 +333,7 @@ function AboutSection() {
 
             <Button
               size="lg"
-              className="mt-25 bg-gradient-to-r from-ekogumus-green to-ekogumus-green-light hover:from-ekogumus-green-light hover:to-ekogumus-green text-white font-opensans font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg"
+              className="cursor-pointer mt-25 bg-gradient-to-r from-ekogumus-green to-ekogumus-green-light hover:from-ekogumus-green-light hover:to-ekogumus-green text-white font-opensans font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg"
               onClick={() => navigate('/about')}
             >
               {(t.about.cta)}
@@ -369,7 +368,7 @@ function AboutSection() {
           <h3 className="text-2xl lg:text-3xl font-montserrat font-bold text-ekogumus-green text-center mb-12">
             {(t.about.timeline.title)}
           </h3>
-          
+
           {/* Сетка перейдет в 1 колонку на мобильных (по умолчанию grid-cols-1) */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* 1988 */}
@@ -471,12 +470,12 @@ function OurProductSection() {
       title: 'Мелкогранулированные органические удобрения высокого качества'
     },
     {
-      src: 'https://images.unsplash.com/photo-1580974563942-76580268810f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb21wb3N0JTIwZWFydGh3b3Jtc3xlbnwxfHx8fDE3NTYwMjU1OTV8MA&ixlib=rb-4.1.0&q=80&w=1080',
+      src: '../images/originals/photo-1580974563942-76580268810f.webp',
       alt: 'Калифорнийские дождевые черви в процессе производства',
       title: 'Калифорнийские красные дождевые черви - основа нашего производства'
     },
     {
-      src: 'https://images.unsplash.com/photo-1581578017306-7334b15283df?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHxzb2lsJTIwZmFydGh3b3Jtc3xlbnwxfHx8fDE3NTYwMjU1OTZ8MA&ixlib=rb-4.1.0&q=80&w=1080',
+      src: '../images/originals/photo-1581578017306-7334b15283df.webp',
       alt: 'Улучшение структуры почвы с помощью удобрений Ekogumus',
       title: 'Восстановление плодородия и улучшение структуры почвы'
     },
@@ -494,65 +493,62 @@ function OurProductSection() {
 
   return (
     <SectionContainer compact={true}>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          {/* На мобильных (по умолчанию) будет 1 колонка, на десктопах - 2 */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-center">
-            
-            {/* Текстовая часть слева */}
-            {/* На мобильных: order-1 (сверху) */}
-            <div className="space-y-6 lg:space-y-8 order-1">
-              <div className="space-y-4 lg:space-y-6">
-                {/* Адаптация размера заголовка: text-3xl на мобильных, text-5xl на больших экранах */}
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-montserrat font-bold text-ekogumus-green mb-4 sm:mb-6">
-                  {(t.ourProduct.title)}
-                </h2>
-                {/* Адаптация размера подзаголовка: text-xl на мобильных, text-2xl на больших экранах */}
-                <p className="text-xl sm:text-xl lg:text-2xl font-bold text-ekogumus-green mb-4 sm:mb-6">
-                  {(t.ourProduct.subtitle)}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* На мобильных (по умолчанию) будет 1 колонка, на десктопах - 2 */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-center">
+
+          {/* Текстовая часть слева */}
+          {/* На мобильных: order-1 (сверху) */}
+          <div className="space-y-6 lg:space-y-8 order-1">
+            <div className="space-y-4 lg:space-y-6">
+              {/* Адаптация размера заголовка: text-3xl на мобильных, text-5xl на больших экранах */}
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-montserrat font-bold text-ekogumus-green mb-4 sm:mb-6">
+                {(t.ourProduct.title)}
+              </h2>
+              {/* Адаптация размера подзаголовка: text-xl на мобильных, text-2xl на больших экранах */}
+              <p className="text-xl sm:text-xl lg:text-2xl font-bold text-ekogumus-green mb-4 sm:mb-6">
+                {(t.ourProduct.subtitle)}
+              </p>
+              <div className="prose prose-lg max-w-none">
+                <p className="text-base sm:text-lg text-gray-700 leading-relaxed mb-4">
+                  {(t.ourProduct.description.paragraph1)}
                 </p>
-                <div className="prose prose-lg max-w-none">
-                  <p className="text-base sm:text-lg text-gray-700 leading-relaxed mb-4">
-                    {(t.ourProduct.description.paragraph1)}
-                  </p>
-                  <p className="text-base sm:text-lg text-gray-700 leading-relaxed mb-4">
-                    {(t.ourProduct.description.paragraph2)}
-                  </p>
-                  <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
-                    {(t.ourProduct.description.paragraph3)}
-                  </p>
-                </div>
+                <p className="text-base sm:text-lg text-gray-700 leading-relaxed mb-4">
+                  {(t.ourProduct.description.paragraph2)}
+                </p>
+                <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
+                  {(t.ourProduct.description.paragraph3)}
+                </p>
               </div>
-              
-              {/* CTA Buttons */}
+            </div>
+
+            {/* CTA Buttons */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.9 }}
-              // На мобильных кнопки будут стоять вертикально (flex-col), на более широких экранах - горизонтально (sm:flex-row)
-              className="flex flex-col sm:flex-row gap-4 mt-6" 
+              className="cursor-pointer flex flex-col sm:flex-row gap-4 mt-6"
             >
               <Button
                 size="lg"
                 onClick={() => navigate('/products')}
-                // Кнопка на всю ширину на мобилке (w-full), на широких экранах - авто
-                className="w-full sm:w-auto bg-gradient-to-r from-ekogumus-green to-ekogumus-green-light hover:from-ekogumus-green-light hover:to-ekogumus-green text-white font-opensans font-semibold px-8 py-4 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group"
+                className="cursor-pointer w-full sm:w-auto bg-gradient-to-r from-ekogumus-green to-ekogumus-green-light hover:from-ekogumus-green-light hover:to-ekogumus-green text-white font-opensans font-semibold px-8 py-4 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group"
               >
                 {(t.ourProduct.cta)}
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
               </Button>
             </motion.div>
-            </div>
+          </div>
 
-            {/* Слайдер изображений справа */}
-            {/* На мобильных: order-2 (снизу) */}
-            <div className="relative order-2">
-              <ProductImageCarousel 
-                images={productImages} 
-                onImageClick={openLightbox}
-              />
-            </div>
+          {/* Слайдер изображений справа */}
+          <div className="relative order-2">
+            <ProductImageCarousel
+              images={productImages}
+              onImageClick={openLightbox}
+            />
           </div>
         </div>
+      </div>
 
       {/* Lightbox */}
       <ImageLightbox
@@ -561,16 +557,16 @@ function OurProductSection() {
         onClose={() => setLightboxOpen(false)}
         initialIndex={lightboxIndex}
       />
-      </SectionContainer>
+    </SectionContainer>
   );
 }
 
 // Компонент слайдера с изображениями с автопролистыванием
-function ProductImageCarousel({ 
-  images, 
-  onImageClick 
-}: { 
-  images: Array<{src: string; alt: string; title: string}>;
+function ProductImageCarousel({
+  images,
+  onImageClick
+}: {
+  images: Array<{ src: string; alt: string; title: string }>;
   onImageClick: (index: number) => void;
 }) {
   const [api, setApi] = useState<CarouselApi>();
@@ -613,12 +609,12 @@ function ProductImageCarousel({
   }, []);
 
   return (
-    <div 
+    <div
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <Carousel 
-        className="w-full" 
+      <Carousel
+        className="w-full"
         setApi={setApi}
         opts={{
           align: "start",
@@ -628,36 +624,35 @@ function ProductImageCarousel({
         <CarouselContent>
           {images.map((image, index) => (
             <CarouselItem key={index}>
-              <div 
-                className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-2xl cursor-pointer group"
+              <div
+                className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-2xl group"
               >
                 <ImageWithFallback
                   src={image.src}
                   alt={image.alt}
                   loading="lazy"
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  className=" w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:green border-1 shadow-lg" />
-        <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:green border-1 shadow-lg" />
-        
+        <CarouselPrevious className="cursor-pointer absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:green border-1 shadow-lg" />
+        <CarouselNext className="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:green border-1 shadow-lg" />
+
         {/* Индикаторы слайдов с активным состоянием */}
         <div className="flex justify-center mt-6 space-x-2">
           {images.map((_, index) => (
             <div
               key={index}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                index === current 
-                  ? 'bg-ekogumus-green opacity-100 scale-125' 
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${index === current
+                  ? 'bg-ekogumus-green opacity-100 scale-125'
                   : 'bg-ekogumus-green opacity-60'
-              }`}
+                }`}
             />
           ))}
         </div>
-        
+
 
       </Carousel>
     </div>
@@ -667,7 +662,7 @@ function ProductImageCarousel({
 // Product Section
 function ProductSection() {
   const { t } = useLanguage();
-  
+
   const benefits = [
     {
       icon: Shield,
@@ -680,7 +675,7 @@ function ProductSection() {
       icon: TrendingUp,
       title: t.products.productSection.card2.title,
       description: t.products.productSection.card2.description,
-      color: "from-green-200 to-green-900", 
+      color: "from-green-200 to-green-900",
       hoverColor: "group-hover:bg-green-50"
     },
     {
@@ -716,7 +711,7 @@ function ProductSection() {
           className="text-center mb-8 sm:mb-12 lg:mb-16"
         >
           {/* Адаптация размера заголовка: text-3xl на мобильных, text-4xl на средних, lg:text-5xl на больших */}
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-montserrat font-bold text-ekogumus-green mb-4 sm:mb-6"> 
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-montserrat font-bold text-ekogumus-green mb-4 sm:mb-6">
             {t.products.productSection.title}
           </h2>
           {/* Адаптация размера подзаголовка: text-base на мобильных, sm:text-xl на средних, lg:text-2xl на больших */}
@@ -737,7 +732,7 @@ function ProductSection() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
               >
-                <Card className={`group text-center h-full bg-glass-green border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] sm:hover:scale-105 cursor-pointer overflow-hidden ${benefit.hoverColor}`}> {/* Слегка уменьшил scale на hover для мобилок */}
+                <Card className={`group text-center h-full bg-glass-green border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] sm:hover:scale-105 overflow-hidden ${benefit.hoverColor}`}> {/* Слегка уменьшил scale на hover для мобилок */}
                   <CardHeader className="pb-3 pt-6 sm:pt-8"> {/* Увеличил padding-top на sm экранах */}
                     {/* Размеры иконок уже адаптивны с помощью sm: и lg: */}
                     <div className={`w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gradient-to-br ${benefit.color} rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
@@ -763,7 +758,7 @@ function ProductSection() {
 function CertificateSection() {
   const { t } = useLanguage();
   // const [lightboxOpen, setLightboxOpen] = useState(false); // УДАЛЯЕМ СОСТОЯНИЕ LIGHTBOX
-  
+
   const certificateImages = [
     {
       src: "../images/originals/certificate_8.webp",
@@ -775,60 +770,60 @@ function CertificateSection() {
   // const openLightbox = () => { // УДАЛЯЕМ ФУНКЦИЮ LIGHTBOX
   //   setLightboxOpen(true);
   // };
-  
+
   // Получаем URL изображения для ссылки
   const imageUrl = certificateImages[0].src;
 
   return (
     <SectionContainer compact={true}>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto">
-              <CardContent className="p-4 sm:p-8 lg:p-12"> 
-                <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
-                  
-                  {/* Левая часть (Текст) */}
-                  <div className="order-2 lg:order-1">
-                    <Badge className="bg-green-700 text-white mb-3 sm:mb-4 text-xs sm:text-sm lg:text-base px-3 py-1">
-                      {(t.certificates.badge)}
-                    </Badge>
-                    <h3 className="text-xl sm:text-3xl xl:text-4xl text-green-700 mb-4 sm:mb-6 leading-tight">
-                     {(t.certificates.title)}
-                    </h3>
-                    <p className="text-base sm:text-lg lg:text-xl text-gray-700 leading-relaxed">
-                     {(t.certificates.description)}
-                    </p>
-                  </div>
-                  
-                  {/* Правая часть (Изображение) */}
-                  <div className="text-center order-1 lg:order-2">
-                    <div className="relative inline-block">
-                      
-                      {/* ЗАМЕНА: Используем <a> для открытия в новой вкладке */}
-                      <a 
-                        href={imageUrl} // URL изображения
-                        target="_blank" // Открывает в новой вкладке
-                        rel="noopener noreferrer" // Рекомендовано для безопасности при target="_blank"
-                        className="relative cursor-pointer group block" // Добавил block, чтобы центрировать элемент
-                      >
-                        {/* Контейнер с адаптированными размерами для формата А4 */}
-                        <div className="relative w-48 sm:w-64 lg:w-72 mx-auto">
-                          <div className="bg-white shadow-lg border-2 border-green-200 rounded-lg overflow-hidden aspect-[3/4] transition-transform duration-300 group-hover:scale-105 group-hover:shadow-xl">
-                            <ImageWithFallback
-                              src={imageUrl} // Используем imageUrl
-                              alt={certificateImages[0].alt}
-                              className="w-full h-full object-cover"
-                              loading="lazy"
-                            />
-                          </div>
-                        </div>
-                      </a>
-                      
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto">
+          <CardContent className="p-4 sm:p-8 lg:p-12">
+            <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
+
+              {/* Левая часть (Текст) */}
+              <div className="order-2 lg:order-1">
+                <Badge className="bg-green-700 text-white mb-3 sm:mb-4 text-xs sm:text-sm lg:text-base px-3 py-1">
+                  {(t.certificates.badge)}
+                </Badge>
+                <h3 className="text-xl sm:text-3xl xl:text-4xl text-green-700 mb-4 sm:mb-6 leading-tight">
+                  {(t.certificates.title)}
+                </h3>
+                <p className="text-base sm:text-lg lg:text-xl text-gray-700 leading-relaxed">
+                  {(t.certificates.description)}
+                </p>
+              </div>
+
+              {/* Правая часть (Изображение) */}
+              <div className="text-center order-1 lg:order-2">
+                <div className="relative inline-block">
+
+                  {/* ЗАМЕНА: Используем <a> для открытия в новой вкладке */}
+                  <a
+                    href={imageUrl} // URL изображения
+                    target="_blank" // Открывает в новой вкладке
+                    rel="noopener noreferrer" // Рекомендовано для безопасности при target="_blank"
+                    className="relative cursor-pointer group block" // Добавил block, чтобы центрировать элемент
+                  >
+                    {/* Контейнер с адаптированными размерами для формата А4 */}
+                    <div className="relative w-48 sm:w-64 lg:w-72 mx-auto">
+                      <div className="bg-white shadow-lg border-2 border-green-200 rounded-lg overflow-hidden aspect-[3/4] transition-transform duration-300 group-hover:scale-105 group-hover:shadow-xl">
+                        <ImageWithFallback
+                          src={imageUrl} // Используем imageUrl
+                          alt={certificateImages[0].alt}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                      </div>
                     </div>
-                  </div>
+                  </a>
+
                 </div>
-              </CardContent>
-          </div>
+              </div>
+            </div>
+          </CardContent>
         </div>
+      </div>
 
       {/* УДАЛЕНИЕ: Lightbox больше не нужен */}
       {/* <ImageLightbox
@@ -1010,11 +1005,11 @@ function StatsSection() {
             </p>
             {/* Кнопки: flex-col на мобильных, sm:flex-row на планшетах */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
+              <Button
                 variant="outline"
                 size="lg"
                 onClick={() => navigate('/products')}
-                className="w-full sm:w-auto border-2 border-white/80 text-white bg-transparent hover:bg-white hover:text-ekogumus-green font-opensans font-semibold px-8 py-4 rounded-lg transition-all duration-300 hover:scale-105" // w-full для мобилки
+                className="cursor-pointer w-full sm:w-auto border-2 border-white/80 text-white bg-transparent hover:bg-white hover:text-ekogumus-green font-opensans font-semibold px-8 py-4 rounded-lg transition-all duration-300 hover:scale-105" // w-full для мобилки
               >
                 {(t.stats.cta.products)}
               </Button>
@@ -1022,7 +1017,7 @@ function StatsSection() {
                 variant="outline"
                 size="lg"
                 onClick={() => navigate('/contacts')}
-                className="w-full sm:w-auto border-2 border-white/80 text-white bg-transparent hover:bg-white hover:text-ekogumus-green font-opensans font-semibold px-8 py-4 rounded-lg transition-all duration-300 hover:scale-105" // w-full для мобилки
+                className="cursor-pointer w-full sm:w-auto border-2 border-white/80 text-white bg-transparent hover:bg-white hover:text-ekogumus-green font-opensans font-semibold px-8 py-4 rounded-lg transition-all duration-300 hover:scale-105" // w-full для мобилки
               >
                 {(t.stats.cta.contact)}
               </Button>

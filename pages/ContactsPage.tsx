@@ -120,7 +120,7 @@ function InteractiveContactTile({
       onHoverEnd={() => setIsHovered(false)}
       className={`group ${className}`}
     >
-      <Card className={`bg-white/90 backdrop-blur-sm border-0 shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer overflow-hidden ${getHoverColor()}`}>
+      <Card className={`bg-white/90 backdrop-blur-sm border-0 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden ${getHoverColor()}`}>
         <CardContent className="p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
@@ -156,7 +156,7 @@ function InteractiveContactTile({
           <div className="flex gap-2">
             <motion.button
               onClick={handlePrimaryAction}
-              className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-gray-100 hover:bg-gray-200 rounded-lg transition-all duration-300 group/btn ${getIconColor()}`}
+              className={`cursor-pointer flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-gray-100 hover:bg-gray-200 rounded-lg transition-all duration-300 group/btn ${getIconColor()}`}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -168,7 +168,7 @@ function InteractiveContactTile({
 
             <motion.button
               onClick={() => copyToClipboard(value)}
-              className="flex items-center justify-center w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-lg transition-all duration-300"
+              className="cursor-pointer flex items-center justify-center w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-lg transition-all duration-300"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               title={t.contacts.actions.copy}
@@ -207,7 +207,7 @@ export function ContactsPage() {
               {t.contacts.subtitle}
             </p>
           </motion.div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Адрес */}
             <motion.div
@@ -231,7 +231,7 @@ export function ContactsPage() {
                 </CardContent>
               </Card>
             </motion.div>
-            
+
             {/* Телефоны */}
             <InteractiveContactTile
               icon={<Phone className="w-6 h-6" />}
@@ -241,7 +241,7 @@ export function ContactsPage() {
               description={t.contacts.contactCards.phone.primaryDesc}
               delay={0.2}
             />
-            
+
             {/* Email */}
             <InteractiveContactTile
               icon={<Mail className="w-6 h-6" />}
@@ -263,7 +263,7 @@ export function ContactsPage() {
               description={t.contacts.contactCards.phone.secondaryDesc}
               delay={0.4}
             />
-            
+
             {/* Телеграм */}
             <InteractiveContactTile
               icon={<MessageCircle className="w-6 h-6" />}
@@ -318,11 +318,11 @@ export function ContactsPage() {
                 {t.contacts.map.description}
               </p>
             </div>
-            
+
             {/* Часы работы и дополнительная информация */}
             <div>
               <h2 className="mb-6 font-montserrat font-semibold text-green-800">{t.contacts.workingHours.title}</h2>
-              
+
               <div className="bg-glass p-6 rounded-lg shadow-md mb-6">
                 <h3 className="mb-4 text-green-800">{t.contacts.workingHours.office.title}</h3>
                 <div className="space-y-2 text-gray-600">
@@ -338,7 +338,7 @@ export function ContactsPage() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="bg-glass p-6 rounded-lg shadow-md">
                 <h3 className="mb-4 text-green-800">{t.contacts.workingHours.production.title}</h3>
                 <div className="space-y-2 text-gray-600">

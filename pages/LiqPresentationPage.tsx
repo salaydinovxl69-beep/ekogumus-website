@@ -76,17 +76,6 @@ export default function LiqPresentation({ isOpen = true, onClose, asModal = fals
 
   const presentationContent = (
     <div className="h-full bg-gradient-to-br from-gray-50 to-green-50 dark:from-gray-900 dark:to-gray-800 relative">
-      {/* Fixed Close Button */}
-      {onClose && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8, rotate: -90 }}
-          animate={{ opacity: 1, scale: 1, rotate: 0 }}
-          whileHover={{ scale: 1.1, rotate: 90 }}
-          whileTap={{ scale: 0.95 }}
-          className="absolute top-4 right-4 z-20"
-        >
-        </motion.div>
-      )}
 
       {/* Header */}
       <div className="absolute top-0 left-0 right-0 z-10 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border-b border-gray-200 dark:border-gray-700">
@@ -106,7 +95,7 @@ export default function LiqPresentation({ isOpen = true, onClose, asModal = fals
               variant="outline"
               size="sm"
               onClick={toggleGridView}
-              className="text-ekogumus-green border-ekogumus-green hover:bg-ekogumus-green hover:text-white"
+              className="cursor-pointer text-ekogumus-green border-ekogumus-green hover:bg-ekogumus-green hover:text-white"
             >
               <Grid className="w-4 h-4 sm:mr-1" />
               <span className="hidden sm:inline">{isGridView ? p.slideView : p.gridView}</span>
@@ -115,7 +104,7 @@ export default function LiqPresentation({ isOpen = true, onClose, asModal = fals
             {!isGridView && (
               <>
                 <Button variant="outline" size="sm" onClick={handlePrevSlide}>
-                  <ChevronLeft className="w-4 h-4" />
+                  <ChevronLeft className="w-4 h-4 " />
                 </Button>
                 <span className="text-sm text-gray-600 dark:text-gray-400 font-opensans px-2">
                   {currentSlide + 1}/{slides.length}
@@ -226,31 +215,6 @@ export default function LiqPresentation({ isOpen = true, onClose, asModal = fals
     </div>
   );
 
-  if (asModal) {
-    return (
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm"
-            onClick={onClose}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-              className="absolute inset-4 bg-white dark:bg-gray-900 rounded-xl shadow-2xl overflow-hidden"
-            >
-              {presentationContent}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    );
-  }
 
   return <div className="h-screen w-full">{presentationContent}</div>;
 }

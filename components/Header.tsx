@@ -3,9 +3,8 @@ import { Moon, Sun } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription, SheetClose } from "./ui/sheet";
 import { Menu, Phone, Youtube, Mail } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-// ИСПРАВЛЕНИЕ 1: Импортируем тип Language из того же места, что и LanguageContext
 import { useLanguage } from "../contexts/LanguageContext";
-import { Language } from "../utils/i18n"; // <--- Вот правильный импорт типа Language
+import { Language } from "../utils/i18n";
 import { useState } from "react";
 
 export function Header() {
@@ -24,7 +23,7 @@ export function Header() {
         <img
           src="/images/originals/logo_2.webp"
           alt="Second Logo"
-          className="w-8 h-8 object-contain" 
+          className="w-8 h-8 object-contain"
         />
         <img
           src="/images/originals/logo.webp"
@@ -70,7 +69,7 @@ export function Header() {
 
           {/* Desktop Navigation (lg:flex) */}
           <nav className="hidden lg:flex items-center space-x-8 xl:space-x-5">
-             {/* ... Десктопные ссылки без изменений ... */}
+            {/* ... Десктопные ссылки без изменений ... */}
             <Link
               to="/"
               className={`text-base  font-opensans font-medium transition-all duration-300 hover:scale-105 ${isActive('/')
@@ -126,7 +125,7 @@ export function Header() {
               {t.nav.contacts}
             </Link>
           </nav>
-          
+
           {/* Medium screen navigation (md:flex lg:hidden) - Сокращенные ссылки */}
           <nav className="hidden md:flex lg:hidden items-center space-x-6">
             <Link
@@ -191,7 +190,7 @@ export function Header() {
                   ? 'bg-ekogumus-green text-white'
                   : 'text-gray-600 hover:text-ekogumus-green'
                   }`}
-                onClick={() => setLanguage('ru')} 
+                onClick={() => setLanguage('ru')}
               >
                 РУ
               </Button>
@@ -202,7 +201,7 @@ export function Header() {
                   ? 'bg-ekogumus-green text-white'
                   : 'text-gray-600 hover:text-ekogumus-green'
                   }`}
-                onClick={() => setLanguage('uz')} 
+                onClick={() => setLanguage('uz')}
               >
                 O'Z
               </Button>
@@ -213,7 +212,7 @@ export function Header() {
                   ? 'bg-ekogumus-green text-white'
                   : 'text-gray-600 hover:text-ekogumus-green'
                   }`}
-                onClick={() => setLanguage('en')} 
+                onClick={() => setLanguage('en')}
               >
                 EN
               </Button>
@@ -249,8 +248,8 @@ export function Header() {
 
                 {/* Mobile Navigation с автоматическим закрытием (SheetClose) */}
                 {/* ИСПРАВЛЕНИЕ: Добавлен px-4 для сдвига навигационных ссылок вправо */}
-                <nav className="flex flex-col space-y-6 flex-1 px-4"> 
-                  
+                <nav className="flex flex-col space-y-6 flex-1 px-4">
+
                   {/* Главная */}
                   <SheetClose asChild>
                     <Link
@@ -261,7 +260,7 @@ export function Header() {
                       {t.nav.home}
                     </Link>
                   </SheetClose>
-                  
+
                   {/* О нас */}
                   <SheetClose asChild>
                     <Link
@@ -272,7 +271,7 @@ export function Header() {
                       {t.nav.about}
                     </Link>
                   </SheetClose>
-                  
+
                   {/* Продукты */}
                   <SheetClose asChild>
                     <Link
@@ -283,7 +282,7 @@ export function Header() {
                       {t.nav.products}
                     </Link>
                   </SheetClose>
-                  
+
                   {/* Сотрудничество (Добавлено) */}
                   <SheetClose asChild>
                     <Link
@@ -294,7 +293,7 @@ export function Header() {
                       {t.nav.cooperation}
                     </Link>
                   </SheetClose>
-                  
+
                   {/* Новости */}
                   <SheetClose asChild>
                     <Link
@@ -305,7 +304,7 @@ export function Header() {
                       {t.nav.news}
                     </Link>
                   </SheetClose>
-                  
+
                   {/* Контакты */}
                   <SheetClose asChild>
                     <Link
@@ -351,7 +350,7 @@ export function Header() {
                         ? 'bg-ekogumus-green text-white'
                         : 'border-ekogumus-green text-ekogumus-green'
                         }`}
-                      onClick={() => handleLanguageChange('ru' as Language)} 
+                      onClick={() => handleLanguageChange('ru' as Language)}
                     >
                       РУ
                     </Button>
@@ -363,7 +362,7 @@ export function Header() {
                         ? 'bg-ekogumus-green text-white'
                         : 'border-ekogumus-green text-ekogumus-green'
                         }`}
-                      onClick={() => handleLanguageChange('uz' as Language)} 
+                      onClick={() => handleLanguageChange('uz' as Language)}
                     >
                       O'Z
                     </Button>
@@ -375,7 +374,7 @@ export function Header() {
                         ? 'bg-ekogumus-green text-white'
                         : 'border-ekogumus-green text-ekogumus-green'
                         }`}
-                      onClick={() => handleLanguageChange('en' as Language)} 
+                      onClick={() => handleLanguageChange('en' as Language)}
                     >
                       EN
                     </Button>

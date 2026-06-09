@@ -22,7 +22,7 @@ interface PurchaseModalProps {
 // Выносим общий контент в отдельный компонент, чтобы не дублировать код
 function PurchaseContent({ product, onClose }: { product: PurchaseModalProps['product'], onClose: () => void }) {
   const { t } = useLanguage();
-  
+
   const purchaseModal = (t.purchaseModal) as {
     title: string;
     subtitle: string;
@@ -56,16 +56,16 @@ function PurchaseContent({ product, onClose }: { product: PurchaseModalProps['pr
         <p className="text-gray-800 dark:text-gray-200">{product.name}</p>
         <div className="flex items-center gap-2 flex-wrap">
           <Badge className="bg-green-600 hover:bg-green-700 text-white px-3 py-1">
-            {product.price} сум
+            {product.price} {t.products.liquidFertilizers.priceUnit}
           </Badge>
           {product.weight && (
             <Badge variant="outline" className="border-green-600 text-green-700 dark:text-green-400 px-3 py-1">
-              {product.weight} кг
+              {product.weight} {t.products.productCards.weightUnit}
             </Badge>
           )}
           {product.volume && (
             <Badge variant="outline" className="border-green-600 text-green-700 dark:text-green-400 px-3 py-1">
-              {product.volume} л
+              {product.volume} {t.products.liquidFertilizers.volumeUnit}
             </Badge>
           )}
         </div>
@@ -76,7 +76,7 @@ function PurchaseContent({ product, onClose }: { product: PurchaseModalProps['pr
         <h4 className="text-center font-medium text-green-900 dark:text-gray-200">
           {purchaseModal.chooseMethod}
         </h4>
-        
+
         {/* Telegram */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -87,13 +87,13 @@ function PurchaseContent({ product, onClose }: { product: PurchaseModalProps['pr
         >
           <Button
             onClick={handleTelegramClick}
-            className="w-full h-auto p-4 bg-white dark:bg-zinc-800 hover:bg-blue-50 dark:hover:bg-zinc-700 text-left border border-gray-200 dark:border-zinc-700 hover:border-blue-300 transition-all duration-300 group"
+            className="cursor-pointer w-full h-auto p-4 bg-white dark:bg-zinc-800 hover:bg-blue-50 dark:hover:bg-zinc-700 text-left border border-gray-200 dark:border-zinc-700 hover:border-blue-300 transition-all duration-300 group"
             variant="outline"
           >
             <div className="flex items-center space-x-4 w-full">
               <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-blue-200 transition-colors">
                 <svg viewBox="0 0 24 24" className="w-7 h-7 text-blue-600" fill="currentColor">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.13-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.13-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z" />
                 </svg>
               </div>
               <div className="flex-1 min-w-0">
@@ -133,9 +133,9 @@ export function PurchaseModal({ isOpen, onClose, product }: PurchaseModalProps) 
           </DrawerHeader>
           <PurchaseContent product={product} onClose={onClose} />
           <DrawerFooter className="pt-2">
-             <DrawerClose asChild>
-                <Button variant="outline">{purchaseModal.close}</Button>
-             </DrawerClose>
+            <DrawerClose asChild>
+              <Button variant="outline">{purchaseModal.close}</Button>
+            </DrawerClose>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

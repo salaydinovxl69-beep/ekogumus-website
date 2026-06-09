@@ -322,13 +322,13 @@ export const en = {
     },
     liquidFertilizers: {
       main: "NOVELTY",
-      title: 'Liquid Concentrated Fertilizers',
+      title: 'NANOECOVERM liquid concentrated fertilizers',
       subtitle: 'PRODUCTION NOVELTIES - High-concentration fast-acting liquid organic fertilizers',
       buyButton: 'Buy',
       moreButton: 'More',
       fromLabel: 'from',
       priceUnit: ' UZS',
-      volumeUnit: 'l',
+      volumeUnit: 'L',
       features: {
         fastAction: 'Fast action',
         highConcentration: 'High concentration',
@@ -359,7 +359,7 @@ export const en = {
       ],
     },
     productCards: {
-      title: 'Fine-granulated Fertilizers',
+      title: 'BIOGUMUS fine-granulated fertilizers',
       subtitle: 'Classic organic-mineral fertilizers in fine granules for various needs',
       buyButton: 'Buy',
       moreButton: 'More',
@@ -554,6 +554,7 @@ export const en = {
     sendEmail: 'Send email',
     youtube: 'YouTube channel',
     telegram: 'Telegram',
+    LinkedIn: "LinkedIn"
   },
 
   // Contacts Page
@@ -688,7 +689,7 @@ export const en = {
       }
     },
     conditions: {
-      title: 'Partnership Terms',
+      title: 'Partnership terms',
       subtitle: 'Choose the type of cooperation that suits your business',
       wholesale: {
         title: 'Wholesale Supplies',
@@ -719,7 +720,7 @@ export const en = {
       }
     },
     process: {
-      title: 'How to Start Partnership',
+      title: 'How to start partnership',
       subtitle: 'Simple and transparent process for starting cooperation',
       step1: {
         title: 'Application',
@@ -806,6 +807,13 @@ export const en = {
         successDescription: 'We will contact you shortly.',
         error: 'Error sending application'
       },
+      errors: {
+        require: "Required field",
+        mail: "Incorrect email",
+        phone: "Incorrect phone",
+        min1: "Minimum of 2 characters",
+        min2: "Minimum of 10 characters"
+      },
       required: 'Required fields'
     },
     contact: {
@@ -857,6 +865,7 @@ export const en = {
     title: 'Company News',
     subtitle: 'Follow the latest events, achievements and innovations in the world of organic fertilizers',
     readMore: 'Read more',
+    more: "Other news",
     backToNews: 'Back to news',
     noNews: 'News will appear soon',
     categories: {
