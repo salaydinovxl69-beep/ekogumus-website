@@ -121,6 +121,8 @@ function Carousel({
         className={cn("relative", className)}
         role="region"
         aria-roledescription="carousel"
+        aria-label="Карусель изображений"
+        aria-live="polite"
         data-slot="carousel"
         {...props}
       >
@@ -191,10 +193,11 @@ function CarouselPrevious({
       )}
       disabled={!canScrollPrev}
       onClick={scrollPrev}
+      aria-label="Предыдущий слайд"
       {...props}
     >
-      <ArrowLeft />
-      <span className="sr-only">Previous slide</span>
+      <ArrowLeft aria-hidden="true" />
+      <span className="sr-only">Предыдущий слайд</span>
     </Button>
   );
 }
@@ -221,10 +224,11 @@ function CarouselNext({
       )}
       disabled={!canScrollNext}
       onClick={scrollNext}
+      aria-label="Следующий слайд"
       {...props}
     >
-      <ArrowRight />
-      <span className="sr-only">Next slide</span>
+      <ArrowRight aria-hidden="true" />
+      <span className="sr-only">Следующий слайд</span>
     </Button>
   );
 }

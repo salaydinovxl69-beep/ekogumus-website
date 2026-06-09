@@ -564,6 +564,8 @@ export const ru = {
       "Основные разделы сайта EKOGUMUS для быстрой навигации",
     closeMenu: "Закрыть меню",
     openMenu: "Открыть меню",
+    skipToContent: "Перейти к содержимому",
+    slideLabel: "Слайд",
     phoneCall: "Позвонить",
     sendEmail: "Написать email",
     youtube: "YouTube канал",
@@ -925,6 +927,59 @@ export const ru = {
         image: "cotton field fertilizer",
       }
     ],
+  },
+
+  pageMeta: {
+    home: {
+      title: "Ekogumus — Органические удобрения на основе биогумуса",
+      description:
+        "Ekogumus — органические удобрения на основе биогумуса для садоводов и агробизнеса: повышают урожайность, улучшают структуру почвы и экологичность производства.",
+    },
+    about: {
+      title: "О компании EkoGumus — 30+ лет опыта в органических удобрениях",
+      description:
+        "История компании EkoGumus, производство биогумуса в Фергане, ценности и достижения в органическом земледелии.",
+    },
+    products: {
+      title: "Продукция EkoGumus — BIOGUMUS и NANOECOVERM",
+      description:
+        "Органические и жидкие удобрения BIOGUMUS и NANOECOVERM: состав, применение, преимущества для повышения урожайности.",
+    },
+    cooperation: {
+      title: "Сотрудничество с EkoGumus — партнёрская программа",
+      description:
+        "Станьте партнёром EkoGumus: дистрибуция органических удобрений, выгодные условия для агробизнеса.",
+    },
+    news: {
+      title: "Новости EkoGumus — события и достижения компании",
+      description:
+        "Последние новости компании EkoGumus: экспорт, инновации и развитие органического производства.",
+    },
+    contacts: {
+      title: "Контакты EkoGumus — Фергана, Узбекистан",
+      description:
+        "Свяжитесь с EkoGumus: телефон, email, Telegram, адрес производства в Фергане.",
+    },
+    liqpresentation: {
+      title: "Презентация NANOECOVERM — EkoGumus",
+      description: "Слайды и информация о жидком удобрении NANOECOVERM от EkoGumus.",
+    },
+    solidpresentation: {
+      title: "Презентация BIOGUMUS — EkoGumus",
+      description: "Слайды и информация о сухом удобрении BIOGUMUS от EkoGumus.",
+    },
+  },
+
+  notFound: {
+    title: "Страница не найдена",
+    description: "Запрашиваемая страница не существует или была перемещена.",
+    backHome: "На главную",
+  },
+
+  stickyCta: {
+    label: "Быстрые действия",
+    call: "Позвонить",
+    telegram: "Telegram",
   },
 };
 

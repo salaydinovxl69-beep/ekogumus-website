@@ -1,0 +1,6 @@
+import{j as e}from"./vendor-motion-Z-m6HlYG.js";import{L as s}from"./vendor-react-D1MOwGjT.js";import{c as o,u as n,B as a}from"./index-CucV9Drm.js";import"./vendor-radix-DW4eaoBD.js";/**
+ * @license lucide-react v0.541.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const r=[["path",{d:"M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8",key:"5wwlr5"}],["path",{d:"M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z",key:"1d0kgt"}]],m=o("house",r);function u(){const{t}=n();return e.jsxs("section",{className:"min-h-[60vh] flex flex-col items-center justify-center text-center px-4 py-16",children:[e.jsx("p",{className:"text-6xl font-montserrat font-bold text-ekogumus-green mb-4",children:"404"}),e.jsx("h1",{className:"text-2xl sm:text-3xl font-montserrat font-semibold text-gray-800 mb-4",children:t.notFound.title}),e.jsx("p",{className:"text-gray-600 font-opensans max-w-md mb-8",children:t.notFound.description}),e.jsx(a,{asChild:!0,size:"lg",className:"bg-ekogumus-green hover:bg-ekogumus-green-light text-white",children:e.jsxs(s,{to:"/",children:[e.jsx(m,{className:"w-5 h-5 mr-2"}),t.notFound.backHome]})})]})}export{u as NotFoundPage};

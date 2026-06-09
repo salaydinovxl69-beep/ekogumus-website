@@ -11,6 +11,7 @@ import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
 import { Youtube, Leaf, TrendingUp, Clock, Shield, Beaker, Droplets, Scale, ShoppingCart, Package, Zap, ExternalLink } from "lucide-react";
+import { YouTubeFacade } from "../components/YouTubeFacade";
 
 export function ProductPage() {
   return (
@@ -898,18 +899,9 @@ function YouTubeVideoSection() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="w-full md:w-1/2 rounded-2xl overflow-hidden shadow-2xl"
+            className="w-full md:w-1/2 shadow-2xl"
           >
-            <div className="relative" style={{ paddingBottom: '56.25%', height: 0 }}>
-              <iframe
-                className="absolute top-0 left-0 w-full h-full"
-                src={`https://www.youtube.com/embed/${videoId1}`}
-                title="YouTube video player 1"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-            </div>
+            <YouTubeFacade videoId={videoId1} title={t.products.youtubeSection.title} />
           </motion.div>
 
           {/* Второе видео */}
@@ -917,18 +909,9 @@ function YouTubeVideoSection() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="w-full md:w-1/2 rounded-2xl overflow-hidden shadow-2xl"
+            className="w-full md:w-1/2 shadow-2xl"
           >
-            <div className="relative" style={{ paddingBottom: '56.25%', height: 0 }}>
-              <iframe
-                className="absolute top-0 left-0 w-full h-full"
-                src={`https://www.youtube.com/embed/${videoId2}`}
-                title="YouTube video player 2"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-            </div>
+            <YouTubeFacade videoId={videoId2} title={t.products.youtubeSection.title} />
           </motion.div>
         </div>
 

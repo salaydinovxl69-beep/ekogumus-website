@@ -1,23 +1,24 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Language, defaultLanguage } from '../utils/i18n';
-
-// Import translations directly to avoid module resolution issues
-import { ru } from '../utils/translations/ru';
-import { uz } from '../utils/translations/uz';
-import { en } from '../utils/translations/en';
 import type { TranslationKeys } from '../utils/translations';
 
-// Create translations object directly in this file
-const translations: Record<Language, TranslationKeys> = {
-  ru,
-  uz,
-  en,
-};
+async function loadTranslation(lang: Language): Promise<TranslationKeys> {
+  switch (lang) {
+    case 'uz':
+      return (await import('../utils/translations/uz')).uz;
+    case 'en':
+      return (await import('../utils/translations/en')).en;
+    case 'ru':
+    default:
+      return (await import('../utils/translations/ru')).ru;
+  }
+}
 
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
   t: TranslationKeys;
+  isLoading: boolean;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -28,7 +29,6 @@ interface LanguageProviderProps {
 
 export function LanguageProvider({ children }: LanguageProviderProps) {
   const [language, setLanguageState] = useState<Language>(() => {
-    // Safely try to get language from localStorage
     try {
       if (typeof window !== 'undefined' && window.localStorage) {
         const stored = localStorage.getItem('ekogumus-language');
@@ -42,10 +42,30 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
     return defaultLanguage;
   });
 
+  const [t, setT] = useState<TranslationKeys | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    setIsLoading(true);
+    loadTranslation(language)
+      .then((translations) => {
+        if (!cancelled) {
+          setT(translations);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error('Failed to load translations:', error);
+        if (!cancelled) setIsLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [language]);
+
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
-    
-    // Safely try to save to localStorage
     try {
       if (typeof window !== 'undefined' && window.localStorage) {
         localStorage.setItem('ekogumus-language', lang);
@@ -53,29 +73,27 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
     } catch (error) {
       console.warn('Failed to save to localStorage:', error);
     }
-    
-    // Update document lang attribute
     if (typeof document !== 'undefined') {
       document.documentElement.lang = lang;
     }
   };
 
   useEffect(() => {
-    // Set initial document language
     if (typeof document !== 'undefined') {
       document.documentElement.lang = language;
     }
   }, [language]);
 
-  // Get translation object with fallback
-  const t = translations[language] || translations[defaultLanguage] || translations.ru;
-
-  // Don't render if translations are not available
-  if (!t) {
-    return <div>Loading translations...</div>;
+  if (isLoading || !t) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="w-10 h-10 border-4 border-ekogumus-green/30 border-t-ekogumus-green rounded-full animate-spin" />
+      </div>
+    );
   }
+
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t, isLoading }}>
       {children}
     </LanguageContext.Provider>
   );
