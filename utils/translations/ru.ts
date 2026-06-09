@@ -451,6 +451,11 @@ export const ru = {
         },
       ],
     },
+    youtubeSection: {
+      title: "Процесс производства нашего удобрения BIOGUMUS И NANOECOVERM",
+      description: "Посмотрите видео о процессе производства наших удобрений",
+      button: "Наш YouTube канал",
+    },
     LiqPresentation: {
       title: "Презентация продукта NANOECOVERM",
       subtitle: "Посмотрите слайды о нашем продукте",

@@ -430,6 +430,11 @@ export const en = {
         },
       ],
     },
+    youtubeSection: {
+      title: "NANOECOVERM and BIOGUMUS Production Process",
+      description: "Watch a video about our fertilizer production process",
+      button: "Our YouTube Channel",
+    },
     LiqPresentation: {
       title: "NANOECOVERM Product Presentation",
       subtitle: "View slides about our product",

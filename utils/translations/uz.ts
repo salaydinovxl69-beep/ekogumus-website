@@ -450,6 +450,11 @@ export const uz = {
         },
       ],
     },
+    youtubeSection: {
+      title: "NANOECOVERM va BIOGUMUS ishlab chiqarish jarayoni",
+      description: "O'g'itlarimizning ishlab chiqarish jarayoni haqida videoni ko'ring",
+      button: "Bizning YouTube kanali",
+    },
     LiqPresentation: {
       title: "NANOECOVERM Mahsuloti Taqdimoti",
       subtitle: "Mahsulotimiz haqida slaydlarni ko‘ring",

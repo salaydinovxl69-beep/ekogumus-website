@@ -869,7 +869,7 @@ function CompositionTable() {
 
 //СЕКЦИЯ С ВИДЕО
 function YouTubeVideoSection() {
-  // const { t } = useLanguage(); // Раскомментируйте, когда добавите переводы
+  const { t } = useLanguage();
 
   // Замените на ID ваших видео и ссылку на ваш канал
   const videoId1 = "AE9L71IuN7A"; // ID первого видео
@@ -886,8 +886,7 @@ function YouTubeVideoSection() {
           className="text-center mb-8 sm:mb-12 lg:mb-16"
         >
           <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl text-ekogumus-green mb-4 sm:mb-6">
-            {/* Используйте t.products.youtubeSection.title для переводов */}
-            Процесс производства нашего удобрения BIOGUMUS И NANOECOVERM
+            {t.products.youtubeSection.title}
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-ekogumus-green to-ekogumus-green-light mx-auto"></div>
         </motion.div>
