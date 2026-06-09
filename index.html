@@ -66,14 +66,8 @@
       />
     </noscript>
 
-    <!-- Preload LCP hero image (critical for mobile viewports) -->
-    <!-- Only preload mobile version - desktop version loads with page layout -->
-    <link
-      rel="preload"
-      as="image"
-      href="/images/hero/hero-640.webp"
-      fetchpriority="high"
-    />
+    <!-- Hero image preload removed - actual hero uses originals/doroga_trava_pole with eager loading -->
+    <!-- Using lazy content images approach instead -->
 
     <!-- JSON-LD: Organization structured data -->
     <script type="application/ld+json">
