@@ -1,1 +1,15 @@
+# Dependencies
 node_modules
+
+# Build output
+dist
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Использует pnpm — чужие lock-файлы не коммитим
+yarn.lock
+package-lock.json

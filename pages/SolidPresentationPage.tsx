@@ -27,15 +27,15 @@ export function SolidPresentationPage({ isOpen = true, onClose, asModal = false 
   // Мемоизированные данные слайдов
   const slides: PresentationSlide[] = useMemo(
     () => [
-      { id: 1, titleKey: '', imageUrl: '../images/originals/0001.webp', descriptionKey: '' },
-      { id: 2, titleKey: '', imageUrl: '../images/originals/0003.webp', descriptionKey: '' },
-      { id: 3, titleKey: '', imageUrl: '../images/originals/0004.webp', descriptionKey: '' },
-      { id: 4, titleKey: '', imageUrl: '../images/originals/0005.webp', descriptionKey: '' },
-      { id: 5, titleKey: '', imageUrl: '../images/originals/0006.webp', descriptionKey: '' },
-      { id: 6, titleKey: '', imageUrl: '../images/originals/0007.webp', descriptionKey: '' },
-      { id: 7, titleKey: '', imageUrl: '../images/originals/0008.webp', descriptionKey: '' },
-      { id: 8, titleKey: '', imageUrl: '../images/originals/0011.webp', descriptionKey: '' },
-      { id: 9, titleKey: '', imageUrl: '../images/originals/0012.webp', descriptionKey: '' },
+      { id: 1, titleKey: '', imageUrl: '../images/originals/slide_1.webp', descriptionKey: '' },
+      { id: 2, titleKey: '', imageUrl: '../images/originals/slide_2.webp', descriptionKey: '' },
+      { id: 3, titleKey: '', imageUrl: '../images/originals/slide_3.webp', descriptionKey: '' },
+      { id: 4, titleKey: '', imageUrl: '../images/originals/slide_4.webp', descriptionKey: '' },
+      { id: 5, titleKey: '', imageUrl: '../images/originals/slide_5.webp', descriptionKey: '' },
+      { id: 6, titleKey: '', imageUrl: '../images/originals/slide_6.webp', descriptionKey: '' },
+      { id: 7, titleKey: '', imageUrl: '../images/originals/slide_7.webp', descriptionKey: '' },
+      { id: 8, titleKey: '', imageUrl: '../images/originals/slide_8.webp', descriptionKey: '' },
+      { id: 9, titleKey: '', imageUrl: '../images/originals/slide_9.webp', descriptionKey: '' },
     ],
     []
   );
