@@ -6,3 +6,4 @@ public/images/optimized
 .vscode
 4observe
 .git.broken-worktree-link.bak
+.claude/settings.local.json
