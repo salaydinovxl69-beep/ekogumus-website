@@ -14,6 +14,26 @@ async function loadTranslation(lang: Language): Promise<TranslationKeys> {
   }
 }
 
+function detectInitialLanguage(): Language {
+  try {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const stored = localStorage.getItem('ekogumus-language');
+      if (stored && (stored === 'ru' || stored === 'uz' || stored === 'en')) {
+        return stored as Language;
+      }
+    }
+  } catch (error) {
+    console.warn('Failed to read from localStorage:', error);
+  }
+  return defaultLanguage;
+}
+
+/* Старт загрузки словаря на module-scope — чанк перевода едет параллельно
+   инициализации React, а не после первого рендера провайдера.
+   import() кэширует модуль, поэтому повторный вызов в эффекте бесплатен. */
+const initialLanguage = detectInitialLanguage();
+void loadTranslation(initialLanguage).catch(() => {});
+
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
@@ -28,19 +48,7 @@ interface LanguageProviderProps {
 }
 
 export function LanguageProvider({ children }: LanguageProviderProps) {
-  const [language, setLanguageState] = useState<Language>(() => {
-    try {
-      if (typeof window !== 'undefined' && window.localStorage) {
-        const stored = localStorage.getItem('ekogumus-language');
-        if (stored && (stored === 'ru' || stored === 'uz' || stored === 'en')) {
-          return stored as Language;
-        }
-      }
-    } catch (error) {
-      console.warn('Failed to read from localStorage:', error);
-    }
-    return defaultLanguage;
-  });
+  const [language, setLanguageState] = useState<Language>(initialLanguage);
 
   const [t, setT] = useState<TranslationKeys | null>(null);
   const [isLoading, setIsLoading] = useState(true);

@@ -1,448 +1,351 @@
-import { motion } from "motion/react";
-import { useState, useEffect, useCallback } from 'react';
+/* «Земля и Зерно» — About / Company page. */
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../contexts/LanguageContext";
-import { Card, CardContent } from "../components/ui/card";
-import { Users, Heart, Leaf, Target } from "lucide-react";
-import { ImageLightbox } from '../components/ImageLightbox';
-import { SectionContainer } from "../components/SectionContainer";
-import { ImageWithFallback } from "../components/figma/ImageWithFallback";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '../components/ui/carousel';
+import { usePageMeta } from "../hooks/usePageMeta";
+import { Icon } from "../components/eko/Icon";
+import { Reveal } from "../components/eko/Reveal";
+import { Eyebrow, SectionHead, Slot } from "../components/eko/primitives";
+import { optimizedSources } from "../utils/img";
+
+const CERT_NUMBERS = [1, 2, 3, 4, 5, 7, 8, 9, 10, 15];
+const certImg = (n: number) => `/images/originals/certificate_${n}.png`;
+
+/* ---------- Certificates carousel (auto-scrolling, pause on hover) ---------- */
+function CertCarousel() {
+  const { t } = useLanguage();
+  const total = CERT_NUMBERS.length;
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const [idx, setIdx] = useState(0);
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
+  const pausedRef = useRef(false);
+
+  /* Scroll targets must always land exactly on the CSS snap grid (a card
+     centred in the viewport, clamped to the scrollable range) — otherwise the
+     browser issues a corrective snap that can cancel the next smooth scroll. */
+  const snapLeft = (track: HTMLDivElement, i: number) => {
+    const card = track.children[Math.max(0, Math.min(i, total - 1))] as HTMLElement;
+    const max = track.scrollWidth - track.clientWidth;
+    /* Card position in the track's own scroll coordinates (offsetLeft is
+       relative to the offsetParent, which is not the track). */
+    const cardRect = card.getBoundingClientRect();
+    const cardLeft = cardRect.left - track.getBoundingClientRect().left + track.scrollLeft - track.clientLeft;
+    const centered = cardLeft - (track.clientWidth - cardRect.width) / 2;
+    return Math.max(0, Math.min(centered, max));
+  };
+
+  /* Distinct grid positions: near both edges several cards clamp to the same
+     spot, so stepping by card index can target the current position. */
+  const snapStops = (track: HTMLDivElement) => {
+    const stops: number[] = [];
+    for (let i = 0; i < total; i++) {
+      const s = snapLeft(track, i);
+      if (!stops.length || s - stops[stops.length - 1] > 1) stops.push(s);
+    }
+    return stops;
+  };
+
+  const byCard = (dir: -1 | 1) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const stops = snapStops(track);
+    let near = 0;
+    let bestD = Infinity;
+    stops.forEach((s, i) => {
+      const d = Math.abs(s - track.scrollLeft);
+      if (d < bestD) {
+        bestD = d;
+        near = i;
+      }
+    });
+    const target = Math.max(0, Math.min(near + dir, stops.length - 1));
+    track.scrollTo({ left: stops[target], behavior: "smooth" });
+  };
+
+  const toCard = (i: number) => {
+    const track = trackRef.current;
+    if (!track) return;
+    track.scrollTo({ left: snapLeft(track, i), behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      const track = trackRef.current;
+      if (pausedRef.current || !track) return;
+      const max = track.scrollWidth - track.clientWidth;
+      if (track.scrollLeft >= max - 2) track.scrollTo({ left: 0, behavior: "smooth" });
+      else byCard(1);
+    }, 3500);
+    return () => clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const onScroll = () => {
+    const track = trackRef.current;
+    if (!track) return;
+    const max = track.scrollWidth - track.clientWidth;
+    const start = track.scrollLeft <= 2;
+    const end = track.scrollLeft >= max - 2;
+    setAtStart(start);
+    setAtEnd(end);
+    /* At the clamped edges the centre-proximity rule can't reach the first/last
+       card (several cards are visible at once), so pin the index there. */
+    if (start || end) {
+      setIdx(start ? 0 : total - 1);
+      return;
+    }
+    const cards = Array.from(track.children) as HTMLElement[];
+    const trackMid = track.getBoundingClientRect().left + track.clientLeft + track.clientWidth / 2;
+    let best = 0;
+    let bestD = Infinity;
+    cards.forEach((c, i) => {
+      const r = c.getBoundingClientRect();
+      const d = Math.abs(r.left + r.width / 2 - trackMid);
+      if (d < bestD) {
+        bestD = d;
+        best = i;
+      }
+    });
+    setIdx(best);
+  };
+
+  const pause = () => {
+    pausedRef.current = true;
+  };
+  const resume = () => {
+    pausedRef.current = false;
+  };
+
+  return (
+    <section className="section certs">
+      <div className="container">
+        <div className="certs__head">
+          <div>
+            <Eyebrow variant="green">{t.eko.about.docsEyebrow}</Eyebrow>
+            <h2 className="h-section" style={{ marginTop: 14 }}>
+              {t.eko.about.certsTitle}
+            </h2>
+            <p className="lead" style={{ marginTop: 14, maxWidth: 520 }}>
+              {t.eko.about.certsSub}
+            </p>
+          </div>
+          <div className="certs__nav">
+            <button className="certs__arrow" aria-label="←" onClick={() => byCard(-1)} disabled={atStart}>
+              <Icon name="chevL" size={22} />
+            </button>
+            <span className="certs__count mono">
+              {String(idx + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+            </span>
+            <button className="certs__arrow" aria-label="→" onClick={() => byCard(1)} disabled={atEnd}>
+              <Icon name="chevR" size={22} />
+            </button>
+          </div>
+        </div>
+
+        <div
+          className="certs__track"
+          ref={trackRef}
+          onScroll={onScroll}
+          onMouseEnter={pause}
+          onMouseLeave={resume}
+          onTouchStart={pause}
+          onTouchEnd={resume}
+        >
+          {CERT_NUMBERS.map((n, i) => (
+            <div className="certcard" key={n}>
+              <Slot
+                src={certImg(n)}
+                alt={`${t.aboutPage.certificates.title} ${i + 1}`}
+                placeholder={`${t.aboutPage.certificates.title} ${i + 1}`}
+                className="certcard__photo"
+                radius={10}
+                fit="contain"
+                sources={optimizedSources(certImg(n))}
+                sizes="(min-width: 1200px) 270px, 26vw"
+              />
+              <span className="certcard__no mono">№ {String(i + 1).padStart(2, "0")}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="certs__dots">
+          {CERT_NUMBERS.map((n, i) => (
+            <button
+              key={n}
+              className={`certs__dot ${i === idx ? "on" : ""}`}
+              aria-label={`${t.aboutPage.certificates.title} ${i + 1}`}
+              onClick={() => toCard(i)}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export function AboutPage() {
   const { t } = useLanguage();
+  const navigate = useNavigate();
+  usePageMeta();
 
-  // From AboutSection
-  const valuesData = [
-    {
-      icon: <Leaf className="w-8 h-8" />,
-      title: t.about.values.ecology.title,
-      description: t.about.values.ecology.description,
-      color: "text-green-600"
-    },
-    {
-      icon: <Target className="w-8 h-8" />,
-      title: t.about.values.quality.title, 
-      description: t.about.values.quality.description,
-      color: "text-ekogumus-yellow"
-    },
-    {
-      icon: <Users className="w-8 h-8" />,
-      title: t.about.values.innovation.title,
-      description: t.about.values.innovation.description,
-      color: "text-blue-600"
-    },
-    {
-      icon: <Heart className="w-8 h-8" />,
-      title: t.about.values.tradition.title,
-      description: t.about.values.tradition.description,
-      color: "text-ekogumus-red"
-    }
+  const a = t.about;
+  const ea = t.eko.about;
+
+  const values = [
+    { icon: "leaf", ...a.values.ecology },
+    { icon: "target", ...a.values.quality },
+    { icon: "spark", ...a.values.innovation },
+    { icon: "heart", ...a.values.tradition },
   ];
-  // --- Certificates section state ---
-  const [api, setApi] = useState<CarouselApi>();
-  const [current, setCurrent] = useState(0);
-  const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [lightboxIndex, setLightboxIndex] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
-  const certificates = [
-    {
-      url: "../images/originals/certificate_1.png",
-      alt: (t.aboutPage.certificates.certificate1Alt)
-    },
-    {
-      url: "../images/originals/certificate_2.png",
-      alt: (t.aboutPage.certificates.certificate2Alt)
-    },
-    {
-      url: "../images/originals/certificate_3.png",
-      alt: (t.aboutPage.certificates.certificate3Alt)
-    },
-    {
-      url: "../images/originals/certificate_4.png",
-      alt: (t.aboutPage.certificates.certificate2Alt)
-    },
-    {
-      url: "../images/originals/certificate_5.png",
-      alt: (t.aboutPage.certificates.certificate3Alt)
-    },
-    {
-      url: "../images/originals/certificate_7.png",
-      alt: (t.aboutPage.certificates.certificate3Alt)
-    },
-    {
-      url: "../images/originals/certificate_8.png",
-      alt: (t.aboutPage.certificates.certificate3Alt)
-    },
-    {
-      url: "../images/originals/certificate_9.png",
-      alt: (t.aboutPage.certificates.certificate3Alt)
-    },
-    {
-      url: "../images/originals/certificate_10.png",
-      alt: (t.aboutPage.certificates.certificate3Alt)
-    },
-    {
-      url: "../images/originals/certificate_11.png",
-      alt: (t.aboutPage.certificates.certificate3Alt)
-    },
-    {
-      url: "../images/originals/certificate_12.png",
-      alt: (t.aboutPage.certificates.certificate3Alt)
-    },
-    {
-      url: "../images/originals/certificate_13.png",
-      alt: (t.aboutPage.certificates.certificate3Alt)
-    },
-    {
-      url: "../images/originals/certificate_14.png",
-      alt: (t.aboutPage.certificates.certificate3Alt)
-    }
+  const timeline = [
+    { icon: "sprout", ...a.timeline.step1 },
+    { icon: "shield", ...a.timeline.step2 },
+    { icon: "award", ...a.timeline.step3 },
   ];
-  // Конвертируем для lightbox
-  const lightboxImages = certificates.map(cert => ({
-    src: cert.url,
-    alt: cert.alt
-  }));
-  // Автопролистывание каждые 3 секунды
-  useEffect(() => {
-    if (!api || !isAutoPlaying) return;
 
-    const interval = setInterval(() => {
-      if (api.canScrollNext()) {
-        api.scrollNext();
-      } else {
-        api.scrollTo(0);
-      }
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [api, isAutoPlaying]);
-  // Отслеживание текущего слайда
-  useEffect(() => {
-    if (!api) return;
-
-    setCurrent(api.selectedScrollSnap());
-
-    api.on('select', () => {
-      setCurrent(api.selectedScrollSnap());
-    });
-  }, [api]);
-  const openLightbox = (index: number) => {
-    setLightboxIndex(index);
-    setLightboxOpen(true);
-  };
-  // Остановка автопролистывания при наведении
-  const handleMouseEnter = useCallback(() => {
-    setIsAutoPlaying(false);
-  }, []);
-  const handleMouseLeave = useCallback(() => {
-    setIsAutoPlaying(true);
-  }, []);
+  const ach = t.aboutPage.history.achievements;
+  const achievements = [ach.customers, ach.laboratory, ach.certification, ach.export];
 
   return (
-    <div>
-      {/* Главная о компании */}
-        <SectionContainer compact={true}>
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-12 lg:mb-16"
-            >
-              <h2 className="text-4xl lg:text-5xl font-montserrat font-bold text-ekogumus-green mb-6">
-                {t.about.title}
-              </h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-ekogumus-green to-ekogumus-green-light mx-auto mb-6"></div>
-            </motion.div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center mb-16">
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-                className="space-y-6"
-              >
-                <div className="space-y-6">
-                  <p className="text-lg lg:text-xl font-opensans leading-relaxed text-gray-700">
-                    {t.about.history}
-                  </p>
-                  
-                  <p className="text-lg font-opensans leading-relaxed text-gray-700">
-                    {t.about.development}
-                  </p>
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="relative"
-              >
-                <div className="inline-block relative rounded-2xl overflow-hidden shadow-2xl ml-20">
-                  <ImageWithFallback
-                    src="../images/originals/Generated Image August 29, 2025 - 1_06PM.jpeg"
-                    alt={t.about.founderAlt}
-                    className=" lg:h-[500px] object-contain"
-                  />
-                </div>
-              </motion.div>
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="mb-16"
-            >
-              <h3 className="text-2xl lg:text-3xl font-montserrat font-bold text-ekogumus-green text-center mb-12">
-                {t.about.timeline.title}
-              </h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="text-center group">
-                  <div className="relative mb-6">
-                    <div className="w-16 h-16 bg-gradient-to-br from-ekogumus-brown to-ekogumus-brown-light rounded-full flex items-center justify-center mx-auto shadow-lg group-hover:scale-110 transition-transform duration-300">
-                      <span className="text-white font-montserrat font-bold text-lg">{t.about.timeline.step1.year}</span>
-                    </div>
-                    <div className="absolute top-8 left-1/2 transform -translate-x-1/2 w-0.5 h-12 bg-gradient-to-b from-ekogumus-brown to-transparent hidden"></div>
-                  </div>
-                  <h4 className="text-lg font-montserrat font-semibold text-ekogumus-green mb-3">{t.about.timeline.step1.title}</h4>
-                  <p className="text-gray-600 font-opensans">{t.about.timeline.step1.description}</p>
-                </div>
-
-                <div className="text-center group">
-                  <div className="relative mb-6">
-                    <div className="w-16 h-16 bg-gradient-to-br from-ekogumus-green to-ekogumus-green-light rounded-full flex items-center justify-center mx-auto shadow-lg group-hover:scale-110 transition-transform duration-300">
-                      <span className="text-white font-montserrat font-bold text-lg">{t.about.timeline.step2.year}</span>
-                    </div>
-                    <div className="absolute top-8 left-1/2 transform -translate-x-1/2 w-0.5 h-12 bg-gradient-to-b from-ekogumus-green to-transparent hidden"></div>
-                  </div>
-                  <h4 className="text-lg font-montserrat font-semibold text-ekogumus-green mb-3">{t.about.timeline.step2.title}</h4>
-                  <p className="text-gray-600 font-opensans">{t.about.timeline.step2.description}</p>
-                </div>
-
-                <div className="text-center group">
-                  <div className="relative mb-6">
-                    <div className="w-16 h-16 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-full flex items-center justify-center mx-auto shadow-lg group-hover:scale-110 transition-transform duration-300">
-                      <span className="text-white font-montserrat font-bold text-lg">{t.about.timeline.step3.year}</span>
-                    </div>
-                  </div>
-                  <h4 className="text-lg font-montserrat font-semibold text-ekogumus-green mb-3">{t.about.timeline.step3.title}</h4>
-                  <p className="text-gray-600 font-opensans">{t.about.timeline.step3.description}</p>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-            >
-              {valuesData.map((value, index) => (
-                <Card key={index} className="bg-glass-green border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
-                  <CardContent className="p-6 text-center">
-                    <div className={`inline-flex items-center justify-center w-16 h-16 ${value.color} bg-gray-50 rounded-full mb-4 group-hover:bg-white transition-colors duration-300`}>
-                      {value.icon}
-                    </div>
-                    <h4 className="text-lg font-montserrat font-semibold text-ekogumus-green mb-3">
-                      {value.title}
-                    </h4>
-                    <p className="text-gray-600 font-opensans text-sm leading-relaxed">
-                      {value.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
-            </motion.div>
-          </div>
-          </SectionContainer>
-
-      {/* История о компании */}
-      <SectionContainer>
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-green-700 mb-12">
-            {(t.aboutPage.history.title)}
-          </h2>
-          
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <p className="text-gray-600 mb-6">
-                {(t.aboutPage.history.content1)}
+    <div className="page eko">
+      <section className="phero phero--about">
+        <div className="container phero__inner">
+          <div className="phero__text">
+            <Reveal>
+              <Eyebrow variant="green">{t.nav.about}</Eyebrow>
+            </Reveal>
+            <Reveal delay={1}>
+              <h1 className="display phero__title">
+                {ea.title1}
+                <br />
+                <em>{ea.title2}</em>
+              </h1>
+            </Reveal>
+            <Reveal delay={2}>
+              <p className="lead">{a.history}</p>
+            </Reveal>
+            <Reveal delay={3}>
+              <p className="muted" style={{ marginTop: 16 }}>
+                {a.development}
               </p>
-              <p className="text-gray-600 mb-6">
-                {(t.aboutPage.history.content2)}
-              </p>
-            </div>
-            
-            <div className="bg-white p-8 rounded-lg shadow-md">
-              <h4 className="text-xl font-semibold text-green-700 mb-4">
-                {(t.aboutPage.history.achievementsTitle)}
-              </h4>
-              <ul className="space-y-3 text-gray-600">
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
-                  {(t.aboutPage.history.achievements.customers)}
-                </li>
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
-                  {(t.aboutPage.history.achievements.export)}
-                </li>
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
-                  {(t.aboutPage.history.achievements.laboratory)}
-                </li>
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
-                  {(t.aboutPage.history.achievements.certification)}
-                </li>
-              </ul>
-            </div>
+            </Reveal>
           </div>
+          <Reveal delay={2} className="phero__media">
+            <Slot
+              src="/images/originals/Founder.png"
+              alt={a.founderAlt}
+              placeholder={t.eko.placeholders.founder}
+              className="phero__photo"
+              radius={20}
+              style={{ aspectRatio: "500 / 700" }}
+              priority
+              width={880}
+              height={1206}
+              sources={optimizedSources("/images/originals/Founder.png")}
+              sizes="(min-width: 980px) 55vw, (min-width: 500px) 460px, 92vw"
+            />
+          </Reveal>
         </div>
-        </SectionContainer>
+      </section>
 
-        {/* Сертификаты */}
-        <section className="py-16 bg-transparent-content">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            {/* Заголовок секции */}
-            <div className="text-center mb-12">
-              <h2 className="mb-4">
-                {(t.aboutPage.certificates.title)}
-              </h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                {(t.aboutPage.certificates.subtitle)}
-              </p>
+      {/* Founder quote */}
+      <section className="section--tight">
+        <div className="container">
+          <Reveal className="quote">
+            <span className="quote__mark">
+              <Icon name="quote" size={40} />
+            </span>
+            <p className="quote__text">{ea.quote}</p>
+            <div className="quote__by">
+              <strong>{a.founderName}</strong>
+              <span className="mono">{a.founderTitle}</span>
             </div>
+          </Reveal>
+        </div>
+      </section>
 
-            {/* Карусель-витрина сертификатов */}
-            <div 
-              className="relative"
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-            >
-              <Carousel 
-                className="w-full" 
-                setApi={setApi}
-                opts={{
-                  align: "center",
-                  loop: true,
-                  slidesToScroll: 1,
-                }}
-              >
-                <CarouselContent className="-ml-2 md:-ml-4">
-                  {certificates.map((certificate, index) => (
-                    <CarouselItem key={index} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
-                      <div className="group p-1">
-                        {/* A4 формат сертификата */}
-                        <div className="relative">
-                          <div 
-                            className="bg-white shadow-lg border-2 border-gray-200 rounded-lg overflow-hidden aspect-[3/4] transform transition-transform duration-300 group-hover:scale-105 group-hover:shadow-xl cursor-pointer"
-                            
-                          >
-                            <ImageWithFallback
-                              src={certificate.url}
-                              alt={certificate.alt}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                          
-                          {/* Тень от сертификата для эффекта A4 документа */}
-                          <div className="absolute -bottom-2 -right-2 w-full h-full bg-gray-300 rounded-lg -z-10 transition-transform duration-300 group-hover:translate-x-1 group-hover:translate-y-1"></div>
-                          
-                          {/* Маленький значок сертификации */}
-                          <div className="absolute top-3 right-3 bg-ekogumus-green text-white rounded-full p-2 shadow-lg">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                          </div>
-                        </div>
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:green border-1 shadow-lg" />
-                <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:green border-1 shadow-lg" />
-              </Carousel>
-              
-              {/* Индикаторы слайдов */}
-              <div className="flex justify-center mt-6 space-x-2">
-                {certificates.map((_, index) => (
-                  <div
-                    key={index}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      index === current 
-                        ? 'bg-ekogumus-green opacity-100 scale-125' 
-                        : 'bg-ekogumus-green opacity-60'
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
+      {/* Timeline + history */}
+      <section className="section timeline" style={{ padding: "13px 0 96px" }}>
+        <div className="container">
+          <SectionHead eyebrow={a.timeline.title} title={ea.timelineTitle} center />
+          <div className="timeline__rail">
+            {timeline.map((s, i) => (
+              <Reveal key={i} delay={(i % 3) as 0 | 1 | 2} className="tnode">
+                <span className="tnode__year">{s.year}</span>
+                <span className="tnode__dot">
+                  <Icon name={s.icon} size={18} />
+                </span>
+                <h4>{s.title}</h4>
+                <p>{s.description}</p>
+              </Reveal>
+            ))}
+          </div>
+          <Reveal delay={2} className="history">
+            <p className="history__p">{t.aboutPage.history.content1}</p>
+            <p className="history__p">{t.aboutPage.history.content2}</p>
+          </Reveal>
+        </div>
+      </section>
 
-
+      {/* Values */}
+      <section className="section section--tight" style={{ padding: "24px 0 64px" }}>
+        <div className="container">
+          <SectionHead eyebrow={ea.valuesEyebrow} title={ea.valuesTitle} center />
+          <div className="vals">
+            {values.map((v, i) => (
+              <Reveal key={i} delay={(i % 4) as 0 | 1 | 2 | 3} className="val">
+                <span className="val__ic">
+                  <Icon name={v.icon} size={26} />
+                </span>
+                <h4>{v.title}</h4>
+                <p>{v.description}</p>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Lightbox */}
-      <ImageLightbox
-        images={lightboxImages}
-        isOpen={lightboxOpen}
-        onClose={() => setLightboxOpen(false)}
-        initialIndex={lightboxIndex}
-      />
-    
-      {/* Команда */}
-      <SectionContainer>
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-green-700 mb-12">
-            {(t.aboutPage.team.title)}
-          </h2>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-24 h-24 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center">
-                <span className="text-2xl">👨‍💼</span>
-              </div>
-              <h3 className="text-xl font-semibold text-green-700 mb-2">
-                {(t.aboutPage.team.management.title)}
-              </h3>
-              <p className="text-gray-600">
-                {(t.aboutPage.team.management.description)}
-              </p>
+      {/* Certificates carousel */}
+      <CertCarousel />
+
+      {/* Achievements split */}
+      <section className="section achieve">
+        <div className="container achieve__grid">
+          <Reveal className="achieve__media">
+            <Slot
+              src="/images/originals/EkoGum.png"
+              alt={t.aboutPage.history.achievementsTitle}
+              placeholder={t.eko.placeholders.production}
+              className="achieve__photo"
+              radius={20}
+              sources={optimizedSources("/images/originals/EkoGum.png")}
+              sizes="(min-width: 980px) 45vw, (min-width: 500px) 460px, 92vw"
+            />
+          </Reveal>
+          <div className="achieve__body">
+            <Reveal>
+              <Eyebrow variant="green">{ea.achievementsEyebrow}</Eyebrow>
+            </Reveal>
+            <Reveal delay={1}>
+              <h2 className="h-section">{ea.achievementsTitle}</h2>
+            </Reveal>
+            <div className="achieve__list">
+              {achievements.map((text, i) => (
+                <Reveal key={i} delay={(i % 4) as 0 | 1 | 2 | 3} className="achieve__item">
+                  <span>{text}</span>
+                </Reveal>
+              ))}
             </div>
-            
-            <div className="text-center">
-              <div className="w-24 h-24 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center">
-                <span className="text-2xl">🔬</span>
-              </div>
-              <h3 className="text-xl font-semibold text-green-700 mb-2">
-                {(t.aboutPage.team.researchers.title)}
-              </h3>
-              <p className="text-gray-600">
-                {(t.aboutPage.team.researchers.description)}
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-24 h-24 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center">
-                <span className="text-2xl">🏭</span>
-              </div>
-              <h3 className="text-xl font-semibold text-green-700 mb-2">
-                {t.aboutPage.team.production.title}
-              </h3>
-              <p className="text-gray-600">
-                {t.aboutPage.team.production.description}
-              </p>
-            </div>
+            <Reveal delay={2} style={{ marginTop: 30 }}>
+              <button className="btn btn--primary" onClick={() => navigate("/cooperation")}>
+                {t.eko.becomePartner} <Icon name="arrow" size={17} className="arrow" />
+              </button>
+            </Reveal>
           </div>
         </div>
-        </SectionContainer>
+      </section>
     </div>
   );
 }

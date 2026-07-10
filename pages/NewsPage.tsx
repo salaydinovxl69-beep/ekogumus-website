@@ -1,151 +1,144 @@
-import { useState } from 'react';
-import { motion } from 'motion/react';
-import { useNavigate } from 'react-router-dom';
-import { useLanguage } from '../contexts/LanguageContext';
-import { Calendar, Tag, ArrowLeft } from 'lucide-react';
-import { Card, CardContent } from '../components/ui/card';
-import { Badge } from '../components/ui/badge';
-import { Button } from '../components/ui/button';
+/* «Земля и Зерно» — News page (category filter + article modal). */
+import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useLanguage } from "../contexts/LanguageContext";
+import { usePageMeta } from "../hooks/usePageMeta";
+import { useScrollLock } from "../hooks/useScrollLock";
+import { Language } from "../utils/i18n";
+import { Icon } from "../components/eko/Icon";
+import { Reveal, useFocusTrap } from "../components/eko/Reveal";
+import { Eyebrow, Slot } from "../components/eko/primitives";
+import { optimizedSources } from "../utils/img";
 
-interface NewsItem {
-  id: number;
-  title: string;
-  excerpt: string;
-  date: string;
-  category: string;
-  image: string;
-}
-
-const getNewsImage = (imageKey: string): string => {
-  const imageMap: Record<string, string> = {
-    'factory production line': 'images/originals/news_content_5.jpg',
-    'international shipping fertilizers': 'images/originals/news_card_img_1.jpg',
-    'certificate quality standards': 'images/originals/news_card_img_2.jpg',
-    'cotton field fertilizer': 'images/originals/news_4.png',
-    'agriculture exhibition booth': 'https://images.unsplash.com/photo-1642414163525-1fd68c8584ad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZ3JpY3VsdHVyZSUyMGV4aGliaXRpb24lMjBib290aHxlbnwxfHx8fDE3NTY3NDUxNzF8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-    'digital monitoring technology': 'https://images.unsplash.com/photo-1744230673231-865d54a0aba4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkaWdpdGFsJTIwbW9uaXRvcmluZyUyMHRlY2hub2xvZ3l8ZW58MXx8fHwxNzU2NzQ1MTc1fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral'
-  };
-
-  return imageMap[imageKey] || 'https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080';
+const IMG_BY_KEYWORD: Record<string, string> = {
+  "factory production line": "/images/originals/news_content_5.jpg",
+  "international shipping fertilizers": "/images/originals/news_card_img_1.jpg",
+  "certificate quality standards": "/images/originals/news_card_img_2.jpg",
+  "cotton field fertilizer": "/images/originals/news_card_img_3.png",
 };
 
+const LOCALE: Record<Language, string> = { ru: "ru-RU", uz: "uz-UZ", en: "en-US" };
+
 export function NewsPage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const navigate = useNavigate();
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  usePageMeta();
+  const en = t.eko.news;
 
-  const mockNews = (t.news.mockNews) as NewsItem[];
-  const categories = (t.news.categories) as Record<string, string>;
+  // ISO dates (YYYY-MM-DD) sort lexicographically; newest first.
+  const items = [...t.news.mockNews].sort((a, b) => b.date.localeCompare(a.date));
+  const cats = [t.news.categories.all, ...Array.from(new Set(items.map((n) => t.news.categories[n.category as keyof typeof t.news.categories])))];
+  const [cat, setCat] = useState(t.news.categories.all);
+  const list = cat === t.news.categories.all ? items : items.filter((n) => t.news.categories[n.category as keyof typeof t.news.categories] === cat);
+  const [openId, setOpenId] = useState<number | null>(null);
+  const open = items.find((n) => n.id === openId);
 
-  const filteredNews = selectedCategory === 'all'
-    ? mockNews
-    : mockNews.filter(item => item.category === selectedCategory);
-    filteredNews.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const cardRef = useRef<HTMLDivElement | null>(null);
+  useFocusTrap(cardRef, openId != null, () => setOpenId(null));
+  useScrollLock(openId != null);
 
-
-  const handleNewsClick = (newsItem: NewsItem) => {
-    navigate(`/news/${newsItem.id}`);
-  };
+  const fmtDate = (d: string) =>
+    new Date(d).toLocaleDateString(LOCALE[language], { day: "numeric", month: "long", year: "numeric" });
 
   return (
-    <div className="min-h-screen py-16">
-      <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <h1 className="mb-4">{(t.news.title)}</h1>
-          <p className="text-gray-600 max-w-3xl mx-auto font-opensans">
-            {(t.news.subtitle)}
-          </p>
-        </motion.div>
-
-        {/* Фильтры категорий */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="flex flex-wrap justify-center gap-3 mb-12"
-        >
-          {Object.entries(categories).map(([key, label]) => (
-            <Button
-              key={key}
-              variant={selectedCategory === key ? "default" : "outline"}
-              onClick={() => setSelectedCategory(key)}
-              className={`
-                ${selectedCategory === key
-                  ? 'bg-ekogumus-green hover:bg-ekogumus-green/90'
-                  : 'border-ekogumus-green text-ekogumus-green hover:bg-ekogumus-green/10'
-                }
-              `}
-            >
-              <Tag className="w-4 h-4 mr-2" />
-              {label}
-            </Button>
-          ))}
-        </motion.div>
-
-        {/* Сетка новостей */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredNews.map((item, index) => (
-            <motion.div
-              key={item.id}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-            >
-              <Card className="h-full bg-white/90 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group"
-                onClick={() => handleNewsClick(item)}>
-                <div className="relative overflow-hidden rounded-t-lg">
-                  <img
-                    src={getNewsImage(item.image)}
-                    alt={item.title}
-                    className="w-full h-64 object-contain bg-gray-100 group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute top-3 right-3">
-                    <Badge variant="secondary" className="bg-white/90 text-ekogumus-green">
-                      {categories[item.category as keyof typeof categories]}
-                    </Badge>
-                  </div>
-                </div>
-
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
-                    <Calendar className="w-4 h-4" />
-                    {item.date}
-                  </div>
-
-                  <h3 className="font-montserrat font-semibold text-ekogumus-green mb-3 group-hover:text-ekogumus-green-light transition-colors">
-                    {item.title}
-                  </h3>
-
-                  <p className="text-gray-600 font-opensans line-clamp-3 mb-4">
-                    {item.excerpt}
-                  </p>
-
-                  <div className="flex items-center text-ekogumus-green font-medium">
-                    {(t.news.readMore)}
-                    <ArrowLeft className="w-4 h-4 ml-2 rotate-180 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
+    <div className="page eko">
+      <section className="phero phero--news">
+        <div className="container">
+          <Reveal>
+            <Eyebrow variant="green">{en.eyebrow}</Eyebrow>
+          </Reveal>
+          <Reveal delay={1}>
+            <h1 className="display phero__title" style={{ maxWidth: 720 }}>
+              {en.title1}
+              <br />
+              <em>{en.title2}</em>
+            </h1>
+          </Reveal>
+          <Reveal delay={2}>
+            <p className="lead" style={{ maxWidth: 560 }}>
+              {en.subtitle}
+            </p>
+          </Reveal>
         </div>
+      </section>
 
-        {filteredNews.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            className="text-center py-16"
-          >
-            <p className="text-gray-500 font-opensans">{(t.news.noNews)}</p>
-          </motion.div>
-        )}
-      </div>
+      <section className="section section--tight">
+        <div className="container">
+          <Reveal className="newsfilter">
+            {cats.map((c) => (
+              <button key={c} className={`newsfilter__btn ${cat === c ? "on" : ""}`} onClick={() => setCat(c)}>
+                {c}
+              </button>
+            ))}
+          </Reveal>
+
+          <div className="newsgrid">
+            {list.map((n, i) => (
+              <Reveal
+                key={n.id}
+                delay={(i % 3) as 0 | 1 | 2}
+                className={`newscard ${i === 0 ? "newscard--tall" : ""}`}
+                onClick={() => setOpenId(n.id)}
+              >
+                <div className="newscard__media">
+                  <Slot
+                    src={IMG_BY_KEYWORD[n.image]}
+                    alt={n.title}
+                    placeholder={en.imagePlaceholder}
+                    className="newscard__photo"
+                    radius={0}
+                    sources={optimizedSources(IMG_BY_KEYWORD[n.image])}
+                    sizes="(min-width: 900px) 360px, 92vw"
+                  />
+                  <span className="newscard__cat chip">
+                    {t.news.categories[n.category as keyof typeof t.news.categories]}
+                  </span>
+                </div>
+                <div className="newscard__body">
+                  <span className="newscard__date mono">{fmtDate(n.date)}</span>
+                  <h3>{n.title}</h3>
+                  <p>{n.excerpt}</p>
+                  <span className="newscard__more">
+                    {t.news.readMore} <Icon name="arrow" size={16} className="arrow" />
+                  </span>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Article modal */}
+      {open && (
+        <div className="eko-modal eko" onClick={() => setOpenId(null)}>
+          <div className="modal__card article" ref={cardRef} onClick={(ev) => ev.stopPropagation()} role="dialog" aria-modal="true" aria-label={open.title}>
+            <button className="modal__close" aria-label={t.purchaseModal.close} onClick={() => setOpenId(null)}>
+              <Icon name="close" size={22} />
+            </button>
+            <span className="chip" style={{ marginBottom: 14 }}>
+              {t.news.categories[open.category as keyof typeof t.news.categories]}
+            </span>
+            <span className="newscard__date mono" style={{ display: "block", marginBottom: 10 }}>
+              {fmtDate(open.date)}
+            </span>
+            <h3 className="article__title">{open.title}</h3>
+            <div className="article__media">
+              <Slot src={IMG_BY_KEYWORD[open.image]} alt={open.title} placeholder={en.imagePlaceholder} radius={12} sources={optimizedSources(IMG_BY_KEYWORD[open.image])} sizes="(min-width: 800px) 640px, 90vw" />
+            </div>
+            <p className="article__text">{open.excerpt}</p>
+            <p className="article__text muted">{en.fullTextNote}</p>
+            <button
+              className="btn btn--primary"
+              onClick={() => {
+                setOpenId(null);
+                navigate("/contacts");
+              }}
+            >
+              {en.contactUs} <Icon name="arrow" size={17} className="arrow" />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

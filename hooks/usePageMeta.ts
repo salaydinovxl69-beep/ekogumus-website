@@ -2,28 +2,25 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 
-const SITE_URL = 'https://ekogumus.com';
-
-function setMetaTag(selector: string, attr: 'content' | 'href', value: string) {
-  const el = document.querySelector(selector);
-  if (el) el.setAttribute(attr, value);
-}
-
 export function usePageMeta() {
-  const { pathname } = useLocation();
   const { t } = useLanguage();
+  const location = useLocation();
 
   useEffect(() => {
-    const routeKey = pathname === '/' ? 'home' : pathname.replace(/^\//, '').split('/')[0];
-    const meta = t.pageMeta[routeKey as keyof typeof t.pageMeta] ?? t.pageMeta.home;
+    const metaKey = location.pathname.slice(1) || 'home'; // 'home' for '/'
+    const pageMeta = t.pageMeta[metaKey];
 
-    document.title = meta.title;
-    setMetaTag('meta[name="description"]', 'content', meta.description);
-    setMetaTag('meta[property="og:title"]', 'content', meta.title);
-    setMetaTag('meta[property="og:description"]', 'content', meta.description);
-    setMetaTag('meta[property="og:url"]', 'content', `${SITE_URL}${pathname === '/' ? '/' : pathname}`);
-    setMetaTag('meta[name="twitter:title"]', 'content', meta.title);
-    setMetaTag('meta[name="twitter:description"]', 'content', meta.description);
-    setMetaTag('link[rel="canonical"]', 'href', `${SITE_URL}${pathname === '/' ? '/' : pathname}`);
-  }, [pathname, t]);
+    if (pageMeta) {
+      document.title = pageMeta.title;
+      const descriptionTag = document.querySelector('meta[name="description"]');
+      if (descriptionTag) {
+        descriptionTag.setAttribute('content', pageMeta.description);
+      } else {
+        const newDescriptionTag = document.createElement('meta');
+        newDescriptionTag.name = 'description';
+        newDescriptionTag.content = pageMeta.description;
+        document.head.appendChild(newDescriptionTag);
+      }
+    }
+  }, [location.pathname, t.pageMeta]);
 }

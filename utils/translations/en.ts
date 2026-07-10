@@ -2,7 +2,7 @@ export const en = {
   // Header & Navigation
   nav: {
     home: 'Home',
-    about: 'About Us',
+    about: 'Company',
     products: 'Products',
     stats: 'Stats',
     cooperation: 'Cooperation',
@@ -24,7 +24,7 @@ export const en = {
       eco: 'Environmentally friendly product',
       yield: 'Increase yield up to 40%',
     },
-    badge: 'Industry leader since 1997',
+    badge: 'Industry leader since 1988',
     cards: {
       years: 'years of successful market operation',
       export: 'annual export',
@@ -36,7 +36,7 @@ export const en = {
 
   // About Section
   about: {
-    title: '30+ years of ascending to the heights of fertility',
+    title: '35+ years of ascending to the heights of fertility',
     history: '"EKOGUMUS" was officially founded in 1997, but the first steps towards its development and prosperity were taken back in 1988 by our father, the company founder - Khaytboy Solijonov.',
     development: 'We continue to expand and develop our father\'s business. For more than thirty years, the company has become a leader in the agricultural industry, providing effective solutions for agriculture around the world.',
     certificate: 'We are the only company in the country that has a certificate of compliance for the serial production of organic-mineral fertilizers.',
@@ -506,7 +506,7 @@ export const en = {
     address: {
       country: 'Republic of Uzbekistan',
       city: 'Fergana region, Fergana city',
-      street: '38 Babur street',
+      street: '35 Babur street',
     },
     workingHours: {
       title: 'Working hours',
@@ -561,7 +561,7 @@ export const en = {
         title: 'Address',
         country: 'Republic of Uzbekistan',
         region: 'Fergana Region',
-        city: 'Fergana city, Bobur street 38',
+        city: 'Fergana city, Bobur street 35',
       },
       phone: {
         title: 'Phone',
@@ -891,5 +891,236 @@ export const en = {
         image: "cotton field fertilizer",
       }
     ],
+  },
+
+  pageMeta: {
+    home: {
+      title: "Ekogumus — organic biohumus-based fertilizers",
+      description:
+        "Ekogumus — organic biohumus-based fertilizers for gardeners and agribusiness: they boost yields, improve soil structure and production sustainability.",
+    },
+    about: {
+      title: "About EkoGumus — 35+ years of experience in organic fertilizers",
+      description: "The history of EkoGumus, biohumus production in Fergana, values and achievements in organic farming.",
+    },
+    products: {
+      title: "EkoGumus products — BIOGUMUS and NANOECOVERM",
+      description: "BIOGUMUS and NANOECOVERM organic and liquid fertilizers: composition, application and benefits.",
+    },
+    cooperation: {
+      title: "Cooperation with EkoGumus — partnership program",
+      description: "Become an EkoGumus partner: organic fertilizer distribution, favorable terms for agribusiness.",
+    },
+    news: {
+      title: "EkoGumus news — company events and achievements",
+      description: "The latest EkoGumus news: exports, innovations and the development of organic production.",
+    },
+    contacts: {
+      title: "EkoGumus contacts — Fergana, Uzbekistan",
+      description: "Contact EkoGumus: phone, email, Telegram, production address in Fergana.",
+    },
+
+  },
+
+  notFound: {
+    title: "Page not found",
+    description: "The requested page does not exist or has been moved.",
+    backHome: "Go home",
+  },
+
+  stickyCta: {
+    label: "Quick actions",
+    call: "Call",
+    telegram: "Telegram",
+  },
+
+  // «Земля и Зерно» redesign copy
+  eko: {
+    buy: "Buy",
+    buyProducts: "Buy products",
+    details: "Details",
+    viewProducts: "View products",
+    moreAboutCompany: "More about the company",
+    becomePartner: "Become a partner",
+    choosePackage: "Choose a package",
+    viewPresentation: "View presentation",
+    presentationEyebrow: "Presentation",
+    videoEyebrow: "Video",
+    toTop: "To top",
+    goto: "Open",
+    copy: "Copy",
+    copied: "Copied ✓",
+    buildRoute: "Get directions",
+    fromLabel: "from",
+    currency: "UZS",
+    weightUnit: "kg",
+    volumeUnit: "L",
+    checkout: "Checkout",
+    productLabel: "Product",
+    allProducts: "EKOGUMUS products",
+    telegramGreeting: "Hello! I'm interested in:",
+    footerTagline: "Organic fertilizers · Fergana",
+    hours: {
+      weekdays: "Monday — Friday",
+      saturday: "Saturday",
+      sunday: "Sunday",
+      workTime: "09:00 — 18:00",
+      dayOff: "Day off",
+    },
+    placeholders: {
+      heroField: "PHOTO — field / granule macro",
+      founder: "PHOTO — founder in the field",
+      granuleBag: "PHOTO — bag of granules",
+      liquidCan: "PHOTO — NANOECOVERM canister",
+      certA4: "SCAN — certificate A4",
+      production: "PHOTO — production",
+    },
+    hero: {
+      title1: "Noble soil —",
+      title2: "rich harvest",
+      subtitle:
+        "Organomineral fertilizers based on biohumus. Made in Fergana — from the living work of California worms, without chemistry.",
+      floatcard: "100% vermicompost",
+      stats: [
+        { v: "35+", l: "years on the land" },
+        { v: "10,000 t+", l: "export per year" },
+        { v: "100%", l: "organic" },
+        { v: "+40%", l: "to yield" },
+      ],
+    },
+    marquee: ["BIOHUMUS", "NANOECOVERM", "VERMICOMPOST", "CERTIFIED", "EXPORT TO 10+ COUNTRIES", "SINCE 1988"],
+    home: {
+      productsEyebrow: "Our products",
+      twoProductsTitle: "Two products — one philosophy",
+      twoProductsSub:
+        "BIOGUMUS in granules and the liquid NANOECOVERM concentrate. Both made from organic matter processed by California worms.",
+      dryGranule: "Dry · granule",
+      liquidNew: "Liquid · new",
+      granuleDesc: "Fine-grained organomineral fertilizer. Packaging from 1 to 20 kg — for home, garden and farm.",
+      liquidDesc: "Fast-acting liquid concentrate. 100 nm nanoparticles ensure maximum bioavailability.",
+      whyBiogumus: "Why biohumus",
+      whatLandGets: "What your land gets",
+      benefitsSub: "A balanced complex of nutrients, humic acids and soil microorganisms in an easily absorbed form.",
+      readyTitle: "Ready to try?",
+      readySub: "We'll match a package to your task.",
+      statsBandTitle: "Achievements we're proud of",
+      certChips: ["Serial production", "State standard", "Export quality"],
+    },
+    products: {
+      eyebrow: "Products",
+      title1: "Fertilizers",
+      title2: "born of the earth",
+      subtitle:
+        "Organomineral fertilizer made from organic matter processed by California worms. Highest quality, certified serial production.",
+      chipOrganic: "100% organic",
+      chipCertified: "Certified",
+      chipDelivery: "Nationwide delivery",
+      heroPlaceholder: "PHOTO — product line",
+      tabGranuleSmall: "granules",
+      tabLiquidSmall: "liquid",
+      tabVideo: "Production",
+      tabVideoSmall: "video",
+      presGranuleTitle: "How to use BIOGUMUS",
+      presGranuleText:
+        "A visual guide to using biohumus: application rates, crops, timing and results. Watch the presentation before choosing a package.",
+      presLiquidTitle: "How to use NANOECOVERM",
+      presLiquidText:
+        "A step-by-step presentation on the liquid NANOECOVERM concentrate: dosages, feeding methods and effects for different crops.",
+      specEyebrow: "Specification",
+      aboutProductEyebrow: "About the product",
+      technologyEyebrow: "Technology",
+      usageEyebrow: "How to apply",
+      usageTitle: "As simple as planting a seed",
+      slide: "Slide",
+      granuleNote:
+        "A concentrated complex of macro- and microelements, amino acids, humic acids, phytohormones and soil microorganisms in an easily absorbed form.",
+      liquidNote:
+        "Nanodispersed particles down to 100 nm — maximum bioavailability of nutrients. The composition adapts to the specific crop and growth phase.",
+      processSubtitle: "Production of liquid fertilizer using nanotechnology.",
+      usageSteps: [
+        {
+          t: "Dissolve or apply",
+          d: "Liquid concentrate — dilute per instructions. Granules — add to the soil when planting.",
+        },
+        { t: "Feed the plants", d: "Root or foliar feeding during the growing season." },
+        { t: "Harvest", d: "A yield increase of 20–40% and ripening 10–15 days earlier." },
+      ],
+      processSteps: [
+        {
+          n: "01",
+          t: "Raw material prep",
+          d: "Biohumus is fed through a screw conveyor and sieved through a 3 mm mesh. Moisture is kept at 15–20%.",
+        },
+        {
+          n: "02",
+          t: "Working suspension",
+          d: "Biohumus is loaded into a mixer, a calculated volume of water is pumped in. The mix is stirred for 90 minutes.",
+        },
+        {
+          n: "03",
+          t: "Cavitation & treatment",
+          d: "Vortex cavitation breaks up agglomerates; ferromagnetic elements grind particles to 100 nm. Duration — about 5 hours.",
+        },
+        {
+          n: "04",
+          t: "Recipe flexibility",
+          d: "NPK is adjusted to the growth phase; microelements (B, Zn, Mn, Mo), biostimulants, amino acids and chelates are added on request.",
+        },
+        {
+          n: "05",
+          t: "Packaging",
+          d: "The concentrate is packed into 1, 5, 10 and 20 L PET canisters. The finished fertilizer is a dark-brown liquid, 15–30% dry matter.",
+        },
+      ],
+    },
+    about: {
+      title1: "A business spanning",
+      title2: "three generations",
+      quote: "We continue to expand and develop our father's work — the land must be fed so it can feed us.",
+      timelineTitle: "From a plot of land to an industry leader",
+      valuesEyebrow: "Our values",
+      valuesTitle: "What EKOGUMUS stands on",
+      docsEyebrow: "Documents",
+      certsTitle: "Certificates",
+      certsSub: "Documents confirming quality and compliance with international standards",
+      achievementsEyebrow: "Achievements",
+      achievementsTitle: "What we're proud of",
+    },
+    coop: {
+      conditionsEyebrow: "Terms",
+      conditionsTitle: "Choose a cooperation format",
+      processEyebrow: "How to start",
+      processTitle: "A simple, transparent process",
+      whyEyebrow: "Why us",
+      whyTitle: "Advantages of working with us",
+      formEyebrow: "Application",
+      bgPlaceholder: "PHOTO — cooperation in agribusiness",
+      sendAnother: "Send another",
+    },
+    news: {
+      eyebrow: "News",
+      title1: "What's happening",
+      title2: "in our field",
+      subtitle: "The latest events, achievements and innovations in the world of organic fertilizers.",
+      imagePlaceholder: "PHOTO — news",
+      contactUs: "Contact us",
+      fullTextNote:
+        "The full text of the news is available in the company materials. Contact us to learn more about our projects and export deliveries.",
+    },
+    contacts: {
+      eyebrow: "Contacts",
+      title1: "Get in touch",
+      title2: "with us",
+      subtitle: "Tap a contact for a quick action. We're always in touch and ready to help.",
+      teamEyebrow: "Team",
+      teamTitle: "Contact persons",
+      findUs: "How to find us",
+      findUsText: "The office and production are in Fergana's industrial zone, with convenient access for freight transport.",
+      mapPlaceholder: "MAP — Fergana, Babur St. 35",
+      salesTitle: "Sales department",
+      salesRole: "Orders and consulting",
+      intakeTitle: "Request intake",
+      intakeRole: "Additional line",
+    },
   },
 };

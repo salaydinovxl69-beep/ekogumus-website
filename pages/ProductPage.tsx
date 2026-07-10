@@ -1,940 +1,689 @@
-import { useState } from "react";
-import { motion } from "motion/react";
-import { Images } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { Badge } from "../components/ui/badge";
-import { Button } from "../components/ui/button";
+/* «Земля и Зерно» — Products page (tabs: BIOGUMUS granules / NANOECOVERM liquid). */
+import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "../contexts/LanguageContext";
-import { PurchaseModal } from "../components/PurchaseModal";
-import { SectionContainer } from "../components/SectionContainer";
-import { ImageWithFallback } from "../components/figma/ImageWithFallback";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
-import { Youtube, Leaf, TrendingUp, Clock, Shield, Beaker, Droplets, Scale, ShoppingCart, Package, Zap, ExternalLink } from "lucide-react";
-import { YouTubeFacade } from "../components/YouTubeFacade";
+import { usePurchase } from "../contexts/PurchaseContext";
+import { usePageMeta } from "../hooks/usePageMeta";
+import { useScrollLock } from "../hooks/useScrollLock";
+import { Icon } from "../components/eko/Icon";
+import { Reveal, useFocusTrap } from "../components/eko/Reveal";
+import { Eyebrow, SectionHead, Slot } from "../components/eko/primitives";
+import { optimizedSources, type ImgSource } from "../utils/img";
+import { YOUTUBE_URL } from "../utils/contacts";
 
-export function ProductPage() {
+type Tab = "granule" | "liquid";
+
+const fmt = (p: string) => p.replace(/\s/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+
+/* Фото товаров в карточках. Кладите файлы в public/images/originals/:
+   BIOGUMUS:    Eco_{вес}.png   → Eco_1.png, Eco_1.5.png, Eco_2.png … Eco_20.png
+   NANOECOVERM: Nano_{объём}.png → Nano_1.png, Nano_5.png, Nano_10.png */
+const granuleImg = (w: string) => `/images/originals/Eco_${w}.png`;
+const liquidImg = (v: string) => `/images/originals/Nano_${v}.png`;
+
+/* Слайды презентаций. Кладите файлы в public/images/presentations/:
+   biogumus/slide_1.webp … slide_9.webp и nanoecoverm/slide_1.png … slide_22.png */
+const PRES_SLIDES: Record<Tab, { count: number; ext: string }> = {
+  granule: { count: 9, ext: "webp" },
+  liquid: { count: 22, ext: "png" },
+};
+const presSlideImg = (kind: Tab, n: number) =>
+  `/images/presentations/${kind === "liquid" ? "nanoecoverm" : "biogumus"}/slide_${n}.${PRES_SLIDES[kind].ext}`;
+
+/* PNG-слайды NANOECOVERM имеют WebP-версии (~10× легче), сгенерированные
+   scripts/optimize-images.mjs; слайды BIOGUMUS уже WebP — для них null. */
+const presSlideSources = (kind: Tab, n: number): ImgSource[] | null =>
+  kind === "liquid"
+    ? [{ type: "image/webp", srcSet: `/images/optimized/presentations/nanoecoverm/slide_${n}.webp` }]
+    : null;
+
+const PCARD_SIZES = "(min-width: 1100px) 270px, (min-width: 640px) 30vw, 46vw";
+
+/* ---------- Presentation call-to-action bar ---------- */
+function PresBar({
+  eyebrow,
+  title,
+  text,
+  cta,
+  onOpen,
+  variant,
+}: {
+  eyebrow: string;
+  title: string;
+  text: string;
+  cta: string;
+  onOpen: () => void;
+  variant: "green" | "clay";
+}) {
   return (
-    <div>
-      <ProductSection />
-      <BiohumusInfoSection />
-      <ProductionProcessSection />
-      <LiqPresentationSection />
-      <LiquidFertilizers />
-      <ProductCards />
-      <YouTubeVideoSection />
+    <Reveal className={`presbar presbar--${variant}`}>
+      <div className="presbar__text">
+        <Eyebrow variant={variant === "clay" ? "clay" : "green"}>{eyebrow}</Eyebrow>
+        <h3 className="presbar__title">{title}</h3>
+        <p className="presbar__p">{text}</p>
+      </div>
+      <button className={`btn ${variant === "clay" ? "btn--clay" : "btn--primary"} btn--lg presbar__btn`} onClick={onOpen}>
+        <Icon name="play" size={18} /> {cta}
+      </button>
+    </Reveal>
+  );
+}
+
+/* ---------- Presentation viewer modal ---------- */
+function PresModal({
+  kind,
+  title,
+  eyebrow,
+  slideLabel,
+  closeLabel,
+  onClose,
+}: {
+  kind: Tab | null;
+  title: string;
+  eyebrow: string;
+  slideLabel: string;
+  closeLabel: string;
+  onClose: () => void;
+}) {
+  const total = kind ? PRES_SLIDES[kind].count : 1;
+  const [i, setI] = useState(0);
+  const cardRef = useRef<HTMLDivElement | null>(null);
+  useFocusTrap(cardRef, !!kind, onClose);
+
+  useEffect(() => {
+    setI(0);
+  }, [kind]);
+
+  useScrollLock(!!kind);
+
+  useEffect(() => {
+    if (!kind) return;
+    const onKey = (ev: KeyboardEvent) => {
+      if (ev.key === "ArrowRight") setI((v) => Math.min(v + 1, total - 1));
+      else if (ev.key === "ArrowLeft") setI((v) => Math.max(v - 1, 0));
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [kind, total]);
+
+  if (!kind) return null;
+  const name = kind === "liquid" ? "NANOECOVERM" : "BIOGUMUS";
+
+  return (
+    <div className="eko-modal eko" onClick={onClose}>
+      <div
+        className="modal__card presmodal"
+        ref={cardRef}
+        onClick={(ev) => ev.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${title}`}
+      >
+        <button className="modal__close" aria-label={closeLabel} onClick={onClose}>
+          <Icon name="close" size={22} />
+        </button>
+        <div className="presmodal__head">
+          <Eyebrow variant={kind === "liquid" ? "clay" : "green"}>{eyebrow}</Eyebrow>
+          <h3 className="presmodal__title">{title}</h3>
+        </div>
+        <div className="presmodal__stage">
+          {Array.from({ length: total }).map((_, s) => (
+            <div key={s} className="presmodal__slide" style={{ display: s === i ? "block" : "none" }}>
+              <Slot
+                src={presSlideImg(kind, s + 1)}
+                alt={`${slideLabel} ${s + 1} — ${name}`}
+                placeholder={`${slideLabel} ${s + 1} — ${name}`}
+                className="presmodal__img"
+                radius={14}
+                fit="contain"
+                sources={presSlideSources(kind, s + 1)}
+              />
+            </div>
+          ))}
+          <button
+            className="presmodal__nav presmodal__nav--prev"
+            aria-label="←"
+            disabled={i === 0}
+            onClick={() => setI((v) => Math.max(v - 1, 0))}
+          >
+            <Icon name="arrow" size={22} />
+          </button>
+          <button
+            className="presmodal__nav presmodal__nav--next"
+            aria-label="→"
+            disabled={i === total - 1}
+            onClick={() => setI((v) => Math.min(v + 1, total - 1))}
+          >
+            <Icon name="arrow" size={22} />
+          </button>
+        </div>
+        <div className="presmodal__foot">
+          <span className="mono presmodal__count">
+            {String(i + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+          </span>
+          <div className="presmodal__dots">
+            {Array.from({ length: total }).map((_, s) => (
+              <button
+                key={s}
+                className={`presmodal__dot ${s === i ? "presmodal__dot--on" : ""}`}
+                aria-label={`${slideLabel} ${s + 1}`}
+                onClick={() => setI(s)}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
 
-//Секция с информ о продукте
-function ProductSection() {
-  const { t } = useLanguage();
+/* ---------- Production videos modal ---------- */
+const PROD_VIDEO_IDS = ["AE9L71IuN7A", "eydxM_NjnLQ"];
 
-  const benefits = [
-    {
-      icon: Shield,
-      title: t.products.productSection.card1.title,
-      description: t.products.productSection.card1.description,
-      color: "from-blue-200 to-blue-900",
-      hoverColor: "group-hover:bg-blue-50"
-    },
-    {
-      icon: TrendingUp,
-      title: t.products.productSection.card2.title,
-      description: t.products.productSection.card2.description,
-      color: "from-green-200 to-green-900",
-      hoverColor: "group-hover:bg-green-50"
-    },
-    {
-      icon: Clock,
-      title: t.products.productSection.card3.title,
-      description: t.products.productSection.card3.description,
-      color: "from-red-200 to-red-900",
-      hoverColor: "group-hover:bg-red-50"
-    },
-    {
-      icon: Leaf,
-      title: t.products.productSection.card4.title,
-      description: t.products.productSection.card4.description,
-      color: "from-emerald-200 to-emerald-900",
-      hoverColor: "group-hover:bg-emerald-50"
-    },
-    {
-      icon: Droplets,
-      title: t.products.productSection.card5.title,
-      description: t.products.productSection.card5.description,
-      color: "from-blue-200 to-blue-900",
-      hoverColor: "group-hover:bg-blue-50"
-    }
-  ];
+function VideoFacade({ id, title }: { id: string; title: string }) {
+  const [loaded, setLoaded] = useState(false);
+
+  if (!loaded) {
+    return (
+      <button type="button" className="vidframe vidframe--poster" onClick={() => setLoaded(true)} aria-label={title}>
+        <img src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`} alt="" loading="lazy" decoding="async" width={480} height={360} className="vidframe__thumb" />
+        <span className="vidframe__play">
+          <Icon name="play" size={26} />
+        </span>
+      </button>
+    );
+  }
 
   return (
-    <SectionContainer compact={true}>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-8 sm:mb-12 lg:mb-16"
-        >
-          <h2 className="text-4xl lg:text-5xl font-montserrat font-bold text-ekogumus-green mb-6">
-            {(t.products.productSection.title)}
-          </h2>
-          <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 max-w-2xl lg:max-w-4xl mx-auto leading-relaxed mb-6">
-            {(t.products.productSection.subtitle)}
-          </p>
-          <div className="w-24 h-1 bg-gradient-to-r from-ekogumus-green to-ekogumus-green-light mx-auto"></div>
-        </motion.div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
-          {benefits.map((benefit, index) => {
-            const Icon = benefit.icon;
-            return (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <Card className={`group text-center h-full bg-white/90 backdrop-blur-sm border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 cursor-pointer overflow-hidden ${benefit.hoverColor}`}>
-                  <CardHeader className="pb-3 pt-6">
-                    <div className={`w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gradient-to-br ${benefit.color} rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
-                      <Icon className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-white" />
-                    </div>
-                    <CardTitle className="text-base sm:text-lg lg:text-xl leading-tight group-hover:text-ekogumus-green transition-colors duration-300">{benefit.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="pb-6">
-                    <p className="text-sm sm:text-base text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors duration-300">{benefit.description}</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            );
-          })}
-        </div>
-      </div>
-    </SectionContainer>
+    <div className="vidframe">
+      <iframe
+        className="vidframe__iframe"
+        src={`https://www.youtube-nocookie.com/embed/${id}?autoplay=1`}
+        title={title}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      />
+    </div>
   );
 }
 
-//Карточки товаров (Жидкое)
-function LiquidFertilizers() {
-  const { t } = useLanguage();
-  const [selectedProduct, setSelectedProduct] = useState<{
-    name: string;
-    price: string;
-    volume: string;
-    marketplace: string;
-  } | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+function VideoModal({
+  open,
+  eyebrow,
+  title,
+  text,
+  channelLabel,
+  closeLabel,
+  onClose,
+}: {
+  open: boolean;
+  eyebrow: string;
+  title: string;
+  text: string;
+  channelLabel: string;
+  closeLabel: string;
+  onClose: () => void;
+}) {
+  const cardRef = useRef<HTMLDivElement | null>(null);
+  useFocusTrap(cardRef, open, onClose);
+  useScrollLock(open);
 
-  // Get liquid products from translations with proper typing
-  const liquidFertilizerData = (t.products.liquidFertilizers) as {
-    title: string;
-    subtitle: string;
-    buyButton: string;
-    moreButton: string;
-    fromLabel: string;
-    priceUnit: string;
-    volumeUnit: string;
-    features: {
-      fastAction: string;
-      highConcentration: string;
-      easyApplication: string;
-    };
-    products: Array<{
-      name: string;
-      description: string;
-      volume: string;
-      price: string;
-      marketplace: string;
-    }>;
-  };
-
-  const products = liquidFertilizerData.products || [];
-
-  // Массив изображений для жидких удобрений
-  const liquidProductImages = [
-    "images/originals/ECO_10_L.png",
-    "images/originals/ECO_10_L.png",
-    "images/originals/ECO_10_L.png",
-  ];
-
-  const handleBuyClick = (product: any) => {
-    setSelectedProduct({
-      name: product.name,
-      price: product.price,
-      volume: product.volume,
-      marketplace: product.marketplace
-    });
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedProduct(null);
-  };
+  if (!open) return null;
 
   return (
-    <SectionContainer compact={true}>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-8 sm:mb-12 lg:mb-16"
-        >
-          {/* Убедитесь, что текст в Badge остается читаемым на мобильных */}
-          <div className="flex items-center justify-center mb-4">
-            <Badge className="bg-gradient-to-r from-yellow-500 to-amber-500 text-white px-3 py-1 text-sm mb-4">
-              <Zap className="w-4 h-4 mr-2" />
-              {liquidFertilizerData.main}
-            </Badge>
-          </div>
-          {/* Адаптивный размер заголовка */}
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl text-ekogumus-green mb-4 sm:mb-6">
-            {liquidFertilizerData.title}
-          </h2>
-          {/* Адаптивный размер подзаголовка */}
-          <p className="text-gray-600 max-w-4xl mx-auto text-base sm:text-lg lg:text-xl mb-6">
-            {liquidFertilizerData.subtitle}
-          </p>
-          <div className="w-24 h-1 bg-gradient-to-r from-yellow-500 to-amber-500 mx-auto"></div>
-        </motion.div>
-
-        {/* Адаптированная сетка: 1 колонка на мобильных, 2 на планшетах (sm), 3 на MD и выше */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-          {products.map((product, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.15 }}
-            >
-              <Card className="group h-full bg-glass-card border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 cursor-pointer overflow-hidden relative">
-                <CardContent className="p-0">
-                  {/* Изображение продукта */}
-                  <div className="relative h-48 sm:h-56 overflow-hidden"> {/* Оптимизация высоты для маленьких экранов */}
-                    <ImageWithFallback
-                      src={liquidProductImages[index % liquidProductImages.length]}
-                      alt={product.name}
-                      className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-yellow-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-                    {/* Бейдж объема */}
-                    <Badge
-                      className="absolute top-3 left-3 bg-gradient-to-r from-yellow-500 to-amber-500 text-white px-3 py-1 shadow-lg text-xs sm:text-sm"
-                      variant="secondary"
-                    >
-                      <Droplets className="w-3 h-3 mr-1" />
-                      {product.volume} {liquidFertilizerData.volumeUnit}
-                    </Badge>
-
-                    {/* Индикатор жидкости */}
-                    <div className="absolute top-3 right-3 w-7 h-7 sm:w-8 sm:h-8 bg-yellow-500/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                      <Beaker className="w-4 h-4 text-yellow-600" />
-                    </div>
-                  </div>
-
-                  {/* Содержимое карточки */}
-                  <div className="p-4 sm:p-5">
-                    {/* Название и описание - line-clamp обеспечивает чистый вид на мобильных */}
-                    <div className="mb-4">
-                      <h3 className="text-lg font-montserrat font-semibold text-ekogumus-green mb-2 line-clamp-1 group-hover:text-yellow-600 transition-colors duration-300">
-                        {product.name}
-                      </h3>
-                      <p className="text-sm text-gray-600 line-clamp-2 leading-relaxed">
-                        {product.description}
-                      </p>
-                    </div>
-
-                    {/* Цена */}
-                    <div className="mb-4">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs text-gray-500">{liquidFertilizerData.fromLabel}</span>
-                        <span className="text-xl font-bold bg-gradient-to-r from-yellow-600 to-amber-600 bg-clip-text text-transparent">
-                          {parseInt(product.price).toLocaleString()}
-                        </span>
-                        <span className="text-sm text-gray-500">{liquidFertilizerData.priceUnit}</span>
-                      </div>
-                    </div>
-
-                    {/* Кнопка покупки - w-full и size="sm" идеальны для мобильных */}
-                    <div>
-                      <Button
-                        onClick={() => handleBuyClick(product)}
-                        className="w-full bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600 text-white transition-all duration-300 group-hover:shadow-lg"
-                        size="sm"
-                      >
-                        <ShoppingCart className="w-4 h-4 mr-2" />
-                        {liquidFertilizerData.buyButton}
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Hover эффект - игнорируется на touch-устройствах, что корректно */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-yellow-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
-                </CardContent>
-              </Card>
-            </motion.div>
+    <div className="eko-modal eko" onClick={onClose}>
+      <div className="modal__card vidmodal" ref={cardRef} onClick={(ev) => ev.stopPropagation()} role="dialog" aria-modal="true" aria-label={title}>
+        <button className="modal__close" aria-label={closeLabel} onClick={onClose}>
+          <Icon name="close" size={22} />
+        </button>
+        <div className="presmodal__head">
+          <Eyebrow variant="green">{eyebrow}</Eyebrow>
+          <h3 className="presmodal__title">{title}</h3>
+          <p className="vidmodal__p">{text}</p>
+        </div>
+        <div className="vidmodal__grid">
+          {PROD_VIDEO_IDS.map((id, i) => (
+            <VideoFacade key={id} id={id} title={`${title} — ${i + 1}`} />
           ))}
         </div>
-
-        {/* Дополнительная информация */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-12 text-center"
-        >
-          <div className="bg-glass-green rounded-2xl p-6 sm:p-8">
-            {/* flex-wrap обеспечивает перенос элементов на новую строку на узких экранах */}
-            <div className="flex items-center justify-center gap-4 flex-wrap text-sm sm:text-base">
-              <div className="flex items-center gap-2 text-yellow-600">
-                <Droplets className="w-5 h-5" />
-                <span className="font-medium">{liquidFertilizerData.features.fastAction}</span>
-              </div>
-              <div className="w-2 h-2 bg-yellow-500 rounded-full hidden sm:block"></div>
-              <div className="flex items-center gap-2 text-yellow-600">
-                <Beaker className="w-5 h-5" />
-                <span className="font-medium">{liquidFertilizerData.features.highConcentration}</span>
-              </div>
-              <div className="w-2 h-2 bg-yellow-500 rounded-full hidden sm:block"></div>
-              <div className="flex items-center gap-2 text-yellow-600">
-                <Scale className="w-5 h-5" />
-                <span className="font-medium">{liquidFertilizerData.features.easyApplication}</span>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Purchase Modal */}
-      {selectedProduct && (
-        <PurchaseModal
-          isOpen={isModalOpen}
-          onClose={closeModal}
-          product={selectedProduct}
-        />
-      )}
-    </SectionContainer>
-  );
-}
-
-//Карточки товаров(Гранулы)
-function ProductCards() {
-  const { t } = useLanguage();
-  const [selectedProduct, setSelectedProduct] = useState<{
-    name: string;
-    price: string;
-    weight: string;
-    marketplace: string;
-  } | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // Get products from translations with proper typing
-  const productCardsData = (t.products.productCards) as {
-    title: string;
-    subtitle: string;
-    buyButton: string;
-    moreButton: string;
-    fromLabel: string;
-    priceUnit: string;
-    weightUnit: string;
-    features: {
-      organicProduct: string;
-      certified: string;
-      delivery: string;
-    };
-    products: Array<{
-      name: string;
-      description: string;
-      weight: string;
-      price: string;
-      marketplace: string;
-    }>;
-  };
-
-  const products = productCardsData.products || [];
-
-  // Массив изображений для товаров
-  const productImages = [
-    "images/originals/ECO_1_KG.png",
-    "images/originals/ECO_1,5_KG.png",
-    "images/originals/ECO_2_KG.png",
-    "images/originals/ECO_2,5_KG.png",
-    "images/originals/ECO_3_KG.png",
-    "images/originals/ECO_7_KG.png",
-    "images/originals/ECO_10_KG.png",
-    "images/originals/ECO_20_KG.png",
-  ];
-
-  const handleBuyClick = (product: any) => {
-    setSelectedProduct({
-      name: product.name,
-      price: product.price,
-      weight: product.weight,
-      marketplace: product.marketplace
-    });
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedProduct(null);
-  };
-
-  return (
-    <SectionContainer compact={true}>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-8 sm:mb-12 lg:mb-16"
-        >
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl text-ekogumus-green mb-4 sm:mb-6">
-            {productCardsData.title}
-          </h2>
-          <p className="text-gray-600 max-w-3xl mx-auto text-base sm:text-lg lg:text-xl mb-6">
-            {productCardsData.subtitle}
-          </p>
-          <div className="w-24 h-1 bg-gradient-to-r from-ekogumus-green to-ekogumus-green-light mx-auto"></div>
-        </motion.div>
-
-        {/* Адаптированная сетка: gap-4 на мобильных, gap-6 на sm, gap-8 на lg */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-          {products.map((product, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-            >
-              <Card className="group h-full bg-white/90 backdrop-blur-sm border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 cursor-pointer overflow-hidden relative">
-                <CardContent className="p-0">
-                  {/* Изображение продукта */}
-                  <div className="relative h-48 overflow-hidden">
-                    <ImageWithFallback
-                      src={productImages[index % productImages.length]}
-                      alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    {/* Hover эффект изображения - не активен на touch-устройствах */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-                    {/* Бейдж веса */}
-                    <Badge
-                      className="absolute top-3 left-3 bg-ekogumus-green text-white px-3 py-1 shadow-lg text-xs" // Добавил text-xs для лучшей читаемости на мобильных
-                      variant="secondary"
-                    >
-                      <Scale className="w-3 h-3 mr-1" />
-                      {product.weight} {productCardsData.weightUnit}
-                    </Badge>
-                  </div>
-
-                  {/* Содержимое карточки */}
-                  <div className="p-4 sm:p-5">
-                    {/* Название и описание */}
-                    <div className="mb-4">
-                      <h3 className="text-lg font-montserrat font-semibold text-ekogumus-green mb-2 line-clamp-1 group-hover:text-ekogumus-green-light transition-colors duration-300">
-                        {product.name}
-                      </h3>
-                      <p className="text-sm text-gray-600 line-clamp-2 leading-relaxed">
-                        {product.description}
-                      </p>
-                    </div>
-
-                    {/* Цена */}
-                    <div className="mb-4">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs text-gray-500">{productCardsData.fromLabel}</span>
-                        <span className="text-xl font-bold text-ekogumus-green">
-                          {parseInt(product.price).toLocaleString()}
-                        </span>
-                        <span className="text-sm text-gray-500">{productCardsData.priceUnit}</span>
-                      </div>
-                    </div>
-
-                    {/* Кнопка покупки */}
-                    <div>
-                      <Button
-                        onClick={() => handleBuyClick(product)}
-                        className="w-full bg-ekogumus-green hover:bg-ekogumus-green-light text-white transition-all duration-300 group-hover:shadow-lg"
-                        size="sm" // Размер "sm" идеален для мобильных карточек
-                      >
-                        <ShoppingCart className="w-4 h-4 mr-2" />
-                        {productCardsData.buyButton}
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Hover эффект карточки - не активен на touch-устройствах */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-ekogumus-green/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Дополнительная информация */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="mt-12 text-center"
-        >
-          <div className="bg-glass-green rounded-2xl p-6 sm:p-8">
-            {/* Использование flex-wrap отлично адаптирует этот блок */}
-            <div className="flex items-center justify-center gap-4 flex-wrap"> 
-              <div className="flex items-center gap-2 text-ekogumus-green text-sm sm:text-base">
-                <Package className="w-5 h-5" />
-                <span className="font-medium">{productCardsData.features.organicProduct}</span>
-              </div>
-              <div className="w-2 h-2 bg-ekogumus-green rounded-full hidden sm:block"></div>
-              <div className="flex items-center gap-2 text-ekogumus-green text-sm sm:text-base">
-                <Scale className="w-5 h-5" />
-                <span className="font-medium">{productCardsData.features.certified}</span>
-              </div>
-              <div className="w-2 h-2 bg-ekogumus-green rounded-full hidden sm:block"></div>
-              <div className="flex items-center gap-2 text-ekogumus-green text-sm sm:text-base">
-                <ExternalLink className="w-5 h-5" />
-                <span className="font-medium">{productCardsData.features.delivery}</span>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Purchase Modal */}
-      {selectedProduct && (
-        <PurchaseModal
-          isOpen={isModalOpen}
-          onClose={closeModal}
-          product={selectedProduct}
-        />
-      )}
-    </SectionContainer>
-  );
-}
-
-function LiqPresentationSection() {
-  const { t } = useLanguage();
-  const navigate = useNavigate();
-
-  const handleOpenPresentation = () => {
-    navigate("/LiqPresentation");
-  };
-
-  return (
-    <SectionContainer className="py-12">
-      <div className="text-center space-y-6">
-        <div className="space-y-4">
-          <h2 className="font-montserrat font-bold text-3xl lg:text-4xl text-ekogumus-green dark:text-ekogumus-green-light">
-            {t.products.LiqPresentation.title}
-          </h2>
-          <p className="font-opensans text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            {t.products.LiqPresentation.subtitle}
-          </p>
-        </div>
-
-        <Button
-          onClick={handleOpenPresentation}
-          size="lg"
-          className="bg-gradient-to-r from-ekogumus-green to-ekogumus-green-light hover:from-ekogumus-green-light hover:to-ekogumus-green text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-        >
-          <Images className="w-5 h-5 mr-2" />
-          {t.products.LiqPresentation.openPresentation}
-        </Button>
-      </div>
-    </SectionContainer>
-  );
-}
-
-//Section for Biogumus Info + Composition Table
-function BiohumusInfoSection() {
-  const { t } = useLanguage();
-
-  return (
-    <SectionContainer compact={true}>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-        <Card className="bg-glass-card h-full">
-          <CardContent className="p-4 sm:p-6 lg:p-8 space-y-4 text-gray-700">
-            <h3 className="text-xl font-bold text-green-800">
-              {(t.products.biohumusInfo.title)}
-            </h3>
-            <p className="text-sm">{(t.products.biohumusInfo.description1)}</p>
-            <p className="text-sm">{(t.products.biohumusInfo.description2)}</p>
-
-            <div className="space-y-2">
-              <p className="font-semibold text-green-800 text-sm">
-                {(t.products.biohumusInfo.characteristicsTitle)}
-              </p>
-              <ul className="list-disc list-inside text-sm space-y-1 pl-4">
-                <li>{(t.products.biohumusInfo.characteristics.type)}</li>
-                <li>{(t.products.biohumusInfo.characteristics.composition)}</li>
-                <li>{(t.products.biohumusInfo.characteristics.usage)}</li>
-                <li>{(t.products.biohumusInfo.characteristics.form)}</li>
-                <li>{(t.products.biohumusInfo.characteristics.package)}</li>
-                <li>{(t.products.biohumusInfo.characteristics.storage)}</li>
-              </ul>
-            </div>
-
-            <div className="space-y-2">
-              <p className="font-semibold text-green-800 text-sm">
-                {(t.products.biohumusInfo.advantagesTitle)}
-              </p>
-              <ul className="list-disc list-inside text-sm space-y-1 pl-4">
-                <li>{(t.products.biohumusInfo.advantages.fertility)}</li>
-                <li>{(t.products.biohumusInfo.advantages.structure)}</li>
-                <li>{(t.products.biohumusInfo.advantages.microorganisms)}</li>
-                <li>{(t.products.biohumusInfo.advantages.ecoSafe)}</li>
-              </ul>
-            </div>
-          </CardContent>
-        </Card>
-        <CompositionTable />
-      </div>
-    </SectionContainer>
-  );
-}
-
-
-function ProductionProcessSection() {
-  const { t } = useLanguage();
-
-  return (
-    <SectionContainer compact={true}>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-        {/*
-          КОЛОНКА 1: ТЕКСТОВЫЙ КОНТЕНТ (Процесс производства)
-        */}
-        <Card className="bg-glass-card h-full">
-          <CardContent className="p-4 sm:p-6 lg:p-8 space-y-4 text-gray-700">
-            <h3 className="text-base sm:text-lg font-semibold text-green-900">
-              {(t.products.productionProcess.title)}
-            </h3>
-
-            <p className="text-sm">{(t.products.productionProcess.steps.preparation)}</p>
-            <p className="text-sm">{(t.products.productionProcess.steps.suspension)}</p>
-            <p className="text-sm">{(t.products.productionProcess.steps.processing)}</p>
-
-            <ul className="list-disc list-inside text-sm space-y-1 pl-4">
-              <li>{(t.products.productionProcess.steps.processingList.cavitation)}</li>
-              <li>{(t.products.productionProcess.steps.processingList.nano)}</li>
-              <li>{(t.products.productionProcess.steps.processingList.homogenization)}</li>
-            </ul>
-
-            <p className="text-sm">{(t.products.productionProcess.steps.duration)}</p>
-            <p className="text-sm">{(t.products.productionProcess.steps.flexibility)}</p>
-
-            <ul className="list-disc list-inside text-sm space-y-1 pl-4">
-              <li>{(t.products.productionProcess.steps.flexibilityList.npk)}</li>
-              <li>{(t.products.productionProcess.steps.flexibilityList.micro)}</li>
-              <li>{(t.products.productionProcess.steps.flexibilityList.additives)}</li>
-            </ul>
-
-            <p className="text-sm">{(t.products.productionProcess.steps.packaging)}</p>
-            <p className="text-sm">{(t.products.productionProcess.steps.finalProduct)}</p>
-
-            <p className="text-sm font-semibold text-green-800">
-              {(t.products.productionProcess.advantagesTitle)}
-            </p>
-            <p className="text-sm">{(t.products.productionProcess.advantagesDescription)}</p>
-          </CardContent>
-        </Card>
-
-        {/*
-          КОЛОНКА 2: ТАБЛИЦА + ИЗОБРАЖЕНИЕ
-          Обернуты во flex-col для вертикального размещения.
-        */}
-        <div className="flex flex-col space-y-8">
-            {/* 1. Таблица BasicBatchTable */}
-            <BasicBatchTable />
-
-            {/* 2. ИЗОБРАЖЕНИЕ A4 (Добавлено под таблицей) */}
-            <div className="w-full flex justify-center">
-    {/*
-      1. Ссылка (<a>) для открытия в полном размере.
-      2. w-full (на мобильных) и lg:w-1/2 (на десктопе) для уменьшения на 50%.
-    */}
-    <a 
-        href="/images/originals/IMG_4102.jpg" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        // На мобильных - 100%, на десктопе (lg) - 50% ширины колонки
-        className="w-full lg:w-1/2 cursor-pointer block group" 
-    >
-        <img
-            // Убедитесь, что этот путь верен для вашего проекта
-            src="/images/originals/IMG_4102.jpg"
-            alt="Схема процесса производства или спецификация"
-            // w-full обеспечивает 100% от ширины родительской ссылки (которая 50% или 100%)
-            // Добавлен эффект масштабирования при наведении (hover:scale)
-            className="w-full h-auto object-contain rounded-xl shadow-lg border border-gray-100 transition-transform duration-300 group-hover:scale-[1.02]"
-        />
-    </a>
-</div>
-        </div>
-      </div>
-    </SectionContainer>
-  );
-}
-
-//Таблица с составом NANOECOVERM
-function BasicBatchTable() {
-  const { t } = useLanguage();
-
-  const basicComposition = [
-    { component: (t.products.nanoecovermComposition.table.items.water), value: (t.products.nanoecovermComposition.table.unit.one) },
-    { component: (t.products.nanoecovermComposition.table.items.biohumus), value: (t.products.nanoecovermComposition.table.unit.two) },
-    { component: (t.products.nanoecovermComposition.table.items.ammoniumNitrate), value: (t.products.nanoecovermComposition.table.unit.three) },
-    { component: (t.products.nanoecovermComposition.table.items.ammophos), value: (t.products.nanoecovermComposition.table.unit.four) },
-    { component: (t.products.nanoecovermComposition.table.items.potassiumSulfate), value: (t.products.nanoecovermComposition.table.unit.five) },
-    { component: (t.products.nanoecovermComposition.table.items.microelements), value: (t.products.nanoecovermComposition.table.unit.six) },
-    { component: (t.products.nanoecovermComposition.table.items.aminoAcids), value: (t.products.nanoecovermComposition.table.unit.seven) },
-    { component: (t.products.nanoecovermComposition.table.items.copperSulfate), value: (t.products.nanoecovermComposition.table.unit.eight) },
-    { component: (t.products.nanoecovermComposition.table.items.gibberellin), value:(t.products.nanoecovermComposition.table.unit.nine) },
-  ];
-
-  return (
-    <Card className="flex-1 bg-glass-card">
-      <CardHeader className="text-center px-3 sm:px-4 lg:px-6">
-        <CardTitle className="text-lg sm:text-xl lg:text-2xl text-green-900 mb-2">
-          {(t.products.nanoecovermComposition.title)}
-        </CardTitle>
-        <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-          {(t.products.nanoecovermComposition.description)}
-        </p>
-      </CardHeader>
-      <CardContent className="px-3 sm:px-4 lg:px-6">
-        <div className="relative">
-          <Table>
-            <TableHeader>
-              <TableRow className="border-b-2 border-green-200">
-                <TableHead className="text-left text-xs sm:text-sm lg:text-base text-gray-900 py-2 px-2 sm:px-3">
-                  {(t.products.nanoecovermComposition.table.component)}
-                </TableHead>
-                <TableHead className="text-right text-xs sm:text-sm lg:text-base text-gray-900 py-2 px-2 sm:px-3">
-                  {(t.products.nanoecovermComposition.table.amount)}
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {basicComposition.map((item, index) => (
-                <TableRow
-                  key={index}
-                  className="hover:bg-green-50 transition-colors duration-200 border-b border-gray-200"
-                >
-                  <TableCell className="py-1.5 sm:py-2 px-2 sm:px-3 text-xs sm:text-sm text-gray-800">
-                    {item.component}
-                  </TableCell>
-                  <TableCell className="py-1.5 sm:py-2 px-2 sm:px-3 text-right text-xs sm:text-sm text-green-700">
-                    {item.value}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
-
-//Таблица с составом BIOGUMUS
-function CompositionTable() {
-  const { t } = useLanguage();
-
-  const composition = [
-    {
-      component: (t.products.compositionData.items.organicMatter),
-      value: (t.products.compositionData.values.organicMatter),
-    },
-    {
-      component: (t.products.compositionData.items.moisture),
-      value: (t.products.compositionData.values.moisture)
-    },
-    {
-      component: (t.products.compositionData.items.ash),
-      value: (t.products.compositionData.values.ash)
-    },
-    {
-      component: (t.products.compositionData.items.organicSubstances),
-      value: (t.products.compositionData.values.organicSubstances)
-    },
-    {
-      component: (t.products.compositionData.items.humus),
-      value: (t.products.compositionData.values.humus)
-    },
-    {
-      component: (t.products.compositionData.items.ph),
-      value: (t.products.compositionData.values.ph)
-    },
-    {
-      component: (t.products.compositionData.items.friability),
-      value: (t.products.compositionData.values.friability)
-    },
-    {
-      component: (t.products.compositionData.items.nitrogen),
-      value: (t.products.compositionData.values.nitrogen)
-    },
-    {
-      component: (t.products.compositionData.items.phosphorus),
-      value: (t.products.compositionData.values.phosphorus),
-    },
-    {
-      component: (t.products.compositionData.items.potassium),
-      value: (t.products.compositionData.values.potassium),
-    },
-    {
-      component: (t.products.compositionData.items.dryResidue),
-      value: (t.products.compositionData.values.dryResidue),
-    },
-    {
-      component: (t.products.compositionData.items.calcium),
-      value: (t.products.compositionData.values.calcium)
-    },
-    {
-      component: (t.products.compositionData.items.magnesium),
-      value: (t.products.compositionData.values.magnesium)
-    },
-    {
-      component: (t.products.compositionData.items.iron),
-      value: (t.products.compositionData.values.iron)
-    },
-    {
-      component: (t.products.compositionData.items.manganese),
-      value: (t.products.compositionData.values.manganese)
-    },
-    {
-      component: (t.products.compositionData.items.heavyMetals),
-      value: (t.products.compositionData.values.heavyMetals),
-    },
-    {
-      component: (t.products.compositionData.items.pathogenicMicroflora),
-      value: (t.products.compositionData.values.pathogenicMicroflora),
-    },
-    {
-      component: (t.products.compositionData.items.helminthEggs),
-      value: (t.products.compositionData.values.helminthEggs)
-    },
-  ];
-
-  return (
-    <Card className="flex-1 bg-glass-card">
-      <CardHeader className="text-center px-3 sm:px-4 lg:px-6">
-        <CardTitle className="text-lg sm:text-xl lg:text-2xl text-green-900 mb-2">
-          {(t.products.composition.title)}
-        </CardTitle>
-        <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-          {(t.products.composition.description)}
-        </p>
-      </CardHeader>
-      <CardContent className="px-3 sm:px-4 lg:px-6">
-        <div className="relative">
-          <Table>
-            <TableHeader>
-              <TableRow className="border-b-2 border-green-400">
-                <TableHead className="text-left text-xs sm:text-sm lg:text-base text-gray-900 py-2 px-2 sm:px-3">
-                  {(t.products.composition.indicator)}
-                </TableHead>
-                <TableHead className="text-right text-xs sm:text-sm lg:text-base text-gray-900 py-2 px-2 sm:px-3">
-                  {(t.products.composition.value)}
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {composition.map((item, index) => (
-                <TableRow
-                  key={index}
-                  className="hover:bg-green-50 transition-colors duration-200 border-b border-gray-200"
-                >
-                  <TableCell className="py-1.5 sm:py-2 px-2 sm:px-3 text-xs sm:text-sm text-gray-800">
-                    {item.component}
-                  </TableCell>
-                  <TableCell className="py-1.5 sm:py-2 px-2 sm:px-3 text-right text-xs sm:text-sm text-green-700">
-                    {item.value}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
-
-//СЕКЦИЯ С ВИДЕО
-function YouTubeVideoSection() {
-  const { t } = useLanguage();
-
-  // Замените на ID ваших видео и ссылку на ваш канал
-  const videoId1 = "AE9L71IuN7A"; // ID первого видео
-  const videoId2 = "eydxM_NjnLQ"; // Замените на ID вашего второго видео (например, Rick Astley - Never Gonna Give You Up)
-  const channelUrl = "https://www.youtube.com/@biogumusfargonaekogumus8419"; // Например: "https://www.youtube.com/channel/UC-lHJZR3Gqxm24_Vd_AJ5Yw"
-
-  return (
-    <SectionContainer compact={true}>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-8 sm:mb-12 lg:mb-16"
-        >
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl text-ekogumus-green mb-4 sm:mb-6">
-            {t.products.youtubeSection.title}
-          </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-ekogumus-green to-ekogumus-green-light mx-auto"></div>
-        </motion.div>
-
-        {/* Контейнер для двух видео */}
-        <div className="flex flex-col md:flex-row gap-8 max-w-6xl mx-auto mb-8">
-          {/* Первое видео */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="w-full md:w-1/2 shadow-2xl"
-          >
-            <YouTubeFacade videoId={videoId1} title={t.products.youtubeSection.title} />
-          </motion.div>
-
-          {/* Второе видео */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="w-full md:w-1/2 shadow-2xl"
-          >
-            <YouTubeFacade videoId={videoId2} title={t.products.youtubeSection.title} />
-          </motion.div>
-        </div>
-
-        {/* Кнопка */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="text-center"
-        >
-          <a href={channelUrl} target="_blank" rel="noopener noreferrer">
-            <Button
-              size="lg"
-              className="bg-red-600 hover:bg-red-700 text-white transition-all duration-300 shadow-lg hover:shadow-xl"
-            >
-              <Youtube className="w-5 h-5 mr-2" />
-              {/* Используйте t.products.youtubeSection.button для переводов */}
-              Наш YouTube канал
-            </Button>
+        <div className="vidmodal__foot">
+          <a className="btn btn--ghost btn--sm" href={YOUTUBE_URL} target="_blank" rel="noopener noreferrer">
+            <Icon name="youtube" size={16} /> {channelLabel}
           </a>
-        </motion.div>
+        </div>
       </div>
-    </SectionContainer>
+    </div>
   );
 }
 
-export default YouTubeVideoSection;
+export function ProductPage() {
+  const { t } = useLanguage();
+  const { openPurchase } = usePurchase();
+  usePageMeta();
+  const [tab, setTab] = useState<Tab>("granule");
+  const [pres, setPres] = useState<Tab | null>(null);
+  const [videoOpen, setVideoOpen] = useState(false);
+
+  const e = t.eko;
+  const ep = e.products;
+  const P = t.products;
+
+  const granuleFeatures = [
+    P.productCards.features.organicProduct,
+    P.productCards.features.certified,
+    P.productCards.features.delivery,
+  ];
+  const liquidFeatures = [
+    P.liquidFertilizers.features.fastAction,
+    P.liquidFertilizers.features.highConcentration,
+    P.liquidFertilizers.features.easyApplication,
+  ];
+
+  // BIOGUMUS spec rows (curated, pulled from existing translations)
+  const ci = P.compositionData.items;
+  const cv = P.compositionData.values;
+  const bioRows: [string, string][] = [
+    [ci.organicSubstances, cv.organicSubstances],
+    [ci.humus, cv.humus],
+    [ci.moisture, cv.moisture],
+    [ci.ph, cv.ph],
+    [ci.nitrogen, cv.nitrogen],
+    [ci.phosphorus, cv.phosphorus],
+    [ci.potassium, cv.potassium],
+    [ci.calcium, cv.calcium],
+    [ci.magnesium, cv.magnesium],
+    [ci.iron, cv.iron],
+    [ci.heavyMetals, cv.heavyMetals],
+    [ci.pathogenicMicroflora, cv.pathogenicMicroflora],
+  ];
+
+  // NANOECOVERM recipe rows
+  const nt = P.nanoecovermComposition.table;
+  const nanoRows: [string, string][] = [
+    [nt.items.water, nt.unit.one],
+    [nt.items.biohumus, nt.unit.two],
+    [nt.items.ammoniumNitrate, nt.unit.three],
+    [nt.items.ammophos, nt.unit.four],
+    [nt.items.potassiumSulfate, nt.unit.five],
+    [nt.items.microelements, nt.unit.six],
+    [nt.items.aminoAcids, nt.unit.seven],
+    [nt.items.copperSulfate, nt.unit.eight],
+    [nt.items.gibberellin, nt.unit.nine],
+  ];
+
+  const isLiquid = tab === "liquid";
+  const compTitle = isLiquid ? P.nanoecovermComposition.title : P.composition.title;
+  const compSub = isLiquid ? P.nanoecovermComposition.description : P.composition.description;
+  const compNote = isLiquid ? ep.liquidNote : ep.granuleNote;
+  const compHead0 = isLiquid ? nt.component : P.composition.indicator;
+  const compHead1 = isLiquid ? nt.amount : P.composition.value;
+  const compRows = isLiquid ? nanoRows : bioRows;
+
+  const characteristics = P.biohumusInfo.characteristics;
+  const charRows: [string, string][] = [
+    characteristics.type,
+    characteristics.composition,
+    characteristics.usage,
+    characteristics.form,
+    characteristics.package,
+    characteristics.storage,
+  ].map((s) => {
+    const idx = s.indexOf(": ");
+    return idx > -1 ? [s.slice(0, idx), s.slice(idx + 2)] : [s, ""];
+  });
+  const advantages = [
+    P.biohumusInfo.advantages.fertility,
+    P.biohumusInfo.advantages.structure,
+    P.biohumusInfo.advantages.microorganisms,
+    P.biohumusInfo.advantages.ecoSafe,
+  ];
+
+  const usageSteps = ep.usageSteps;
+  const usageIcons = ["drop", "soil", "leaf"];
+
+  return (
+    <div className="page eko">
+      {/* Sub-hero */}
+      <section className="phero phero--bleed">
+        <div className="container phero__inner">
+          <div className="phero__text">
+            <Reveal>
+              <Eyebrow variant="green">{ep.eyebrow}</Eyebrow>
+            </Reveal>
+            <Reveal delay={1}>
+              <h1 className="display phero__title">
+                {ep.title1} <em>{ep.title2}</em>
+              </h1>
+            </Reveal>
+            <Reveal delay={2}>
+              <p className="lead">{ep.subtitle}</p>
+            </Reveal>
+            <Reveal delay={3} className="phero__chips">
+              <span className="chip">
+                <Icon name="leaf" size={14} /> {ep.chipOrganic}
+              </span>
+              <span className="chip chip--ochre">
+                <Icon name="award" size={14} /> {ep.chipCertified}
+              </span>
+              <span className="chip chip--clay">
+                <Icon name="truck" size={14} /> {ep.chipDelivery}
+              </span>
+            </Reveal>
+          </div>
+          <Reveal delay={2} className="phero__media">
+            <Slot
+              src="/images/originals/Products.png"
+              alt={P.title}
+              placeholder={ep.heroPlaceholder}
+              className="phero__photo"
+              radius={20}
+              priority
+              width={2048}
+              height={2048}
+              sources={optimizedSources("/images/originals/Products.png")}
+              sizes="(min-width: 980px) 55vw, (min-width: 500px) 460px, 92vw"
+            />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Tab switch */}
+      <section className="section section--tight">
+        <div className="container">
+          <div className="ptabs">
+            <button className={`ptab ${tab === "granule" ? "ptab--on" : ""}`} onClick={() => setTab("granule")}>
+              <Icon name="soil" size={20} />{" "}
+              <span>
+                BIOGUMUS<small>{ep.tabGranuleSmall}</small>
+              </span>
+            </button>
+            <button className={`ptab ptab--liquid ${tab === "liquid" ? "ptab--on" : ""}`} onClick={() => setTab("liquid")}>
+              <Icon name="drop" size={20} />{" "}
+              <span>
+                NANOECOVERM<small>{ep.tabLiquidSmall}</small>
+              </span>
+            </button>
+            <button className="ptab ptab--video" onClick={() => setVideoOpen(true)}>
+              <Icon name="play" size={20} />{" "}
+              <span>
+                {ep.tabVideo}
+                <small>{ep.tabVideoSmall}</small>
+              </span>
+            </button>
+          </div>
+
+          {tab === "granule" && (
+            <div className="pgroup">
+              <div className="pgroup__head">
+                <div>
+                  <h2 className="h-section">{P.productCards.title}</h2>
+                  <p className="lead" style={{ marginTop: 14, maxWidth: 600 }}>
+                    {P.productCards.subtitle}
+                  </p>
+                </div>
+                <div className="pgroup__feats">
+                  {granuleFeatures.map((f, i) => (
+                    <span key={i} className="chip">
+                      <Icon name="check" size={13} /> {f}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <PresBar
+                eyebrow={e.presentationEyebrow}
+                title={ep.presGranuleTitle}
+                text={ep.presGranuleText}
+                cta={e.viewPresentation}
+                onOpen={() => setPres("granule")}
+                variant="green"
+              />
+              <div className="pcards" key="gran">
+                {P.productCards.products.map((p, i) => (
+                  <div key={i} className="pcard">
+                    <div className="pcard__media">
+                      <Slot src={granuleImg(p.weight)} alt={`BIOGUMUS ${p.weight} ${e.weightUnit}`} placeholder={`${p.weight} ${e.weightUnit}`} className="pcard__photo" radius={12} fit="contain" sources={optimizedSources(granuleImg(p.weight))} sizes={PCARD_SIZES} />
+                      <span className="pcard__weight mono">
+                        {p.weight} {e.weightUnit}
+                      </span>
+                    </div>
+                    <div className="pcard__body">
+                      <span className="pcard__name">BIOGUMUS</span>
+                      <p className="pcard__desc">{p.description}</p>
+                      <div className="pcard__foot">
+                        <div className="pcard__price">
+                          <span className="mono">{e.fromLabel}</span>
+                          <strong>{fmt(p.price)}</strong>
+                          <span className="mono">{e.currency}</span>
+                        </div>
+                        <button
+                          className="btn btn--primary btn--sm"
+                          onClick={() => openPurchase({ name: "BIOGUMUS", weight: p.weight, price: fmt(p.price) })}
+                        >
+                          <Icon name="cart" size={15} /> {e.buy}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {tab === "liquid" && (
+            <div className="pgroup">
+              <div className="pgroup__head">
+                <div>
+                  <span className="chip chip--clay" style={{ marginBottom: 12 }}>
+                    {P.liquidFertilizers.main}
+                  </span>
+                  <h2 className="h-section">{P.liquidFertilizers.title}</h2>
+                  <p className="lead" style={{ marginTop: 14, maxWidth: 600 }}>
+                    {P.liquidFertilizers.subtitle}
+                  </p>
+                </div>
+                <div className="pgroup__feats">
+                  {liquidFeatures.map((f, i) => (
+                    <span key={i} className="chip chip--clay">
+                      <Icon name="spark" size={13} /> {f}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <PresBar
+                eyebrow={e.presentationEyebrow}
+                title={ep.presLiquidTitle}
+                text={ep.presLiquidText}
+                cta={e.viewPresentation}
+                onOpen={() => setPres("liquid")}
+                variant="clay"
+              />
+              <div className="pcards pcards--3" key="liq">
+                {P.liquidFertilizers.products.map((p, i) => (
+                  <div key={i} className="pcard pcard--liquid">
+                    <div className="pcard__media">
+                      <Slot src={liquidImg(p.volume)} alt={`NANOECOVERM ${p.volume} ${e.volumeUnit}`} placeholder={`${p.volume} ${e.volumeUnit}`} className="pcard__photo" radius={12} fit="contain" sources={optimizedSources(liquidImg(p.volume))} sizes={PCARD_SIZES} />
+                      <span className="pcard__weight mono">
+                        {p.volume} {e.volumeUnit}
+                      </span>
+                    </div>
+                    <div className="pcard__body">
+                      <span className="pcard__name">NANOECOVERM</span>
+                      <p className="pcard__desc">{p.description}</p>
+                      <div className="pcard__foot">
+                        <div className="pcard__price">
+                          <span className="mono">{e.fromLabel}</span>
+                          <strong>{fmt(p.price)}</strong>
+                          <span className="mono">{e.currency}</span>
+                        </div>
+                        <button
+                          className="btn btn--clay btn--sm"
+                          onClick={() => openPurchase({ name: "NANOECOVERM", volume: p.volume, price: fmt(p.price) })}
+                        >
+                          <Icon name="cart" size={15} /> {e.buy}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Composition spec — responds to active tab */}
+      <section className="section comp">
+        <div className="container comp__grid">
+          <div className="comp__left">
+            <Reveal>
+              <Eyebrow variant="green">{ep.specEyebrow}</Eyebrow>
+            </Reveal>
+            <Reveal delay={1}>
+              <h2 className="h-section">{compTitle}</h2>
+            </Reveal>
+            <Reveal delay={2}>
+              <p className="lead">{compSub}</p>
+            </Reveal>
+            <Reveal delay={2}>
+              <div className="comp__note">
+                <Icon name={isLiquid ? "drop" : "leaf"} size={20} />
+                <p>{compNote}</p>
+              </div>
+            </Reveal>
+          </div>
+          <div className="comp__table-wrap">
+            <table className="comp__table">
+              <thead>
+                <tr>
+                  <th className="mono">{compHead0}</th>
+                  <th className="mono">{compHead1}</th>
+                </tr>
+              </thead>
+              <tbody key={tab}>
+                {compRows.map((r, i) => (
+                  <tr key={i}>
+                    <td>{r[0]}</td>
+                    <td className="mono">{r[1]}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      {/* Per-tab description */}
+      <section className="section section--tight prodinfo" key={tab + "-info"}>
+        <div className="container">
+          {tab === "granule" ? (
+            <div className="prodinfo__grid">
+              <div className="prodinfo__lead">
+                <Eyebrow variant="green">{ep.aboutProductEyebrow}</Eyebrow>
+                <h2 className="h-section">{P.biohumusInfo.title}</h2>
+                <p className="prodinfo__p">{P.biohumusInfo.description1}</p>
+                <p className="prodinfo__p">{P.biohumusInfo.description2}</p>
+              </div>
+              <div className="prodinfo__cards">
+                <div className="prodinfo__card">
+                  <h4 className="prodinfo__cardh">
+                    <Icon name="soil" size={18} /> {P.biohumusInfo.characteristicsTitle}
+                  </h4>
+                  <dl className="speclist">
+                    {charRows.map(([k, v], i) => (
+                      <div className="speclist__row" key={i}>
+                        <dt>{k}</dt>
+                        <dd>{v}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+                <div className="prodinfo__card prodinfo__card--adv">
+                  <h4 className="prodinfo__cardh">
+                    <Icon name="leaf" size={18} /> {P.biohumusInfo.advantagesTitle}
+                  </h4>
+                  <ul className="advlist">
+                    {advantages.map((a, i) => (
+                      <li key={i}>
+                        <span className="advlist__ic">
+                          <Icon name="check" size={13} />
+                        </span>
+                        {a}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="prodinfo__proc">
+              <div className="prodinfo__lead prodinfo__lead--center">
+                <Eyebrow variant="green">{ep.technologyEyebrow}</Eyebrow>
+                <h2 className="h-section">{P.productionProcess.title}</h2>
+                <p className="lead">{ep.processSubtitle}</p>
+              </div>
+              <div className="proc__steps">
+                {ep.processSteps.map((s, i) => (
+                  <div className="proc__step" key={i}>
+                    <span className="proc__n mono">{s.n}</span>
+                    <div>
+                      <h4>{s.t}</h4>
+                      <p>{s.d}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="proc__adv">
+                <h4 className="prodinfo__cardh">
+                  <Icon name="spark" size={18} /> {P.productionProcess.advantagesTitle}
+                </h4>
+                <p>{P.productionProcess.advantagesDescription}</p>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Usage steps */}
+      <section className="section section--tight usage">
+        <div className="container">
+          <SectionHead eyebrow={ep.usageEyebrow} title={ep.usageTitle} center />
+          <div className="usage__grid">
+            {usageSteps.map((s, i) => (
+              <Reveal key={i} delay={(i % 3) as 0 | 1 | 2} className="usage__step">
+                <span className="usage__n mono">{String(i + 1).padStart(2, "0")}</span>
+                <span className="usage__ic">
+                  <Icon name={usageIcons[i]} size={26} />
+                </span>
+                <h4>{s.t}</h4>
+                <p>{s.d}</p>
+              </Reveal>
+            ))}
+          </div>
+          <Reveal delay={2} className="center" style={{ marginTop: 44 }}>
+            <button className="btn btn--primary btn--lg" onClick={() => openPurchase()}>
+              <Icon name="cart" size={18} /> {e.choosePackage}
+            </button>
+          </Reveal>
+        </div>
+      </section>
+
+      <PresModal
+        kind={pres}
+        title={pres === "liquid" ? ep.presLiquidTitle : ep.presGranuleTitle}
+        eyebrow={e.presentationEyebrow}
+        slideLabel={ep.slide}
+        closeLabel={t.purchaseModal.close}
+        onClose={() => setPres(null)}
+      />
+
+      <VideoModal
+        open={videoOpen}
+        eyebrow={e.videoEyebrow}
+        title={P.youtubeSection.title}
+        text={P.youtubeSection.description}
+        channelLabel={P.youtubeSection.button}
+        closeLabel={t.purchaseModal.close}
+        onClose={() => setVideoOpen(false)}
+      />
+    </div>
+  );
+}

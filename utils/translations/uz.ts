@@ -2,7 +2,7 @@ export const uz = {
   // Header & Navigation
   nav: {
     home: 'Bosh sahifa',
-    about: 'Kompaniya haqida',
+    about: 'Kompaniya',
     products: 'Mahsulotlar',
     stats: 'Raqamlarda',
     cooperation: 'Hamkorlik',
@@ -24,7 +24,7 @@ export const uz = {
       eco: 'Ekologik toza mahsulot',
       yield: 'Hosildorlikni 40% gacha oshiradi',
     },
-    badge: '1997 yildan beri soha yetakchisi',
+    badge: '1988 yildan beri soha yetakchisi',
     cards: {
       years: 'yil muvaffaqiyatli faoliyat',
       export: 'yillik eksport',
@@ -55,7 +55,7 @@ export const uz = {
 
   // About Section
   about: {
-    title: '30+ yil unumdorlik cho\'qqilariga ko\'tarilish',
+    title: '35+ yil unumdorlik cho\'qqilariga ko\'tarilish',
     history: '"EKOGUMUS" rasman 1997 yilda tashkil etilgan, lekin uning rivojlanishi va gullab-yashnashiga dastlabki qadamlar 1988 yilda bizning otamiz, kompaniya asoschisi - Xaytboy Solijanov tomonidan qo\'yilgan.',
     development: 'Biz otamizning ishini kengaytirib, rivojlantirishda davom etmoqdamiz. O\'ttiz yildan ortiq vaqt davomida kompaniya qishloq xo\'jaligi sohasida yetakchiga aylandi va butun dunyo bo\'ylab qishloq xo\'jaligi uchun samarali yechimlarni taqdim etmoqda.',
     certificate: 'Biz mamlakatda organik-mineral o\'g\'itlarning seriyali ishlab chiqarishiga muvofiqlik sertifikatiga ega yagona kompaniyamiz.',
@@ -526,7 +526,7 @@ export const uz = {
     address: {
       country: 'O\'zbekiston Respublikasi',
       city: 'Farg\'ona viloyati, Farg\'ona sh.',
-      street: 'Bobur ko\'chasi 38',
+      street: 'Bobur ko\'chasi 37',
     },
     workingHours: {
       title: 'Ish vaqti',
@@ -581,7 +581,7 @@ export const uz = {
         title: 'Manzil',
         country: 'O\'zbekiston Respublikasi',
         region: 'Farg\'ona viloyati',
-        city: 'Farg\'ona sh., Bobur ko\'chasi 38',
+        city: 'Farg\'ona sh., Bobur ko\'chasi 37',
       },
       phone: {
         title: 'Telefon',
@@ -892,5 +892,238 @@ export const uz = {
         image: "cotton field fertilizer",
       }
     ],
+  },
+
+  pageMeta: {
+    home: {
+      title: "Ekogumus — biogumus asosidagi organik o'g'itlar",
+      description:
+        "Ekogumus — bog'bonlar va agrobiznes uchun biogumus asosidagi organik o'g'itlar: hosildorlikni oshiradi, tuproq tuzilishini yaxshilaydi.",
+    },
+    about: {
+      title: "Ekogumus haqida — organik o'g'itlarda 35+ yillik tajriba",
+      description: "Ekogumus kompaniyasi tarixi, Farg'onada biogumus ishlab chiqarish, qadriyatlar va yutuqlar.",
+    },
+    products: {
+      title: "Ekogumus mahsulotlari — BIOGUMUS va NANOECOVERM",
+      description: "BIOGUMUS va NANOECOVERM organik va suyuq o'g'itlari: tarkibi, qo'llanilishi va afzalliklari.",
+    },
+    cooperation: {
+      title: "Ekogumus bilan hamkorlik — sheriklik dasturi",
+      description: "Ekogumus sherigi bo'ling: organik o'g'itlar distributsiyasi, agrobiznes uchun qulay shartlar.",
+    },
+    news: {
+      title: "Ekogumus yangiliklari — kompaniya voqealari va yutuqlari",
+      description: "Ekogumus kompaniyasining so'nggi yangiliklari: eksport, innovatsiyalar va organik ishlab chiqarish.",
+    },
+    contacts: {
+      title: "Ekogumus kontaktlari — Farg'ona, O'zbekiston",
+      description: "Ekogumus bilan bog'laning: telefon, email, Telegram, Farg'onadagi ishlab chiqarish manzili.",
+    },
+
+  },
+
+  notFound: {
+    title: "Sahifa topilmadi",
+    description: "So'ralgan sahifa mavjud emas yoki ko'chirilgan.",
+    backHome: "Bosh sahifaga",
+  },
+
+  stickyCta: {
+    label: "Tezkor amallar",
+    call: "Qo'ng'iroq qilish",
+    telegram: "Telegram",
+  },
+
+  // «Земля и Зерно» redesign copy
+  eko: {
+    buy: "Sotib olish",
+    buyProducts: "Mahsulot sotib olish",
+    details: "Batafsil",
+    viewProducts: "Mahsulotlarni ko'rish",
+    moreAboutCompany: "Kompaniya haqida batafsil",
+    becomePartner: "Hamkor bo'lish",
+    choosePackage: "Qadoqni tanlash",
+    viewPresentation: "Taqdimotni ko'rish",
+    presentationEyebrow: "Taqdimot",
+    videoEyebrow: "Video",
+    toTop: "Yuqoriga",
+    goto: "O'tish",
+    copy: "Nusxalash",
+    copied: "Nusxalandi ✓",
+    buildRoute: "Marshrut tuzish",
+    fromLabel: "dan",
+    currency: "so'm",
+    weightUnit: "kg",
+    volumeUnit: "l",
+    checkout: "Buyurtma berish",
+    productLabel: "Mahsulot",
+    allProducts: "EKOGUMUS mahsulotlari",
+    telegramGreeting: "Assalomu alaykum! Meni quyidagi mahsulot qiziqtiradi:",
+    footerTagline: "Organik o'g'itlar · Farg'ona",
+    hours: {
+      weekdays: "Dushanba — Juma",
+      saturday: "Shanba",
+      sunday: "Yakshanba",
+      workTime: "09:00 — 18:00",
+      dayOff: "Dam olish kuni",
+    },
+    placeholders: {
+      heroField: "RASM — dala / granula makro",
+      founder: "RASM — asoschi dalada",
+      granuleBag: "RASM — granula qopi",
+      liquidCan: "RASM — NANOECOVERM kanistri",
+      certA4: "SKAN — sertifikat A4",
+      production: "RASM — ishlab chiqarish",
+    },
+    hero: {
+      title1: "Olijanob tuproq —",
+      title2: "boy hosil",
+      subtitle:
+        "Biogumus asosidagi organomineral o'g'itlar. Farg'onada — Kaliforniya chuvalchanglarining tirik mehnatidan, kimyosiz ishlab chiqaramiz.",
+      floatcard: "100% vermikompost",
+      stats: [
+        { v: "35+", l: "yil yerda" },
+        { v: "10 000 t+", l: "yillik eksport" },
+        { v: "100%", l: "organik" },
+        { v: "+40%", l: "hosildorlikka" },
+      ],
+    },
+    marquee: ["BIOGUMUS", "NANOECOVERM", "VERMIKOMPOST", "SERTIFIKATLANGAN", "10+ DAVLATGA EKSPORT", "1988 YILDAN"],
+    home: {
+      productsEyebrow: "Bizning mahsulot",
+      twoProductsTitle: "Ikki mahsulot — bitta falsafa",
+      twoProductsSub:
+        "Granuladagi BIOGUMUS va suyuq NANOECOVERM konsentrati. Ikkalasi ham organikani Kaliforniya chuvalchanglari qayta ishlashidan.",
+      dryGranule: "Quruq · granula",
+      liquidNew: "Suyuq · yangilik",
+      granuleDesc: "Mayda granulali organomineral o'g'it. 1 dan 20 kg gacha qadoq — uy, dala va ferma uchun.",
+      liquidDesc: "Tez ta'sir qiluvchi suyuq konsentrat. 100 nm nanozarralar maksimal biomavjudlikni ta'minlaydi.",
+      whyBiogumus: "Nega biogumus",
+      whatLandGets: "Yeringiz nima oladi",
+      benefitsSub:
+        "Oziq moddalar, gumin kislotalari va tuproq mikroorganizmlarining muvozanatli majmuasi oson o'zlashtiriladigan shaklda.",
+      readyTitle: "Sinab ko'rishga tayyormisiz?",
+      readySub: "Vazifangizga mos qadoqni tanlaymiz.",
+      statsBandTitle: "Faxrlanadigan yutuqlarimiz",
+      certChips: ["Seriyali ishlab chiqarish", "Davlat standarti", "Eksport sifati"],
+    },
+    products: {
+      eyebrow: "Mahsulot",
+      title1: "Yer tomonidan",
+      title2: "tug'ilgan o'g'itlar",
+      subtitle:
+        "Organikani Kaliforniya chuvalchanglari qayta ishlashidan olingan organomineral o'g'it. Yuqori sifat, sertifikatlangan seriyali ishlab chiqarish.",
+      chipOrganic: "100% organik",
+      chipCertified: "Sertifikatlangan",
+      chipDelivery: "Mamlakat bo'ylab yetkazib berish",
+      heroPlaceholder: "RASM — mahsulot liniyasi",
+      tabGranuleSmall: "granula",
+      tabLiquidSmall: "suyuq",
+      tabVideo: "Ishlab chiqarish",
+      tabVideoSmall: "video",
+      presGranuleTitle: "BIOGUMUSni qanday qo'llash kerak",
+      presGranuleText:
+        "Biogumusdan foydalanish bo'yicha qo'llanma: me'yorlar, ekinlar, muddatlar va natijalar. Qadoqni tanlashdan oldin taqdimotni ko'ring.",
+      presLiquidTitle: "NANOECOVERMni qanday qo'llash kerak",
+      presLiquidText:
+        "Suyuq NANOECOVERM konsentrati bo'yicha bosqichma-bosqich taqdimot: dozalar, oziqlantirish usullari va turli ekinlar uchun ta'sir.",
+      specEyebrow: "Spetsifikatsiya",
+      aboutProductEyebrow: "Mahsulot haqida",
+      technologyEyebrow: "Texnologiya",
+      usageEyebrow: "Qanday qo'llash kerak",
+      usageTitle: "Urug' ekkanchalik oddiy",
+      slide: "Slayd",
+      granuleNote:
+        "Makro- va mikroelementlar, aminokislotalar, gumin kislotalari, fitogormonlar va tuproq mikroorganizmlarining konsentrlangan majmuasi oson o'zlashtiriladigan shaklda.",
+      liquidNote:
+        "100 nm gacha nanodispers zarralar — oziq moddalarning maksimal biomavjudligi. Tarkib aniq ekin va vegetatsiya fazasiga moslashtiriladi.",
+      processSubtitle: "Nanotexnologiya yordamida suyuq o'g'it ishlab chiqarish.",
+      usageSteps: [
+        {
+          t: "Eriting yoki soling",
+          d: "Suyuq konsentrat — yo'riqnomaga ko'ra eritiladi. Granulalar — ekish vaqtida tuproqqa solinadi.",
+        },
+        { t: "O'simliklarni oziqlantiring", d: "Vegetatsiya davrida ildiz ostiga yoki barg orqali oziqlantirish." },
+        { t: "Hosilni yig'ing", d: "Hosildorlik 20–40% ortishi va 10–15 kun erta pishish." },
+      ],
+      processSteps: [
+        {
+          n: "01",
+          t: "Xom ashyo tayyorlash",
+          d: "Biogumus shnekli transporter orqali beriladi va 3 mm elakdan o'tkaziladi. Namlik 15–20% oralig'ida ushlab turiladi.",
+        },
+        {
+          n: "02",
+          t: "Ishchi suspenziya",
+          d: "Biogumus aralashtirgichga yuklanadi, nasos orqali hisoblangan suv qo'shiladi. Aralashma 90 daqiqa aralashtiriladi.",
+        },
+        {
+          n: "03",
+          t: "Kavitatsiya va ishlov",
+          d: "Girdobli kavitatsiya aglomeratlarni buzadi, ferromagnit elementlar zarralarni 100 nm gacha maydalaydi. Davomiyligi — taxminan 5 soat.",
+        },
+        {
+          n: "04",
+          t: "Retseptura moslashuvchanligi",
+          d: "Vegetatsiya fazasiga ko'ra NPKni rostlash, mikroelementlar (B, Zn, Mn, Mo), biostimulyatorlar va xelatlar qo'shish.",
+        },
+        {
+          n: "05",
+          t: "Qadoqlash",
+          d: "Konsentrat 1, 5, 10 va 20 l PET kanistrlarga qadoqlanadi. Tayyor o'g'it — to'q jigarrang suyuqlik, quruq modda 15–30%.",
+        },
+      ],
+    },
+    about: {
+      title1: "Uch avlodga",
+      title2: "cho'zilgan ish",
+      quote: "Biz otamizning ishini davom ettiramiz — yer bizni boqishi uchun uni boqish kerak.",
+      timelineTitle: "Yer maydonidan tarmoq yetakchisigacha",
+      valuesEyebrow: "Bizning qadriyatlar",
+      valuesTitle: "EKOGUMUS nimaga tayanadi",
+      docsEyebrow: "Hujjatlar",
+      certsTitle: "Sertifikatlar",
+      certsSub: "Sifat va xalqaro standartlarga muvofiqlikni tasdiqlovchi hujjatlar",
+      achievementsEyebrow: "Yutuqlar",
+      achievementsTitle: "Nimadan faxrlanamiz",
+    },
+    coop: {
+      conditionsEyebrow: "Shartlar",
+      conditionsTitle: "Hamkorlik formatini tanlang",
+      processEyebrow: "Qanday boshlash",
+      processTitle: "Oddiy va shaffof jarayon",
+      whyEyebrow: "Nega biz",
+      whyTitle: "Biz bilan ishlash afzalliklari",
+      formEyebrow: "Ariza",
+      bgPlaceholder: "RASM — agrobiznesdagi hamkorlik",
+      sendAnother: "Yana bittasini yuborish",
+    },
+    news: {
+      eyebrow: "Yangiliklar",
+      title1: "Bizning dalada",
+      title2: "nima sodir bo'lmoqda",
+      subtitle: "Organik o'g'itlar olamidagi so'nggi voqealar, yutuqlar va innovatsiyalar.",
+      imagePlaceholder: "RASM — yangilik",
+      contactUs: "Biz bilan bog'lanish",
+      fullTextNote:
+        "Yangilikning to'liq matni kompaniya materiallarida mavjud. Loyihalar va eksport yetkazib berishlar haqida batafsil bilish uchun biz bilan bog'laning.",
+    },
+    contacts: {
+      eyebrow: "Kontaktlar",
+      title1: "Biz bilan",
+      title2: "bog'laning",
+      subtitle: "Tezkor amal uchun kontaktni bosing. Biz doimo aloqadamiz va yordam berishga tayyormiz.",
+      teamEyebrow: "Jamoa",
+      teamTitle: "Kontakt shaxslar",
+      findUs: "Bizni qanday topish mumkin",
+      findUsText:
+        "Ofis va ishlab chiqarish Farg'onaning sanoat zonasida, yuk transporti uchun qulay kirish bilan joylashgan.",
+      mapPlaceholder: "XARITA — Farg'ona, Bobur ko'chasi 37",
+      salesTitle: "Sotuv bo'limi",
+      salesRole: "Buyurtma va maslahat",
+      intakeTitle: "Arizalarni qabul qilish",
+      intakeRole: "Qo'shimcha liniya",
+    },
   },
 };
