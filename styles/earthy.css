@@ -278,6 +278,10 @@ h1, h2, h3, h4, h5 {
 .muted { color: var(--ink-soft); }
 .center { text-align: center; }
 
+/* Route-transition loading skeleton (Suspense fallback) — token-driven so it
+   matches whichever theme is active without a separate dark override. */
+.skeleton__bar { background: var(--line-soft); border-radius: var(--rad-lg); }
+
 /* scrollbar */
 .eko ::-webkit-scrollbar { width: 11px; }
 .eko ::-webkit-scrollbar-track { background: var(--cream-2); }
@@ -347,6 +351,10 @@ h1, h2, h3, h4, h5 {
 .hdr__icon:hover { background: var(--green-800); color: var(--cream); border-color: var(--green-800); }
 .hdr__burger { display: none; background: none; border: none; color: var(--green-900); width: 44px; height: 44px; place-items: center; }
 
+/* Theme toggle — light: orange button, white moon icon */
+.hdr__icon--theme { background: #D17046; border-color: #D17046; color: #FFFFFF; }
+.hdr__icon--theme:hover { background: #BE5F35; border-color: #BE5F35; color: #FFFFFF; }
+
 /* Language switch (kept from the trilingual site, restyled for the earthy header) */
 .langsw { display: inline-flex; align-items: center; gap: 2px; background: var(--paper-2); border: 1px solid var(--line); border-radius: var(--rad-pill); padding: 3px; }
 .langsw__btn { font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); background: none; border: none; border-radius: var(--rad-pill); padding: 6px 9px; cursor: pointer; transition: all .2s; line-height: 1; }
@@ -383,6 +391,9 @@ h1, h2, h3, h4, h5 {
 .drawer__foot { margin-top: auto; display: flex; flex-direction: column; gap: 10px; padding-top: 22px; }
 .drawer__foot a { color: rgba(243,236,221,.75); font-size: 15px; }
 .drawer__foot .btn { margin-top: 10px; }
+.drawer__theme { display: inline-flex; align-items: center; gap: 10px; align-self: flex-start; background: #D17046; border: 1px solid #D17046; color: #fff; font-family: var(--font-body); font-weight: 600; font-size: 14px; padding: 11px 16px; border-radius: var(--rad-pill); cursor: pointer; transition: background .2s, border-color .2s; }
+.drawer__theme svg { color: #FFFFFF; }
+.drawer__theme:hover { background: #BE5F35; border-color: #BE5F35; }
 .drawer__langsw { display: flex; gap: 8px; margin-bottom: 4px; }
 .drawer__langsw button { flex: 1; font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: rgba(243,236,221,.75); background: rgba(243,236,221,.06); border: 1px solid rgba(243,236,221,.16); border-radius: var(--rad-pill); padding: 9px 0; cursor: pointer; transition: all .2s; }
 .drawer__langsw button.on { background: var(--cream); color: var(--green-900); border-color: var(--cream); }

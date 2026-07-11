@@ -939,6 +939,8 @@ export const en = {
     buy: "Buy",
     buyProducts: "Buy products",
     details: "Details",
+    lightTheme: "Light theme",
+    darkTheme: "Dark theme",
     viewProducts: "View products",
     moreAboutCompany: "More about the company",
     becomePartner: "Become a partner",

@@ -985,6 +985,8 @@ export const ru = {
     buy: "Купить",
     buyProducts: "Купить продукцию",
     details: "Подробнее",
+    lightTheme: "Светлая тема",
+    darkTheme: "Тёмная тема",
     viewProducts: "Смотреть продукцию",
     moreAboutCompany: "Подробнее о компании",
     becomePartner: "Стать партнёром",

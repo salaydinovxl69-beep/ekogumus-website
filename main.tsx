@@ -7,6 +7,7 @@ import './styles/globals.css';
 // rules win over the legacy liquid-glass base styles.
 import './styles/earthy.css';
 import './styles/earthy-pages.css';
+import './styles/earthy-dark.css';
 
 // Self-hosted «Земля и Зерно» fonts (Spectral / Manrope / JetBrains Mono) —
 // без render-blocking CSS с fonts.googleapis.com и двух внешних соединений.

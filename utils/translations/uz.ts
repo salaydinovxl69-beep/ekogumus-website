@@ -940,6 +940,8 @@ export const uz = {
     buy: "Sotib olish",
     buyProducts: "Mahsulot sotib olish",
     details: "Batafsil",
+    lightTheme: "Yorug' rejim",
+    darkTheme: "Qorong'i rejim",
     viewProducts: "Mahsulotlarni ko'rish",
     moreAboutCompany: "Kompaniya haqida batafsil",
     becomePartner: "Hamkor bo'lish",

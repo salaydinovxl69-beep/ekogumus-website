@@ -1,0 +1,148 @@
+/* ============================================================
+   EkoGumus — Dark theme  «Земля ночью»  (Soil at night)
+   Ported from the Claude Design handoff (dark.css).
+   Activated via  <html data-theme="dark">
+   Strategy: remap the design-system tokens to dark surfaces +
+   light ink, then patch the handful of overloaded tokens
+   (--green-900 = heading text AND dark-band bg; --green-100 =
+   pale pill bg AND light icon on dark tiles) with scoped rules.
+   --card/--card-2 renamed to --paper/--paper-2 to match this
+   repo's namespacing (see styles/earthy.css's own header comment).
+   ============================================================ */
+
+:root[data-theme="dark"] {
+  /* Page background — set directly (do NOT repurpose --cream) */
+  --bg:           #14160E;
+
+  /* Warm-neutral surfaces → deep soil tones */
+  --cream-2:      #1B1F15;
+  --paper:        #1E2218;
+  --paper-2:      #262B1D;
+  --line:         #383D2C;
+  --line-soft:    #2C3122;
+
+  /* Ink → warm light on dark */
+  --ink:          #E9E0CC;
+  --ink-soft:     #B2AA94;
+  --ink-faint:    #8C8470;
+
+  /* Green scale — brightened so it reads on dark surfaces.
+     NOTE: --green-900 now serves as the light heading/ink-strong
+     colour; every place that used it as a DARK BAND BACKGROUND is
+     re-pointed to a deep surface further down. */
+  --green-900:    #ECE5D1;
+  --green-800:    #3C8852;   /* primary / icon tiles / pills */
+  --green-700:    #61A26B;
+  --green-600:    #62A36C;
+  --green-500:    #58976A;
+  /* --green-300 and --green-100 intentionally kept light (used as
+     foreground icons on green tiles + glow accents) */
+
+  /* Soil + grain accents — a touch brighter to glow on dark */
+  --clay:         #D17046;
+  --clay-soft:    #DC8C61;
+  --ochre:        #D8A847;
+  --ochre-soft:   #E6CD84;
+
+  --shadow-sm:    0 1px 2px rgba(0,0,0,.45), 0 2px 8px rgba(0,0,0,.4);
+  --shadow-md:    0 6px 18px rgba(0,0,0,.5), 0 16px 40px rgba(0,0,0,.45);
+  --shadow-lg:    0 14px 34px rgba(0,0,0,.55), 0 34px 80px rgba(0,0,0,.6);
+
+  color-scheme: dark;
+}
+
+/* ---------- Paper-grain overlay: keep it as subtle texture ---------- */
+/* earthy.css's body rule reads var(--cream)/var(--ink) directly rather than
+   through --bg/--fg indirection, so the page background must be repointed
+   here explicitly — redefining --bg alone above does not reach it. */
+:root[data-theme="dark"] body {
+  background: var(--bg);
+  color: var(--ink);
+}
+
+:root[data-theme="dark"] body::before {
+  mix-blend-mode: overlay;
+  opacity: .28;
+}
+
+/* ---------- Selection (light heading colour would be invisible) ---------- */
+:root[data-theme="dark"] ::selection {
+  background: var(--green-300);
+  color: #12150D;
+}
+
+/* ============================================================
+   Dark bands — these used --green-900 as their BACKGROUND.
+   Re-point to a deep elevated surface; their light text
+   (var(--cream) / rgba light literals) already works.
+   ============================================================ */
+:root[data-theme="dark"] .statsband,
+:root[data-theme="dark"] .ftr,
+:root[data-theme="dark"] .form-sec,
+:root[data-theme="dark"] .phero--coop,
+:root[data-theme="dark"] .drawer__panel { background: #0F1209; }
+
+:root[data-theme="dark"] .statcard { background: #0F1209; }
+:root[data-theme="dark"] .statcard:hover { background: #1A1F12; }
+
+/* statsband / footer hairlines read better a touch brighter */
+:root[data-theme="dark"] .statsband__grid {
+  background: rgba(236,229,209,.12);
+  border-color: rgba(236,229,209,.12);
+}
+
+/* Back-to-top button hover used --green-900 (now light ink) as bg —
+   not present in the original handoff (production-only element), so
+   pointed at the same brighter hover green as .btn--primary:hover. */
+:root[data-theme="dark"] .totop:hover { background: #49A062; }
+
+/* ============================================================
+   Pale green-100 boxes that carry DARK text — keep that text
+   dark so it stays legible on the pale pill (which we kept light).
+   ============================================================ */
+:root[data-theme="dark"] .modal__item strong { color: #21482E; }
+:root[data-theme="dark"] .comp__note,
+:root[data-theme="dark"] .comp__note p { color: #21482E; }
+:root[data-theme="dark"] .prodinfo__card--adv { color: #243524; }
+:root[data-theme="dark"] .prodinfo__card--adv .advlist li { color: #243524; }
+:root[data-theme="dark"] .prodinfo__card--adv .prodinfo__cardh { color: #1E3D2A; }
+
+/* ============================================================
+   Hardcoded light backgrounds that don't follow tokens
+   ============================================================ */
+:root[data-theme="dark"] .hdr--scrolled {
+  background: rgba(18,21,12,.86);
+  box-shadow: 0 4px 24px rgba(0,0,0,.45);
+}
+:root[data-theme="dark"] .mcta { background: rgba(18,21,12,.92); }
+
+:root[data-theme="dark"] .field input:focus,
+:root[data-theme="dark"] .field textarea:focus { background: #1A1E12; }
+
+:root[data-theme="dark"] .presmodal__nav { background: rgba(30,34,24,.92); }
+:root[data-theme="dark"] .presmodal__nav:hover { background: var(--green-800); }
+
+/* btn--light is a pale paper button; its label was --green-900
+   (now light) — force a dark-green label and keep the hover pale */
+:root[data-theme="dark"] .btn--light { color: #1E3D2A; }
+:root[data-theme="dark"] .btn--light:hover { background: #FFF8EC; color: #14301E; }
+
+/* btn--primary:hover used --green-900 (now light) as bg → keep it green */
+:root[data-theme="dark"] .btn--primary:hover { background: #49A062; }
+
+/* «Купить» в карточке-CTA (блок преимуществ) — оранжевая в тёмной теме */
+:root[data-theme="dark"] .benefit--cta .btn--primary { background: #D17046; }
+:root[data-theme="dark"] .benefit--cta .btn--primary:hover { background: #DD8155; }
+
+/* Certificate seal: ochre disc, label was --green-900 (now light) */
+:root[data-theme="dark"] .cert__seal { color: #1A1F12; border-color: var(--bg); }
+
+/* Timeline dot halo ring used --cream (light) — match the page */
+:root[data-theme="dark"] .tnode__dot { box-shadow: 0 0 0 6px var(--bg); }
+
+/* ---------- Theme toggle: dark — white button, orange sun icon ---------- */
+:root[data-theme="dark"] .hdr__icon--theme { background: #FFFFFF; border-color: #FFFFFF; color: #D17046; }
+:root[data-theme="dark"] .hdr__icon--theme:hover { background: #F3ECDD; border-color: #F3ECDD; color: #BE5F35; }
+:root[data-theme="dark"] .drawer__theme { background: #FFFFFF; border-color: #FFFFFF; color: #1E3D2A; }
+:root[data-theme="dark"] .drawer__theme:hover { background: #F3ECDD; border-color: #F3ECDD; }
+:root[data-theme="dark"] .drawer__theme svg { color: #D17046; }

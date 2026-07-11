@@ -35,6 +35,8 @@ export const ICON_PATHS: Record<string, string> = {
   star: '<path d="M12 4l2.3 4.8 5.2.6-3.8 3.5 1 5.1L12 15.8 7.3 18.6l1-5.1L4.5 10l5.2-.6z"/>',
   cart: '<path d="M4 5h2l2 11h9l2-7H7"/><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/>',
   play: '<path d="M8 5.5v13l11-6.5z"/>',
+  sun: '<circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2.4M12 19.1v2.4M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/>',
+  moon: '<path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/>',
 };
 
 export type IconName = keyof typeof ICON_PATHS;

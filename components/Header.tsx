@@ -6,6 +6,7 @@ import { Icon } from "./eko/Icon";
 import { BrandLogo } from "./eko/BrandLogo";
 import { useFocusTrap } from "./eko/Reveal";
 import { useScrollLock } from "../hooks/useScrollLock";
+import { useTheme } from "../hooks/useTheme";
 import type { Language } from "../utils/i18n";
 
 import { PHONE, PHONE_RAW, EMAIL } from "../utils/contacts";
@@ -23,6 +24,7 @@ export function Header() {
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [theme, toggleTheme] = useTheme();
   const panelRef = useRef<HTMLDivElement>(null);
 
   const navItems = NAV_ROUTES.map((r) => ({ path: r.path, label: t.nav[r.key] }));
@@ -71,6 +73,15 @@ export function Header() {
           </nav>
 
           <div className="hdr__right">
+            <button
+              type="button"
+              className="hdr__icon hdr__icon--theme"
+              onClick={toggleTheme}
+              aria-label={theme === "dark" ? t.eko.lightTheme : t.eko.darkTheme}
+              title={theme === "dark" ? t.eko.lightTheme : t.eko.darkTheme}
+            >
+              <Icon name={theme === "dark" ? "sun" : "moon"} size={19} />
+            </button>
             <a
               className="hdr__icon"
               href={`tel:${PHONE_RAW}`}
@@ -149,6 +160,14 @@ export function Header() {
             ))}
           </nav>
           <div className="drawer__foot">
+            <button
+              type="button"
+              className="drawer__theme"
+              onClick={toggleTheme}
+            >
+              <Icon name={theme === "dark" ? "sun" : "moon"} size={18} />
+              {theme === "dark" ? t.eko.lightTheme : t.eko.darkTheme}
+            </button>
             <div className="drawer__langsw" role="group" aria-label="Выбор языка">
               {LANGS.map(({ code, label, name }) => (
                 <button

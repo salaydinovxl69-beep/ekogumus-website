@@ -4,6 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
+    <!-- Apply saved theme before first paint (default: light) to avoid a flash -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem("eg-theme") || "light";
+          document.documentElement.setAttribute("data-theme", t);
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
+    <meta name="theme-color" content="#F3ECDD" />
+
     <!-- Primary Meta Tags -->
     <title>Ekogumus — Органические удобрения на основе биогумуса</title>
     <meta
@@ -68,10 +81,12 @@
     <link rel="dns-prefetch" href="https://i.ytimg.com" />
     <link rel="dns-prefetch" href="https://www.youtube-nocookie.com" />
 
-    <!-- Inline critical CSS: warm cream background visible before JS loads, prevents white flash -->
+    <!-- Inline critical CSS: warm cream background visible before JS loads, prevents white flash.
+         Theme-aware so a returning dark-mode visitor doesn't see a light flash either. -->
     <style>
       html { background: #F3ECDD; }
       body { margin: 0; background: #F3ECDD; min-height: 100vh; }
+      html[data-theme="dark"], body[data-theme="dark"] { background: #14160E; }
     </style>
 
     <!-- JSON-LD: Organization structured data -->
